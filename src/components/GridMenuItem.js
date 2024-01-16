@@ -5,7 +5,7 @@ const GridItem = ({ imageSource, labelText }) => {
   return (
     <View style={styles.gridItem}>
       <ImageBackground
-        source={require("../images/Rectangle4.png")}
+        source={require("../images/Group67.png")}
         style={styles.gridIconContainer}
       >
         <View style={styles.gridIconContainer}>
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     borderRadius: 23,
     marginBottom: 5,
     alignItems:"center",
-    justifyContent:"center",
+    justifyContent:"center"
   },
 
   gridIcon: {
@@ -40,9 +40,10 @@ const styles = StyleSheet.create({
   },
 
   gridText: {
-    fontSize: 14,
+    fontSize: 12,
     color: "#005E6A",
-    textAlign:"center"
+    textAlign:"center",
+    fontFamily: "Inter-Medium",
   },
 });
 
