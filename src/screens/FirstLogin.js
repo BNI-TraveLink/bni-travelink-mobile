@@ -13,7 +13,8 @@ const FirstLogin = () => {
   const [fontsLoaded] = useFonts({
     'Inter-Regular' : require('../fonts/Inter/static/Inter-Regular.ttf'),
     'Poppins-SemiBold' : require('../fonts/Poppins/Poppins-SemiBold.ttf'),
-    'Inter-Medium' : require('../fonts/Inter/static/Inter-Medium.ttf')
+    'Inter-Medium' : require('../fonts/Inter/static/Inter-Medium.ttf'),
+    'Inter-SemiBold' : require('../fonts/Inter/static/Inter-SemiBold.ttf')
   })
 
   if(fontsLoaded){
@@ -21,7 +22,7 @@ const FirstLogin = () => {
   return (
     <View style={{ flex: 1, paddingBottom: 32 }}>
       <ImageBackground
-        source={require("../images/background.png")}
+        source={require("../images/Rectangle1.png")}
         style={styles.backgroundGradient}
       >
         <View>
@@ -101,7 +102,7 @@ const FirstLogin = () => {
   return (
     <View style={{ flex: 1, paddingBottom: 32 }}>
       <ImageBackground
-        source={require("../images/background.png")}
+        source={require("../images/Rectangle1.png")}
         style={styles.backgroundGradient}
       >
         <View>
@@ -213,11 +214,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 55,
     fontWeight: "bold",
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Inter-SemiBold',
   },
 
   buttonLogin: {
-    backgroundColor: "#00A2B7",
+    backgroundColor: "#F15A23",
     padding: 10,
     borderRadius: 20,
     marginTop: 110,
