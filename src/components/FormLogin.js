@@ -10,10 +10,10 @@ import {
   Keyboard,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-// import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
+// import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
-const FormLogin = ({ modalVisible, setModalVisible }) => {
+const FormLogin = ({ modalVisible, setModalVisible, navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +24,8 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
   const [fontsLoaded] = useFonts({
     InterRegular: require("../fonts/Inter/static/Inter-Regular.ttf"),
   });
+
+  // const navigation = useNavigation(); // Inisialisasi objek navigasi
 
   const handleLogin = () => {
     const hardcodedEmail = "atika";
@@ -37,6 +39,9 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
       console.log("Login successful!");
       setIsLoggedIn(true);
       setModalVisible(false);
+
+      // Navigasi ke halaman Home setelah login berhasil
+      navigation.navigate("Home");
     } else {
       console.log("Login failed. Check your email and password.");
       setModalVisible(true);
@@ -96,7 +101,10 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
                 <View style={styles.inputContainer}>
                   <Text style={styles.label}>User ID</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[
+                      styles.input,
+                      { color: "#005E6A", fontSize: 17, fontWeight: "600" },
+                    ]}
                     placeholder="Enter your User ID"
                     value={email}
                     onChangeText={(text) => setEmail(text)}
@@ -106,20 +114,28 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
                   <Text style={styles.label}>MPIN</Text>
                   <View style={styles.passwordInputContainer}>
                     <TextInput
-                      style={styles.input}
+                      style={[
+                        styles.input,
+                        { color: "#005E6A", fontSize: 17, fontWeight: "600" },
+                      ]}
                       placeholder="Enter your MPIN"
                       secureTextEntry={!showPassword}
                       value={password}
                       onChangeText={(text) => setPassword(text)}
                     />
                     <TouchableOpacity
-                      style={styles.showPasswordToggle}
+                      style={[
+                        styles.showPasswordToggle,
+                        {
+                          marginTop: -8,
+                        },
+                      ]}
                       onPress={toggleShowPassword}
                     >
                       <Ionicons
                         name={showPassword ? "eye-off" : "eye"}
                         size={24}
-                        color="#fefefe"
+                        color="#00A2B7"
                       />
                     </TouchableOpacity>
                   </View>
@@ -201,7 +217,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 17,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
@@ -216,7 +232,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10, // Add padding to align text with the input
   },
   label: {
-    fontSize: 18,
+    fontSize: 17,
     alignSelf: "flex-start",
     marginBottom: 5,
     color: "#F15A23",
@@ -224,9 +240,19 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     paddingHorizontal: 12,
-    backgroundColor: "#ccc",
-    borderRadius: 10,
+    borderRadius: 20,
     width: "100%",
+    shadowColor: "#000", // Warna bayangan
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5, // Kekuatan bayangan (0-1)
+    shadowRadius: 3.84, // Jarak bayangan dari elemen
+    elevation: 2, // Elevation memberikan efek bayangan pada Android
+    backgroundColor: "#D9D9D9", // Warna latar belakang sesuai kebutuhan
+    padding: 10, // Atur padding sesuai kebutuhan
+    marginBottom: 10, // Atur margin bawah sesuai kebutuhan
   },
   passwordInputContainer: {
     flexDirection: "row",
@@ -238,7 +264,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   button: {
-    backgroundColor: "#005E6A",
+    backgroundColor: "#F15A23",
     padding: 15,
     borderRadius: 20,
     alignItems: "center",
@@ -268,6 +294,7 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     marginLeft: 10,
     color: "#005E6A",
+    fontSize: 12,
   },
   forgotContainer: {
     flexDirection: "row",
@@ -276,7 +303,7 @@ const styles = StyleSheet.create({
   },
   forgotText: {
     color: "#005E6A",
-    fontSize: 16,
+    fontSize: 12,
   },
   errorText: {
     color: "red",

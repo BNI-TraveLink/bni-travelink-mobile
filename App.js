@@ -1,11 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import FirstLogin from "./src/screens/FirstLogin";
+import AppNavigator from "./src/navigation/index";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <FirstLogin />
+      {/* <FirstLogin /> */}
+      <AppNavigator />
+      <StatusBar style="auto" />
     </View>
   );
 }
