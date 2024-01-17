@@ -11,9 +11,9 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-// import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
-const FormLogin = ({ modalVisible, setModalVisible, navigation }) => {
+const FormLogin = ({ modalVisible, setModalVisible }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ const FormLogin = ({ modalVisible, setModalVisible, navigation }) => {
     InterRegular: require("../fonts/Inter/static/Inter-Regular.ttf"),
   });
 
-  // const navigation = useNavigation(); // Inisialisasi objek navigasi
+  const navigation = useNavigation(); // Inisialisasi objek navigasi
 
   const handleLogin = () => {
     const hardcodedEmail = "atika";
