@@ -1,9 +1,8 @@
 import React from "react";
-import { ImageBackground, StatusBar, TouchableOpacity } from "react-native";
+import { ImageBackground, TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet, Image } from "react-native";
 import GridItem from "../components/GridMenuItem";
-import { useFonts } from 'expo-font';
-
+import { useFonts } from "expo-font";
 
 const FirstLogin = () => {
   const handleLoginPress = () => {
@@ -11,92 +10,90 @@ const FirstLogin = () => {
   };
 
   const [fontsLoaded] = useFonts({
-    'Inter-Regular' : require('../fonts/Inter/static/Inter-Regular.ttf'),
-    'Poppins-SemiBold' : require('../fonts/Poppins/Poppins-SemiBold.ttf'),
-    'Inter-Medium' : require('../fonts/Inter/static/Inter-Medium.ttf'),
-    'Inter-SemiBold' : require('../fonts/Inter/static/Inter-SemiBold.ttf')
-  })
+    "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
+    "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
+    "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
+    "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
+  });
 
-  if(fontsLoaded){
-    
-  return (
-    <View style={{ flex: 1, paddingBottom: 32 }}>
-      <ImageBackground
-        source={require("../images/Rectangle1.png")}
-        style={styles.backgroundGradient}
-      >
-        <View>
-          <View style={styles.appBar}>
-            <Image
-              source={require("../images/mingcute_warning-line.png")}
-              style={{ marginTop: 5 }}
-            />
-            <View style={styles.centerContent}>
+  if (fontsLoaded) {
+    return (
+      <View style={{ flex: 1, paddingBottom: 32 }}>
+        <ImageBackground
+          source={require("../images/Rectangle1.png")}
+          style={styles.backgroundGradient}
+        >
+          <View>
+            <View style={styles.appBar}>
               <Image
-                source={require("../images/logo-bni-putih.png")}
-                style={styles.logo}
+                source={require("../images/mingcute_warning-line.png")}
+                style={{ marginTop: 5 }}
+              />
+              <View style={styles.centerContent}>
+                <Image
+                  source={require("../images/logo-bni-putih.png")}
+                  style={styles.logo}
+                />
+              </View>
+            </View>
+            <View>
+              <Text style={styles.welcomeText}>Welcome!</Text>
+            </View>
+            <View>
+              <Image
+                source={require("../images/TraveLink(1)1.png")}
+                style={{ marginTop: 16, width: 358, height: 290 }}
+              />
+              <View style={styles.buttonLoginContainer}>
+                <TouchableOpacity
+                  onPress={handleLoginPress}
+                  style={styles.buttonLogin}
+                >
+                  <Text style={styles.buttonText}>Login</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.gridContainer}>
+              <GridItem
+                imageSource={require("../images/ion_wallet-outline.png")}
+                labelText={"E-Wallet"}
+              />
+              <GridItem
+                imageSource={require("../images/qris.png")}
+                labelText={"QRIS"}
+              />
+              <GridItem
+                imageSource={require("../images/logotravelink2.png")}
+                labelText={"BNI TraveLink"}
+                style={{ width: 49, height: 24 }}
+              />
+              <GridItem
+                imageSource={require("../images/ep_menu.png")}
+                labelText={"Another Menu"}
               />
             </View>
-          </View>
-          <View>
-            <Text style={styles.welcomeText}>Welcome!</Text>
-          </View>
-          <View>
-            <Image
-              source={require("../images/TraveLink(1)1.png")}
-              style={{ marginTop: 16, width: 358, height: 290 }}
-            />
-            <View style={styles.buttonLoginContainer}>
+            <View style={styles.chatUsContainer}>
               <TouchableOpacity
                 onPress={handleLoginPress}
-                style={styles.buttonLogin}
+                style={styles.buttonChatUs}
               >
-                <Text style={styles.buttonText}>Login</Text>
+                <Image
+                  source={require("../images/mdi_customer-service.png")}
+                  style={{ width: 20, height: 20 }}
+                />
+                <Text style={styles.buttonTextChatUs}>Chat Us</Text>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.gridContainer}>
-            <GridItem
-              imageSource={require("../images/ion_wallet-outline.png")}
-              labelText={"E-Wallet"}
-            />
-            <GridItem
-              imageSource={require("../images/qris.png")}
-              labelText={"QRIS"}
-            />
-            <GridItem
-              imageSource={require("../images/logotravelink2.png")}
-              labelText={"BNI TraveLink"}
-              style={{ width: 49, height: 24 }}
-            />
-            <GridItem
-              imageSource={require("../images/ep_menu.png")}
-              labelText={"Another Menu"}
-            />
-          </View>
-          <View style={styles.chatUsContainer}>
-            <TouchableOpacity
-              onPress={handleLoginPress}
-              style={styles.buttonChatUs}
-            >
-              <Image
-                source={require("../images/mdi_customer-service.png")}
-                style={{ width: 20, height: 20 }}
-              />
-              <Text style={styles.buttonTextChatUs}>Chat Us</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ImageBackground>
-    </View>
-  );
-  }
-  else{
-    return(
+        </ImageBackground>
+      </View>
+    );
+  } else {
+    return (
       <View>
         <Text>Hello</Text>
       </View>
-    )
+    );
   }
 
   return (
@@ -187,7 +184,7 @@ const styles = StyleSheet.create({
   },
 
   appBar: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
 
   appBarText: {
@@ -214,7 +211,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 55,
     fontWeight: "bold",
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: "Inter-SemiBold",
   },
 
   buttonLogin: {
@@ -230,7 +227,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     textAlign: "center",
-    fontFamily:'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
   },
 
   gridContainer: {
@@ -238,7 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexWrap: "wrap",
     marginTop: 80,
-    paddingHorizontal:16
+    paddingHorizontal: 16,
   },
 
   buttonLoginContainer: {
@@ -260,7 +257,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    fontFamily: "Poppins-SemiBold"
+    fontFamily: "Poppins-SemiBold",
   },
 
   buttonTextChatUs: {
