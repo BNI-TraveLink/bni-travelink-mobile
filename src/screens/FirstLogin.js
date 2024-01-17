@@ -1,12 +1,15 @@
 import React from "react";
-import { ImageBackground, TouchableOpacity } from "react-native";
+import { ImageBackground, StatusBar, TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet, Image } from "react-native";
 import GridItem from "../components/GridMenuItem";
-import { useFonts } from "expo-font";
+import { useFonts } from 'expo-font';
+
 
 const FirstLogin = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   const handleLoginPress = () => {
-    console.log("Tekan disini");
+    setModalVisible(true);
   };
 
   const [fontsLoaded] = useFonts({
@@ -16,86 +19,8 @@ const FirstLogin = () => {
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   });
 
-  if (fontsLoaded) {
-    return (
-      <View style={{ flex: 1, paddingBottom: 32 }}>
-        <ImageBackground
-          source={require("../images/Rectangle1.png")}
-          style={styles.backgroundGradient}
-        >
-          <View>
-            <View style={styles.appBar}>
-              <Image
-                source={require("../images/mingcute_warning-line.png")}
-                style={{ marginTop: 5 }}
-              />
-              <View style={styles.centerContent}>
-                <Image
-                  source={require("../images/logo-bni-putih.png")}
-                  style={styles.logo}
-                />
-              </View>
-            </View>
-            <View>
-              <Text style={styles.welcomeText}>Welcome!</Text>
-            </View>
-            <View>
-              <Image
-                source={require("../images/TraveLink(1)1.png")}
-                style={{ marginTop: 16, width: 358, height: 290 }}
-              />
-              <View style={styles.buttonLoginContainer}>
-                <TouchableOpacity
-                  onPress={handleLoginPress}
-                  style={styles.buttonLogin}
-                >
-                  <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.gridContainer}>
-              <GridItem
-                imageSource={require("../images/ion_wallet-outline.png")}
-                labelText={"E-Wallet"}
-              />
-              <GridItem
-                imageSource={require("../images/qris.png")}
-                labelText={"QRIS"}
-              />
-              <GridItem
-                imageSource={require("../images/logotravelink2.png")}
-                labelText={"BNI TraveLink"}
-                style={{ width: 49, height: 24 }}
-              />
-              <GridItem
-                imageSource={require("../images/ep_menu.png")}
-                labelText={"Another Menu"}
-              />
-            </View>
-            <View style={styles.chatUsContainer}>
-              <TouchableOpacity
-                onPress={handleLoginPress}
-                style={styles.buttonChatUs}
-              >
-                <Image
-                  source={require("../images/mdi_customer-service.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-                <Text style={styles.buttonTextChatUs}>Chat Us</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </ImageBackground>
-      </View>
-    );
-  } else {
-    return (
-      <View>
-        <Text>Hello</Text>
-      </View>
-    );
-  }
-
+  if(fontsLoaded){
+    
   return (
     <View style={{ flex: 1, paddingBottom: 32 }}>
       <ImageBackground
@@ -117,7 +42,6 @@ const FirstLogin = () => {
           </View>
           <View>
             <Text style={styles.welcomeText}>Welcome!</Text>
-            
           </View>
           <View>
             <Image
@@ -168,6 +92,14 @@ const FirstLogin = () => {
       </ImageBackground>
     </View>
   );
+  }
+  else{
+    return(
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -271,6 +203,14 @@ const styles = StyleSheet.create({
   chatUsContainer: {
     flex: 1,
     alignItems: "center",
+  },
+
+  openModalText: {
+    color: "white",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 20,
+    textDecorationLine: "underline",
   },
 });
 
