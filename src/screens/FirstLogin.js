@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ImageBackground, StatusBar, TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet, Image } from "react-native";
 import GridItem from "../components/GridMenuItem";
