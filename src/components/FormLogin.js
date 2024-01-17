@@ -153,10 +153,17 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
                   >
                     <Ionicons
                       name={rememberUser ? "checkbox" : "checkbox-outline"}
-                      size={24}
+                      size={19}
                       color="#005E6A"
                     />
-                    <Text style={styles.checkboxLabel}>Save User ID</Text>
+                    <Text
+                      style={[
+                        styles.checkboxLabel,
+                        { fontFamily: "Inter-Medium" },
+                      ]}
+                    >
+                      Save User ID
+                    </Text>
                   </TouchableOpacity>
                 </View>
 
@@ -216,7 +223,7 @@ const styles = StyleSheet.create({
     width: "80%",
     padding: 20,
     backgroundColor: "#FFF",
-    borderRadius: 10,
+    borderRadius: 20,
   },
   title: {
     fontSize: 17,
@@ -234,6 +241,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10, // Add padding to align text with the input
   },
   label: {
+    paddingHorizontal: 10,
     fontSize: 17,
     alignSelf: "flex-start",
     marginBottom: 5,
@@ -271,7 +279,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     marginHorizontal: 70,
-    marginTop: 10,
+    marginTop: 2,
     marginBottom: 30,
   },
   buttonText: {
@@ -285,29 +293,32 @@ const styles = StyleSheet.create({
     right: 10,
   },
   checkboxContainer: {
+    paddingHorizontal: 12,
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 15,
   },
   checkbox: {
+    marginTop: -10,
     flexDirection: "row",
     alignItems: "center",
   },
   checkboxLabel: {
     marginLeft: 10,
     color: "#005E6A",
-    fontSize: 12,
+    fontSize: 13,
   },
   forgotContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 2,
   },
   forgotText: {
     color: "#005E6A",
     fontSize: 12,
   },
   errorText: {
+    paddingHorizontal: 12,
     color: "red",
     marginBottom: 10,
   },
