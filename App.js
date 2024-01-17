@@ -5,7 +5,6 @@ import AppNavigator from "./src/navigation/index";
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* <FirstLogin /> */}
       <AppNavigator />
       <StatusBar style="auto" />
     </View>

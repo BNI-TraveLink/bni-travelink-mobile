@@ -29,13 +29,19 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
 
   const handleLogin = () => {
     const hardcodedEmail = "atika";
-    const hardcodedPassword = "123";
+    const hardcodedPassword = "123456";
 
     setEmail("");
     setPassword("");
     setErrorText("");
 
-    if (email === hardcodedEmail && password === hardcodedPassword) {
+    const isPasswordValid = password.length >= 6 && /^\d+$/.test(password);
+
+    if (
+      email === hardcodedEmail &&
+      isPasswordValid &&
+      password === hardcodedPassword
+    ) {
       console.log("Login successful!");
       setIsLoggedIn(true);
       setModalVisible(false);
@@ -196,11 +202,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
       </TouchableWithoutFeedback>
     );
   } else {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return <View></View>;
   }
 };
 const styles = StyleSheet.create({
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "100%",
-    marginBottom: 20,
+    marginBottom: 8,
     overflow: "hidden",
     // Set the background color to gray
     paddingHorizontal: 10, // Add padding to align text with the input
