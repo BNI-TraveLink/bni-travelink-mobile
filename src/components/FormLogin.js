@@ -28,8 +28,8 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
   const navigation = useNavigation(); // Inisialisasi objek navigasi
 
   const handleLogin = () => {
-    const hardcodedUser_id = "atika";
-    const hardcodedMpin = "123456";
+    const hardcodedUser_id = "minara297";
+    const hardcodedMpin = "194624";
 
     setUser_id("");
     setMpin("");
