@@ -96,7 +96,7 @@ const FirstLogin = () => {
             </View>
           </View>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text style={styles.openModalText}>Open Login</Text>
+            <Text style={styles.openModalText}></Text>
           </TouchableOpacity>
           <Modal
             animationType="slide"

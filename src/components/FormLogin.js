@@ -14,9 +14,9 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
 const FormLogin = ({ modalVisible, setModalVisible }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [user_id, setUser_id] = useState("");
+  const [mpin, setMpin] = useState("");
+  const [showMpin, setShowMpin] = useState(false);
   const [rememberUser, setRememberUser] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorText, setErrorText] = useState(""); // Tambahkan state errorText
@@ -28,20 +28,16 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
   const navigation = useNavigation(); // Inisialisasi objek navigasi
 
   const handleLogin = () => {
-    const hardcodedEmail = "atika";
-    const hardcodedPassword = "123456";
+    const hardcodedUser_id = "atika";
+    const hardcodedMpin = "123456";
 
-    setEmail("");
-    setPassword("");
+    setUser_id("");
+    setMpin("");
     setErrorText("");
 
-    const isPasswordValid = password.length >= 6 && /^\d+$/.test(password);
+    const isMpinValid = mpin.length >= 6 && /^\d+$/.test(mpin);
 
-    if (
-      email === hardcodedEmail &&
-      isPasswordValid &&
-      password === hardcodedPassword
-    ) {
+    if (user_id === hardcodedUser_id && isMpinValid && mpin === hardcodedMpin) {
       console.log("Login successful!");
       setIsLoggedIn(true);
       setModalVisible(false);
@@ -49,10 +45,10 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
       // Navigasi ke halaman Home setelah login berhasil
       navigation.navigate("Home");
     } else {
-      console.log("Login failed. Check your email and password.");
+      console.log("Login failed. Check your User ID and MPIN.");
       setModalVisible(true);
       setIsLoggedIn(false);
-      setErrorText("Username or Password is Incorrect"); // Set pesan kesalahan
+      setErrorText("User ID or MPIN is Incorrect"); // Set pesan kesalahan
       console.log("Error Text:", errorText); // Tambahkan log ini
     }
   };
@@ -60,13 +56,13 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     // Tambahan: Reset state jika diperlukan
-    setEmail("");
-    setPassword("");
+    setUser_id("");
+    setMpin("");
     setErrorText("");
   };
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
+  const toggleShowMpin = () => {
+    setShowMpin(!showMpin);
   };
 
   const toggleRememberUser = () => {
@@ -97,7 +93,18 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
             onRequestClose={() => setModalVisible(false)}
           >
             <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
+              <View
+                style={[
+                  styles.modalContent,
+                  { width: 331, height: 415 },
+                  {
+                    marginTop: 217,
+                    marginBottom: 212,
+                    marginRight: 29,
+                    marginLeft: 30,
+                  },
+                ]}
+              >
                 <Text style={[styles.title, { fontFamily: "InterRegular" }]}>
                   Welcome!
                 </Text>
@@ -112,34 +119,36 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
                       { color: "#005E6A", fontSize: 17, fontWeight: "600" },
                     ]}
                     placeholder="Enter your User ID"
-                    value={email}
-                    onChangeText={(text) => setEmail(text)}
+                    value={user_id}
+                    autoFocus={true}
+                    onChangeText={(text) => setUser_id(text)}
                   />
                 </View>
                 <View style={styles.inputContainer}>
                   <Text style={styles.label}>MPIN</Text>
-                  <View style={styles.passwordInputContainer}>
+                  <View style={styles.mpinInputContainer}>
                     <TextInput
                       style={[
                         styles.input,
                         { color: "#005E6A", fontSize: 17, fontWeight: "600" },
                       ]}
                       placeholder="Enter your MPIN"
-                      secureTextEntry={!showPassword}
-                      value={password}
-                      onChangeText={(text) => setPassword(text)}
+                      secureTextEntry={!showMpin}
+                      value={mpin}
+                      autoFocus={true}
+                      onChangeText={(text) => setMpin(text)}
                     />
                     <TouchableOpacity
                       style={[
-                        styles.showPasswordToggle,
+                        styles.showMpinToggle,
                         {
                           marginTop: -8,
                         },
                       ]}
-                      onPress={toggleShowPassword}
+                      onPress={toggleShowMpin}
                     >
                       <Ionicons
-                        name={showPassword ? "eye-off" : "eye"}
+                        name={showMpin ? "eye-off" : "eye"}
                         size={24}
                         color="#00A2B7"
                       />
@@ -222,6 +231,7 @@ const styles = StyleSheet.create({
   modalContent: {
     width: "80%",
     padding: 20,
+    marginHorizontal: 14,
     backgroundColor: "#FFF",
     borderRadius: 20,
   },
@@ -249,7 +259,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     borderRadius: 20,
     width: "100%",
     shadowColor: "#000", // Warna bayangan
@@ -261,15 +271,15 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84, // Jarak bayangan dari elemen
     elevation: 2, // Elevation memberikan efek bayangan pada Android
     backgroundColor: "#D9D9D9", // Warna latar belakang sesuai kebutuhan
-    padding: 10, // Atur padding sesuai kebutuhan
+    padding: 14, // Atur padding sesuai kebutuhan
     marginBottom: 10, // Atur margin bawah sesuai kebutuhan
   },
-  passwordInputContainer: {
+  mpinInputContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderColor: "#DDD",
   },
-  showPasswordToggle: {
+  showMpinToggle: {
     marginLeft: "auto",
     paddingRight: 10,
   },
@@ -279,7 +289,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     marginHorizontal: 70,
-    marginTop: 2,
+    marginTop: 18,
     marginBottom: 30,
   },
   buttonText: {
@@ -293,10 +303,10 @@ const styles = StyleSheet.create({
     right: 10,
   },
   checkboxContainer: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 18,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 14,
   },
   checkbox: {
     marginTop: -10,
