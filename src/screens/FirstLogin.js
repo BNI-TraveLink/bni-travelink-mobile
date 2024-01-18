@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ImageBackground, StatusBar, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import {
   ImageBackground,
   TouchableOpacity,
@@ -22,6 +24,24 @@ const FirstLogin = () => {
   const [fontsLoaded] = useFonts({
     "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
+    "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
+  });
+
+  if(fontsLoaded){
+    
+  return (
+    <View style={{ flex: 1, paddingBottom: 32 }}>
+      <ImageBackground
+        source={require("../images/Rectangle1.png")}
+        style={styles.backgroundGradient}
+      >
+        <View>
+          <View style={styles.appBar}>
+            <Image
+              source={require("../images/mingcute_warning-line.png")}
+              style={{ marginTop: 5 }}
+            />
+            <View style={styles.centerContent}>
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   });
@@ -54,6 +74,16 @@ const FirstLogin = () => {
                 source={require("../images/TraveLink(1)1.png")}
                 style={{ marginTop: 16, width: 358, height: 290 }}
               />
+              <Text style={styles.buttonTextChatUs}>Chat Us</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
+    </View>
+  );
+  }
+  else{
+    return(
               <View style={styles.buttonLoginContainer}>
                 <TouchableOpacity
                   onPress={handleLoginPress}
