@@ -8,6 +8,7 @@ export default function App() {
     <View style={styles.container}>
       {/* <AppNavigator /> */}
       <HomePage/>
+      <AppNavigator />
       <StatusBar style="auto" />
     </View>
   );
