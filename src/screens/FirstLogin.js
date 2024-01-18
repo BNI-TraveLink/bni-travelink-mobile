@@ -15,7 +15,6 @@ const FirstLogin = () => {
   const [fontsLoaded] = useFonts({
     "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
-    "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   });
 
