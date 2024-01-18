@@ -7,6 +7,8 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* <AppNavigator /> */}
+
+      {/* Buat update di sini */}
       <HomePage/>
       <AppNavigator />
       <StatusBar style="auto" />
