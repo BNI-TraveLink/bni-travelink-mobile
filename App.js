@@ -1,15 +1,15 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import AppNavigator from "./src/navigation/index";
-import HomePage from "./src/screens/HomePage";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
+// import CobaHome from './src/screens/CobaHome';
+import HomePage from './src/screens/HomePage';
+// import FirstLogin from './src/screens/FirstLogin';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* <AppNavigator /> */}
-      {/* <HomePage/> */}
-      {/* <HomePage/> */}
-      <AppNavigator />
+      <HomePage/>
+      {/* <FirstLogin/> */}
+      {/* <CobaHome/> */}
       <StatusBar style="auto" />
     </View>
   );
@@ -18,5 +18,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#F5F5F5",
   },
 });

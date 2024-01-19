@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import {
-  ImageBackground,
-  View,
-  Text,
-  StyleSheet,
   Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
   TouchableOpacity,
 } from "react-native";
 import { useFonts } from "expo-font";
-import GridItem from "../components/GridMenuItem";
 import GridHomeMenu from "../components/GridHomeMenu";
 
 const HomePage = () => {
@@ -25,34 +24,37 @@ const HomePage = () => {
     "Poppins-ExtraBold": require("../fonts/Poppins/Poppins-ExtraBold.ttf"),
     "Poppins-Medium": require("../fonts/Poppins/Poppins-Medium.ttf"),
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
+    "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
+    "Inter-Bold": require("../fonts/Inter/static/Inter-Bold.ttf"),
   });
 
   if (fontsLoaded) {
     return (
-      <View style={{ flex: 1, paddingBottom: 32, backgroundColor: "#F5F5F5" }}>
-        <ImageBackground
-          source={require("../images/Rectangle1.png")}
-          style={styles.backgroundGradient}
-        >
-          <View>
-            <View style={styles.appBar}>
+      <ImageBackground
+        source={require("../images/background-container.png")}
+        style={styles.backgroundGradient}
+      >
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+          <View style={styles.appBar}>
+            <Image
+              source={require("../images/customer-service.png")}
+              style={{ height: 20, width: 20 }}
+            />
+            <Text style={styles.chatUs}>chatUs</Text>
+            <View style={styles.centerContent}>
               <Image
-                source={require("../images/ri_customer-service-fill.png")}
-                style={{ marginRight: 5, height: 20, width: 20 }}
+                source={require("../images/logobniputih.png")}
+                style={styles.logo}
               />
-              <Text style={styles.chatUs}>Chat Us</Text>
-              <View style={styles.centerContent}>
-                <Image
-                  source={require("../images/logo-bni-putih.png")}
-                  style={styles.logo}
-                />
-              </View>
-              <Image
-                source={require("../images/Vector.png")}
-                style={{ marginRight: 8 }}
-              />
-              <Image source={require("../images/line-md_log-out.png")} />
             </View>
+            <Image
+              source={require("../images/notification.png")}
+              style={{ marginRight: 8, height: 20, width: 16 }}
+            />
+            <Image
+              source={require("../images/log-out.png")}
+              style={{ height: 20, width: 20 }}
+            />
           </View>
           <View>
             <View style={styles.custProfile}>
@@ -75,8 +77,8 @@ const HomePage = () => {
                 <Image
                   source={
                     isHidden
-                      ? require("../images/hide.png")
-                      : require("../images/show.png")
+                      ? require("../images/visible.png")
+                      : require("../images/not-visible.png")
                   }
                   style={styles.icon}
                 />
@@ -84,7 +86,7 @@ const HomePage = () => {
             </View>
             <View style={styles.accountContainer}>
               <Image
-                source={require("../images/icon-park-solid_down-one.png")}
+                source={require("../images/solid_down.png")}
                 style={{ height: 25, width: 25, marginRight: 4 }}
               />
               <View style={{ alignItems: "center" }}>
@@ -92,7 +94,7 @@ const HomePage = () => {
                 <Text style={styles.accountLabel}>BNI Taplus Muda</Text>
               </View>
               <Image
-                source={require("../images/bitcoin-icons_copy-filled.png")}
+                source={require("../images/copy.png")}
                 style={{ height: 25, width: 25, marginLeft: 2 }}
               ></Image>
             </View>
@@ -100,37 +102,37 @@ const HomePage = () => {
           <View style={styles.menuContainer}>
             <View style={styles.gridContainer}>
               <GridHomeMenu
-                imageSource={require("../images/fa6-solid_money-bill-transfer.png")}
+                imageSource={require("../images/transfer-item.png")}
                 labelText={"Transfer"}
               />
               <GridHomeMenu
-                imageSource={require("../images/majesticons_list-box.png")}
+                imageSource={require("../images/payment-item.png")}
                 labelText={"Payment"}
               />
               <GridHomeMenu
-                imageSource={require("../images/fontisto_shopping-basket-add.png")}
+                imageSource={require("../images/purchase-item.png")}
                 labelText={"Purchase"}
               />
               <GridHomeMenu
-                imageSource={require("../images/solar_graph-new-bold.png")}
+                imageSource={require("../images/investment-item.png")}
                 labelText={"Investment"}
               />
             </View>
             <View style={styles.gridContainer}>
               <GridHomeMenu
-                imageSource={require("../images/octicon_goal-16.png")}
+                imageSource={require("../images/life-goals-item.png")}
                 labelText={"Life Goals"}
               />
               <GridHomeMenu
-                imageSource={require("../images/game-icons_receive-money.png")}
+                imageSource={require("../images/digital-loan-item.png")}
                 labelText={"Digital Loan"}
               />
               <GridHomeMenu
-                imageSource={require("../images/teenyicons_gift-solid.png")}
+                imageSource={require("../images/dikado-item.png")}
                 labelText={"DiKado"}
               />
               <GridHomeMenu
-                imageSource={require("../images/fe_app-menu.png")}
+                imageSource={require("../images/another-menu-item.png")}
                 labelText={"Another Menu"}
               />
             </View>
@@ -141,30 +143,35 @@ const HomePage = () => {
           </View>
           <Text style={styles.eWalletsText}>My E-Wallets</Text>
           <View style={styles.myWalletContainer}>
-            <View style={styles.myWalletContent}></View>
-            <Image source={require("../images/Rectangle4(1).png")} />
-            <View style={{ alignItems: "center" }}>
-              <Text style={styles.pointText}>LinkAja</Text>
-              <Text style={styles.pointText}>Rp 297.000</Text>
+            <View style={styles.myWalletContent}>
+              <Image
+                source={require("../images/link-aja-item.png")}
+                style={{ width: 70, height: 70, objectFit: "contain" }}
+              />
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.nameLabel}>LinkAja</Text>
+                <Text style={styles.nameText}>Rp 297.000</Text>
+              </View>
+              <Image
+                source={require("../images/link-aja-item.png")}
+                style={{ width: 70, height: 70, objectFit: "contain" }}
+              />
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.nameLabel}>LinkAja</Text>
+                <Text style={styles.nameText}>Rp 297.000</Text>
+              </View>
             </View>
           </View>
-        </ImageBackground>
-      </View>
+        </View>
+      </ImageBackground>
     );
   }
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-  },
-
   backgroundGradient: {
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 56,
-    height: 430,
+    paddingTop: 45,
+    height: 440,
   },
 
   appBar: {
@@ -174,15 +181,16 @@ const styles = StyleSheet.create({
 
   chatUs: {
     color: "#FFFFFF",
-    fontSize: 10,
+    fontSize: 15,
     fontFamily: "Poppins-Regular",
+    marginLeft: 5,
   },
 
   centerContent: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
+    paddingRight: 35, // mengatur logo BNI ketengah
   },
 
   logo: {
@@ -224,14 +232,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  icon: {
-    width: 20,
-    height: 20,
-    marginLeft: 6,
-  },
   saldoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "row"
   },
 
   saldoLabel: {
@@ -240,10 +242,19 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-ExtraBold",
     marginRight: 5,
   },
+
   saldoText: {
     color: "#FFFFFF",
     fontSize: 20,
     fontFamily: "Poppins-ExtraBold",
+    letterSpacing: 3, // mengatur agar tidak ada space
+  },
+
+  icon: {
+    width: 20,
+    height: 20,
+    marginLeft: 6,
+    marginBottom: 6,
   },
 
   accountContainer: {
@@ -347,10 +358,17 @@ const styles = StyleSheet.create({
     marginRight: 21,
   },
 
-  myWalletText: {
-    fontSize: 18,
-    color: "#FFFFFF",
-    fontFamily: "Poppins-Regular",
+  nameLabel: {
+    color: "#005E6A",
+    fontSize: 20,
+    fontFamily: "Inter-SemiBold",
+    marginRight: 5,
+  },
+
+  nameText: {
+    color: "#005E6A",
+    fontSize: 16,
+    fontFamily: "Inter-Bold",
   },
 });
 

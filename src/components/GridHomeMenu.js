@@ -5,7 +5,7 @@ const GridHomeMenu = ({ imageSource, labelText }) => {
   return (
     <View style={styles.gridItem}>
       <ImageBackground
-        source={require("../images/Group67.png")}
+        source={require("../images/background-item.png")}
         style={styles.gridIconContainer}
       >
         <View style={styles.gridIconContainer}>
