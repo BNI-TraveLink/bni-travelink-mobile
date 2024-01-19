@@ -7,6 +7,7 @@ import HomePage from './src/screens/HomePage';
 export default function App() {
   return (
     <View style={styles.container}>
+      {/* production */}
       <HomePage/>
       {/* <FirstLogin/> */}
       {/* <CobaHome/> */}
