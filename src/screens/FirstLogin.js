@@ -30,18 +30,18 @@ const FirstLogin = () => {
     return (
       <View style={{ flex: 1, paddingBottom: 32 }}>
         <ImageBackground
-          source={require("../images/Rectangle1.png")}
+          source={require("../images/background-container.png")}
           style={styles.backgroundGradient}
         >
           <View>
             <View style={styles.appBar}>
               <Image
-                source={require("../images/mingcute_warning-line.png")}
-                style={{ marginTop: 5 }}
+                source={require("../images/warning-item.png")}
+                style={{ width:30, height:30, marginTop: 5 }}
               />
               <View style={styles.centerContent}>
                 <Image
-                  source={require("../images/logo-bni-putih.png")}
+                  source={require("../images/logobniputih.png")}
                   style={styles.logo}
                 />
               </View>
@@ -51,7 +51,7 @@ const FirstLogin = () => {
             </View>
             <View>
               <Image
-                source={require("../images/TraveLink(1)1.png")}
+                source={require("../images/traveLink-item.png")}
                 style={{ marginTop: 16, width: 358, height: 290 }}
               />
               <View style={styles.buttonLoginContainer}>
@@ -65,20 +65,20 @@ const FirstLogin = () => {
             </View>
             <View style={styles.gridContainer}>
               <GridItem
-                imageSource={require("../images/ion_wallet-outline.png")}
+                imageSource={require("../images/wallet-item.png")}
                 labelText={"E-Wallet"}
               />
               <GridItem
-                imageSource={require("../images/qris.png")}
+                imageSource={require("../images/qr-scan-item.png")}
                 labelText={"QRIS"}
               />
               <GridItem
-                imageSource={require("../images/logotravelink2.png")}
+                imageSource={require("../images/logo-bnitravelink-item.png")}
                 labelText={"BNI TraveLink"}
                 style={{ width: 49, height: 24 }}
               />
               <GridItem
-                imageSource={require("../images/ep_menu.png")}
+                imageSource={require("../images/another-menu-item.png")}
                 labelText={"Another Menu"}
               />
             </View>
@@ -88,7 +88,7 @@ const FirstLogin = () => {
                 style={styles.buttonChatUs}
               >
                 <Image
-                  source={require("../images/mdi_customer-service.png")}
+                  source={require("../images/org-customer-service.png")}
                   style={{ width: 20, height: 20 }}
                 />
                 <Text style={styles.buttonTextChatUs}>Chat Us</Text>

@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, ImageBackground } from "react-native";
 
-const GridMenuItem = ({ imageSource, labelText }) => {
+const GridHomeMenu = ({ imageSource, labelText }) => {
   return (
-    <View style={styles.gridMenuItem}>
+    <View style={styles.gridItem}>
       <ImageBackground
         source={require("../images/background-item.png")}
         style={styles.gridIconContainer}
@@ -18,10 +18,10 @@ const GridMenuItem = ({ imageSource, labelText }) => {
 };
 
 const styles = StyleSheet.create({
-  gridMenuItem: {
+  gridItem: {
     width: 70,
-    marginBottom: 15,
-    marginTop:45
+    marginBottom: 7.5,
+    marginTop: 11.5,
   },
 
   gridIconContainer: {
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GridMenuItem;
+export default GridHomeMenu;
