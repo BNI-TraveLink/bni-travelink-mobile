@@ -10,10 +10,10 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="FirstLogin"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="Login" component={FirstLogin} />
+        <Stack.Screen name="FirstLogin" component={FirstLogin} />
         <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
