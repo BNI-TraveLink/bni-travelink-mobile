@@ -1,15 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-// import CobaHome from './src/screens/CobaHome';
-import HomePage from './src/screens/HomePage';
-// import FirstLogin from './src/screens/FirstLogin';
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import AppNavigator from "./src/navigation/index";
+import SplashScreen from "./src/screens/SplashScreen";
+import HomeScreen from "./src/screens/homescreen";
+import FirstLogin from "./src/screens/FirstLogin";
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
     <View style={styles.container}>
-      <HomePage/>
-      {/* <FirstLogin/> */}
-      {/* <CobaHome/> */}
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="FirstLogin" component={FirstLogin} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
       <StatusBar style="auto" />
     </View>
   );
@@ -21,3 +35,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
   },
 });
+
+export default App;
