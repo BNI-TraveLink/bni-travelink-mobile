@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { ImageBackground, StatusBar, TouchableOpacity } from "react-native";
+import { ImageBackground, Modal, StatusBar, TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet, Image } from "react-native";
 import GridItem from "../components/GridMenuItem";
 import { useFonts } from 'expo-font';
+import FormLogin from "../components/FormLogin";
 
 
 const FirstLogin = () => {
