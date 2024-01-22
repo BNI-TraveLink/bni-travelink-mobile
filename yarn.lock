@@ -1185,6 +1185,11 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/inter@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.npmjs.org/@expo-google-fonts/inter/-/inter-0.2.3.tgz"
+  integrity sha512-iHK9FI+dnE45X5c2Z5hSFwNH4zUWethizpbv3XUn0FIGw5jwvzriENz0a6wCdkI4/d+1QkurnHo5XHti7TbNJA==
+
 "@expo/bunyan@^4.0.0", "@expo/bunyan@4.0.0":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@expo/bunyan/-/bunyan-4.0.0.tgz"
@@ -2668,6 +2673,15 @@ cliui@^6.0.0:
     strip-ansi "^6.0.0"
     wrap-ansi "^6.2.0"
 
+cliui@^7.0.2:
+  version "7.0.4"
+  resolved "https://registry.npmjs.org/cliui/-/cliui-7.0.4.tgz"
+  integrity sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==
+  dependencies:
+    string-width "^4.2.0"
+    strip-ansi "^6.0.0"
+    wrap-ansi "^7.0.0"
+
 cliui@^8.0.1:
   version "8.0.1"
   resolved "https://registry.npmjs.org/cliui/-/cliui-8.0.1.tgz"
@@ -3247,6 +3261,13 @@ expo-file-system@~15.4.0, expo-file-system@~15.4.5:
   integrity sha512-xy61KaTaDgXhT/dllwYDHm3ch026EyO8j4eC6wSVr/yE12MMMxAC09yGwy4f7kkOs6ztGVQF5j7ldRzNLN4l0Q==
   dependencies:
     uuid "^3.4.0"
+
+expo-font@^11.10.2:
+  version "11.10.2"
+  resolved "https://registry.npmjs.org/expo-font/-/expo-font-11.10.2.tgz"
+  integrity sha512-AE0Q0LiWiVosQ/jlKUPoWoob7p3GwYM2xmLoUkuopO9RYh9NL1hZKHiMKcWBZyDG8Gww1GtBQwh7ZREST8+jjQ==
+  dependencies:
+    fontfaceobserver "^2.1.0"
 
 expo-font@~11.4.0:
   version "11.4.0"
@@ -5505,6 +5526,14 @@ react-native-screens@^3.29.0, "react-native-screens@>= 3.0.0":
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-vector-icons@^10.0.3:
+  version "10.0.3"
+  resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-10.0.3.tgz"
+  integrity sha512-ZgVlV5AdQgnPHHvBEihGf2xwyziT1acpXV1U+WfCgCv3lcEeCRsmwAsBU+kUSNsU+8TcWVsX04kdI6qUaS8D7w==
+  dependencies:
+    prop-types "^15.7.2"
+    yargs "^16.1.1"
+
 react-native@*, react-native@0.72.6:
   version "0.72.6"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.72.6.tgz"
@@ -6834,6 +6863,11 @@ yargs-parser@^18.1.2:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+yargs-parser@^20.2.2:
+  version "20.2.9"
+  resolved "https://registry.npmjs.org/yargs-parser/-/yargs-parser-20.2.9.tgz"
+  integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
+
 yargs-parser@^21.1.1:
   version "21.1.1"
   resolved "https://registry.npmjs.org/yargs-parser/-/yargs-parser-21.1.1.tgz"
@@ -6855,6 +6889,19 @@ yargs@^15.1.0:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
+
+yargs@^16.1.1:
+  version "16.2.0"
+  resolved "https://registry.npmjs.org/yargs/-/yargs-16.2.0.tgz"
+  integrity sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw==
+  dependencies:
+    cliui "^7.0.2"
+    escalade "^3.1.1"
+    get-caller-file "^2.0.5"
+    require-directory "^2.1.1"
+    string-width "^4.2.0"
+    y18n "^5.0.5"
+    yargs-parser "^20.2.2"
 
 yargs@^17.6.2:
   version "17.7.2"

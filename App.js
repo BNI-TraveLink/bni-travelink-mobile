@@ -1,20 +1,22 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AppNavigator from "./src/navigation/index";
 import SplashScreen from "./src/screens/SplashScreen";
-// import HomeScreen from "./src/screens/homescreen";
+import HomeScreen from "./src/screens/homescreen";
 import FirstLogin from "./src/screens/FirstLogin";
 import HomePage from "./src/screens/HomePage";
+import Purchase from "./src/screens/Purchase";
+import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
 
 function App() {
   return (
     <View style={styles.container}>
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
@@ -24,7 +26,9 @@ function App() {
           <Stack.Screen name="FirstLogin" component={FirstLogin} />
           <Stack.Screen name="Home" component={HomePage} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
+
+      <Purchase></Purchase>
       <StatusBar style="auto" />
     </View>
   );
