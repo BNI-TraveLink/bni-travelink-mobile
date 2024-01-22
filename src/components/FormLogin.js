@@ -25,6 +25,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
 
   const [fontsLoaded] = useFonts({
     InterRegular: require("../fonts/Inter/static/Inter-Regular.ttf"),
+    InterMedium: require("../fonts/Inter/static/Inter-Medium.ttf"),
   });
 
   const navigation = useNavigation(); // Inisialisasi objek navigasi
@@ -192,7 +193,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
                     <Text
                       style={[
                         styles.checkboxLabel,
-                        { fontFamily: "Inter-Medium" },
+                        { fontFamily: "InterMedium" },
                       ]}
                     >
                       Save User ID
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
     color: "#005E6A",
-    fontFamily: "Inter-Regular",
+    fontFamily: "InterRegular",
   },
   inputContainer: {
     width: "100%",
