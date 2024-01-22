@@ -40,7 +40,7 @@ const FirstLogin = () => {
           </View>
           <View>
             <Image
-              source={require("../images/traveLink-item.png")}
+              source={require("../images/travelink-item.png")}
               style={{ marginTop: 16, width: 358, height: 290 }}
             />
             <View style={styles.buttonLoginContainer}>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
 
   chatUsContainer: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
 
   buttonChatUs: {

@@ -1,15 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-// import CobaHome from './src/screens/CobaHome';
-import HomePage from './src/screens/HomePage';
-// import FirstLogin from './src/screens/FirstLogin';
+// import KrlOrderForm from './src/screens/KrlOrderForm';
+// import TraveLink from './src/screens/TraveLink';
+// import Purchase from './src/screens/Purchase';
+// import HomePageAfter from './src/screens/HomePageAfter';
+// import BottomBarPage from './src/components/BottomBar';
+// import HomePage from './src/screens/HomePage';
+import FirstLogin from './src/screens/FirstLogin';
+// import Coba from './src/screens/Coba';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <HomePage/>
-      {/* <FirstLogin/> */}
-      {/* <CobaHome/> */}
+      {/* <HomePage/> */}
+      <FirstLogin/>
+      {/* <BottomBarPage/> */}
+      {/* <HomePageAfter/> */}
+      {/* <Purchase/> */}
+      {/* <TraveLink/> */}
+      {/* <KrlOrderForm/> */}
+      {/* <Coba/> */}
       <StatusBar style="auto" />
     </View>
   );

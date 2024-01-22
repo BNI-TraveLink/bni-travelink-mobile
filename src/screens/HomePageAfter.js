@@ -12,7 +12,7 @@ import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
 import BottomBar from "../components/BottomBar";
 
-const HomePage = () => {
+const HomePageAfter = () => {
   const [isHidden, setIsHidden] = useState(false);
   const saldo = "2.971.946";
 
@@ -143,6 +143,14 @@ const HomePage = () => {
             <Text style={styles.pointText}>MyPoints</Text>
             <Text style={styles.pointText}>1.946</Text>
           </View>
+          <Text style={styles.bniText}>My BNI TraveLink</Text>
+          <View style={styles.bniContainer}>
+            <Text>Hello</Text>
+            <Text>Hello</Text>
+            <Text>Hello</Text>
+            <Text>Hello</Text>
+          </View>
+          <View style={styles.pointContainer}></View>
           <Text style={styles.eWalletsText}>My E-Wallets</Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={{ flexDirection: "row", marginBottom: 10 }}>
@@ -204,6 +212,30 @@ const HomePage = () => {
 };
 
 const styles = StyleSheet.create({
+  bniContainer: {
+    justifyContent: "center",
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+  bniText:{
+    fontSize: 16,
+    color: "#005E6A",
+    fontFamily: "Inter-SemiBold",
+    paddingLeft: 13,
+    paddingRight: 13,
+    paddingTop: 17,
+    paddingBottom: 9,
+  },
+
   backgroundGradient: {
     paddingTop: 45,
     height: 440,
@@ -367,7 +399,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-SemiBold",
     paddingLeft: 13,
     paddingRight: 13,
-    paddingTop: 17,
+    paddingTop: 10,
     paddingBottom: 9,
   },
 
@@ -424,4 +456,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomePage;
+export default HomePageAfter;
