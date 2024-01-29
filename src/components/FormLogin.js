@@ -12,6 +12,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const FormLogin = ({ modalVisible, setModalVisible }) => {
   const [user_id, setUser_id] = useState("");
@@ -27,23 +29,38 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
 
   const navigation = useNavigation(); // Inisialisasi objek navigasi
 
-  const handleLogin = () => {
-    const hardcodedUser_id = "minara297";
-    const hardcodedMpin = "194624";
-
+  const handleLogin = async () => {
     setUser_id("");
     setMpin("");
     setErrorText("");
 
     const isMpinValid = mpin.length >= 6 && /^\d+$/.test(mpin);
 
-    if (user_id === hardcodedUser_id && isMpinValid && mpin === hardcodedMpin) {
-      console.log("Login successful!");
-      setIsLoggedIn(true);
-      setModalVisible(false);
+    // if (user_id === hardcodedUser_id && isMpinValid && mpin === hardcodedMpin) {
+    if (isMpinValid) {
+      try {
+        setIsLoggedIn(true);
+        setModalVisible(false);
 
-      // Navigasi ke halaman Home setelah login berhasil
-      navigation.navigate("Home");
+        const formData = new FormData();
+        formData.append("userId", user_id);
+        formData.append("mpin", mpin);
+
+        const response = await axios.post("http://192.168.132.60:8081/logins/hash", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+
+        if (response.data) {
+          await AsyncStorage.setItem("session", JSON.stringify(response.data));
+          // Navigasi ke halaman Home setelah login berhasil
+          navigation.navigate("Home");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
     } else {
       console.log("Login failed. Check your User ID and MPIN.");
       setModalVisible(true);

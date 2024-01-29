@@ -3,11 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import AppNavigator from "./src/navigation/index";
 import SplashScreen from "./src/screens/SplashScreen";
-// import HomeScreen from "./src/screens/homescreen";
 import FirstLogin from "./src/screens/FirstLogin";
 import HomePage from "./src/screens/HomePage";
+import Purchase from "./src/screens/Purchase";
+import TraveLink from "./src/screens/TraveLink";
+import KrlOrderForm from "./src/screens/KrlOrderForm";
 
 const Stack = createStackNavigator();
 
@@ -20,9 +21,12 @@ function App() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Splash" component={SplashScreen}/>
           <Stack.Screen name="FirstLogin" component={FirstLogin} />
           <Stack.Screen name="Home" component={HomePage} />
+          <Stack.Screen name="Purchase" component={Purchase}/>
+          <Stack.Screen name="TraveLink" component={TraveLink}/>
+          <Stack.Screen name="KrlOrderForm" component={KrlOrderForm}/>
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />

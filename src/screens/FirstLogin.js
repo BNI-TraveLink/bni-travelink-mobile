@@ -8,12 +8,15 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import GridItem from "../components/GridMenuItem";
+import GridMenuItem from "../components/GridMenuItem";
 import { useFonts } from "expo-font";
 import FormLogin from "../components/FormLogin"; // Import FormLogin component
+import axios from "axios";
 
 const FirstLogin = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [mpin, setMpin] = useState("");
 
   const handleLoginPress = () => {
     setModalVisible(true);
@@ -28,89 +31,87 @@ const FirstLogin = () => {
 
   if (fontsLoaded) {
     return (
-      <View style={{ flex: 1, paddingBottom: 32 }}>
         <ImageBackground
           source={require("../images/background-container.png")}
           style={styles.backgroundGradient}
         >
+          <View style={styles.appBar}>
+          <Image
+            source={require("../images/warning-item.png")}
+            style={{ height: 30, width: 30 }}
+          />
+          <View style={styles.centerContent}>
+            <Image
+              source={require("../images/logobniputih.png")}
+              style={styles.logo}
+            />
+          </View>
+        </View>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           <View>
-            <View style={styles.appBar}>
-              <Image
-                source={require("../images/warning-item.png")}
-                style={{ width:30, height:30, marginTop: 5 }}
-              />
-              <View style={styles.centerContent}>
-                <Image
-                  source={require("../images/logobniputih.png")}
-                  style={styles.logo}
-                />
-              </View>
-            </View>
-            <View>
-              <Text style={styles.welcomeText}>Welcome!</Text>
-            </View>
-            <View>
-              <Image
-                source={require("../images/traveLink-item.png")}
-                style={{ marginTop: 16, width: 358, height: 290 }}
-              />
-              <View style={styles.buttonLoginContainer}>
-                <TouchableOpacity
-                  onPress={handleLoginPress}
-                  style={styles.buttonLogin}
-                >
-                  <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.gridContainer}>
-              <GridItem
-                imageSource={require("../images/wallet-item.png")}
-                labelText={"E-Wallet"}
-              />
-              <GridItem
-                imageSource={require("../images/qr-scan-item.png")}
-                labelText={"QRIS"}
-              />
-              <GridItem
-                imageSource={require("../images/logo-bnitravelink-item.png")}
-                labelText={"BNI TraveLink"}
-                style={{ width: 49, height: 24 }}
-              />
-              <GridItem
-                imageSource={require("../images/another-menu-item.png")}
-                labelText={"Another Menu"}
-              />
-            </View>
-            <View style={styles.chatUsContainer}>
+            <Text style={styles.welcomeText}>Welcome!</Text>
+          </View>
+          <View>
+            <Image
+              source={require("../images/traveLink(1)1.png")}
+              style={{ marginTop: 16, width: 358, height: 290 }}
+            />
+            <View style={styles.buttonLoginContainer}>
               <TouchableOpacity
                 onPress={handleLoginPress}
-                style={styles.buttonChatUs}
+                style={styles.buttonLogin}
               >
-                <Image
-                  source={require("../images/org-customer-service.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-                <Text style={styles.buttonTextChatUs}>Chat Us</Text>
+                <Text style={styles.buttonLoginText}>Login</Text>
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text style={styles.openModalText}></Text>
-          </TouchableOpacity>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
-          >
-            <FormLogin
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
+          <View style={styles.gridContainer}>
+            <GridMenuItem
+              imageSource={require("../images/wallet-item.png")}
+              labelText={"E-Wallet"}
             />
-          </Modal>
-        </ImageBackground>
-      </View>
+            <GridMenuItem
+              imageSource={require("../images/qr-scan-item.png")}
+              labelText={"QRIS"}
+            />
+            <GridMenuItem
+              imageSource={require("../images/logo-bnitravelink-item.png")}
+              labelText={"BNI TraveLink"}
+              style={{ width: 49, height: 24 }}
+            />
+            <GridMenuItem
+              imageSource={require("../images/menu-item.png")}
+              labelText={"Another Menu"}
+            />
+          </View>
+          <View style={styles.chatUsContainer}>
+            <TouchableOpacity
+              onPress={handleLoginPress}
+              style={styles.buttonChatUs}
+            >
+              <Image
+                source={require("../images/org-customer-service.png")}
+                style={{ width: 20, height: 20 }}
+              />
+              <Text style={styles.buttonTextChatUs}>Chat Us</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Text style={styles.openModalText}></Text>
+        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <FormLogin
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        </Modal>
+      </ImageBackground>
     );
   } else {
     return (
@@ -122,33 +123,30 @@ const FirstLogin = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-  },
-
   backgroundGradient: {
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 56,
-    height: 430,
+    paddingTop: 30,
+    height: 440,
   },
 
   appBar: {
     flexDirection: "row",
-  },
-
-  appBarText: {
-    color: "black",
-    fontSize: 18,
-    fontWeight: "bold",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 8,
+    // // backgroundColor: 'white',
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'rgba(0, 0, 0, 0.1)',
+    // shadowColor: 'black',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.2,
+    // // elevation: 2,
+    paddingRight: 35,
   },
 
   centerContent: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
   },
 
   logo: {
@@ -165,16 +163,23 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-SemiBold",
   },
 
+  buttonLoginContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   buttonLogin: {
     backgroundColor: "#F15A23",
     padding: 10,
     borderRadius: 20,
     marginTop: 110,
     height: 50,
-    width: 298,
+    width: 320,
   },
 
-  buttonText: {
+  buttonLoginText: {
     color: "white",
     fontSize: 20,
     textAlign: "center",
@@ -189,18 +194,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 
-  buttonLoginContainer: {
+  chatUsContainer: {
     flex: 1,
-    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
   },
 
   buttonChatUs: {
     backgroundColor: "white",
     padding: 10,
     borderRadius: 20,
-    marginTop: 20,
+    marginTop: 130,
     width: 90,
     height: 40,
     borderColor: "#005E6A",
@@ -217,19 +220,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginLeft: 8,
-  },
-
-  chatUsContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-
-  openModalText: {
-    color: "white",
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 20,
-    textDecorationLine: "underline",
   },
 });
 
