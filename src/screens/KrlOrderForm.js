@@ -221,9 +221,11 @@ const KrlOrderForm = () => {
             </View>
           </View>
           <Confirmation
+          // set order from krl
             isVisibleConfirm={isConfirmationVisible}
             selectedStation1={selectedStation1}
             selectedStation2={selectedStation2}
+            selectedPeople={selectedPeople}
           />
         </View>
       </ImageBackground>

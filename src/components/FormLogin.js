@@ -46,14 +46,21 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
         formData.append("userId", user_id);
         formData.append("mpin", mpin);
 
-        const response = await axios.post("http://192.168.132.60:8081/logins/hash", formData, {
+        const responseLogin = await axios.post("http://192.168.68.153:8081/logins/hash", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           }
         })
 
-        if (response.data) {
-          await AsyncStorage.setItem("session", JSON.stringify(response.data));
+        if (responseLogin.data) {
+          await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
+
+          const responseBalance = await axios.get(
+            `http://192.168.68.153:8081/balance/getBalanceByUserId/${responseLogin.data.userId}`
+          );
+
+          await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
+
           // Navigasi ke halaman Home setelah login berhasil
           navigation.navigate("Home");
         }
