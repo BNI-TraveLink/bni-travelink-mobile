@@ -205,7 +205,7 @@ const HomePage = ({ selectedStation1, selectedStation2 }) => {
                 }}
               >
                 <GridHomeMenu
-                  imageSource={require("../images/travelink-item.png")}
+                  imageSource={require("../images/traveLink-item.png")}
                 />
                 <View style={{ marginLeft: -70, marginTop: 20 }}>
                   <Text style={styles.tittleCommuterLine}>Commuter Line</Text>
