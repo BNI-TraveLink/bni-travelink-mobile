@@ -7,7 +7,7 @@ const HomeScreen = () => {
 
   const handleLogout = () => {
     // Navigasi ke halaman Login saat logout
-    navigation.navigate("FirstLogin");
+    navigation.navigate("Confirmation");
   };
 
   return (

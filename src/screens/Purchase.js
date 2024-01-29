@@ -1,150 +1,168 @@
+import React from "react";
+import { View, ImageBackground, Image, Text, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { View } from "react-native";
 import GridHomeMenu from "../components/GridHomeMenu";
-import { useNavigation } from "@react-navigation/native";
 
 const Purchase = () => {
-  const navigation = useNavigation();
-
-  const handleBackPress = () => {
-    navigation.navigate("Home");
-  };
-
-  const handleTraveLinkPress = () => {
-    navigation.navigate("TraveLink");
-  };
-
   const [fontsLoaded] = useFonts({
-    "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   });
 
-  if (fontsLoaded) {
+  if (!fontsLoaded) {
     return (
       <ImageBackground
-        source={require("../images/background-setengah.png")}
+        source={require("../images/background-container.png")}
         style={styles.backgroundGradient}
       >
-        <View style={styles.appBar}>
-          <TouchableOpacity onPress={handleBackPress}>
-            <Image
-              source={require("../images/arrow-back-item.png")}
-              style={{ height: 30, width: 30 }}
+        <View style={styles.menuContainer}>
+          <View style={styles.gridContainer}>
+            <GridHomeMenu
+              imageSource={require("../images/transfer-item.png")}
+              labelText={"Transfer"}
             />
-          </TouchableOpacity>
-          <View style={styles.centerContent}>
-            <Text style={styles.logoText}>Purchase</Text>
+            <GridHomeMenu
+              imageSource={require("../images/payment-item.png")}
+              labelText={"Payment"}
+            />
+            <GridHomeMenu
+              imageSource={require("../images/purchase-item.png")}
+              labelText={"Purchase"}
+            />
+            <GridHomeMenu
+              imageSource={require("../images/investment-item.png")}
+              labelText={"Investment"}
+            />
           </View>
-        </View>
-        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-          <View>
-            <View style={styles.menuContainer}>
-              <View style={[styles.gridContainer, { paddingTop: 28 }]}>
-                <GridHomeMenu
-                  imageSource={require("../images/internet-item.png")}
-                  labelText={"Internet"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/pln-item.png")}
-                  labelText={"PLN"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/pgn-item.png")}
-                  labelText={"PGN"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/tv-item.png")}
-                  labelText={"TV"}
-                />
-              </View>
-              <View style={[styles.gridContainer, { paddingBottom: 40 }]}>
-                <GridHomeMenu
-                  imageSource={require("../images/flight-item.png")}
-                  labelText={"Flight"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/phone-item.png")}
-                  labelText={"Phone"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/bnilife-item.png")}
-                  labelText={"BNI Life"}
-                />
-                <TouchableOpacity onPress={handleTraveLinkPress}>
-                <GridHomeMenu
-                  imageSource={require("../images/traveLink-item.png")}
-                  labelText={"BNI TraveLink"}
-                />
-                </TouchableOpacity>
-              </View>
-            </View>
+          <View style={styles.gridContainer}>
+            <GridHomeMenu
+              imageSource={require("../images/life-goals-item.png")}
+              labelText={"Life Goals"}
+            />
+            <GridHomeMenu
+              imageSource={require("../images/digital-loan-item.png")}
+              labelText={"Digital Loan"}
+            />
+            <GridHomeMenu
+              imageSource={require("../images/dikado-item.png")}
+              labelText={"DiKado"}
+            />
+            <GridHomeMenu
+              imageSource={require("../images/another-menu-item.png")}
+              labelText={"Another Menu"}
+            />
           </View>
         </View>
       </ImageBackground>
     );
   }
+
+  return (
+    <View style={styles.container}>
+      {/* App Bar Image */}
+      <Image
+        source={require("../images/bar_purchase.png")}
+        style={styles.PurchaseImage}
+      />
+
+      {/* App Bar */}
+      <View style={styles.appBarContainer}>
+        {/* Left Icon (Back Arrow) */}
+        <Ionicons
+          name="arrow-back"
+          size={24}
+          color="#FFFFFF"
+          style={styles.backArrow}
+        />
+
+        {/* Title (Purchase) */}
+        <Text style={styles.title}>Purchase</Text>
+      </View>
+
+      {/* Content */}
+      <View style={styles.contentContainer}>
+        {/* Your main content goes here */}
+        <View style={styles.gridContainer}>
+          <GridHomeMenu
+            imageSource={require("../images/transfer-item.png")}
+            labelText={"Transfer"}
+          />
+          <GridHomeMenu
+            imageSource={require("../images/payment-item.png")}
+            labelText={"Payment"}
+          />
+          <GridHomeMenu
+            imageSource={require("../images/purchase-item.png")}
+            labelText={"Purchase"}
+          />
+          <GridHomeMenu
+            imageSource={require("../images/investment-item.png")}
+            labelText={"Investment"}
+          />
+        </View>
+        <View style={styles.gridContainer}>
+          <GridHomeMenu
+            imageSource={require("../images/life-goals-item.png")}
+            labelText={"Life Goals"}
+          />
+          <GridHomeMenu
+            imageSource={require("../images/digital-loan-item.png")}
+            labelText={"Digital Loan"}
+          />
+          <GridHomeMenu
+            imageSource={require("../images/dikado-item.png")}
+            labelText={"DiKado"}
+          />
+          <GridHomeMenu
+            imageSource={require("../images/another-menu-item.png")}
+            labelText={"Another Menu"}
+          />
+        </View>
+      </View>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-  backgroundGradient: {
-    paddingTop: 30,
-    height: 77,
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F5F5", // Background color set to white
   },
-
-  appBar: {
+  PurchaseImage: {
+    width: 390,
+    height: 88,
+    resizeMode: "cover", // Sesuaikan ukuran gambar agar sesuai dengan dimensi yang ditentukan
+  },
+  appBarContainer: {
+    position: "absolute",
+    top: 55,
+    left: 0,
+    right: 0,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    padding: 8,
-    // backgroundColor: 'white',
-    borderBottomWidth: 2,
-    borderBottomColor: "rgba(0, 0, 0, 0.1)",
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    // elevation: 2,
+    justifyContent: "center", // Pusatkan elemen di dalam App Bar
+    fontSize: 20,
   },
-
-  centerContent: {
+  backArrow: {
+    position: "absolute",
+    left: 16,
+  },
+  title: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontFamily: "Inter-SemiBold", // Menggunakan jenis font Inter Semi Bold
+  },
+  contentContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingRight: 35, // mengatur logo BNI ketengah
+    padding: 16, // Tambahkan padding atau sesuaikan sesuai kebutuhan konten Anda
+    marginTop: 88, // Sesuaikan dengan tinggi gambar App Bar
   },
-
-  logoText: {
-    color: "white",
-    fontSize: 22,
-    fontFamily: "Inter-SemiBold",
-  },
-
-  menuContainer: {
-    justifyContent: "center",
-    marginTop: 17,
-    backgroundColor: "#FFF",
-    borderRadius: 10,
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-
   gridContainer: {
-    marginLeft: 21,
-    marginRight: 21,
+    // Add any styles needed for your grid container
+    // You may want to use flex properties or other styles to arrange the GridHomeMenu components
     flexDirection: "row",
     justifyContent: "space-between",
+    marginTop: 16,
   },
 });
 
