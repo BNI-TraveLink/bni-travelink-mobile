@@ -11,14 +11,40 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import BottomBarOrderForm from "./BotomBarOrderForm";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Confirmation = ({
   isVisibleConfirm,
   selectedStation1,
   selectedStation2,
+  selectedPeople,
 }) => {
   const navigation = useNavigation();
   const [errorText, setErrorText] = useState("");
+
+  const [saldo, setSaldo] = useState(0);
+  const [userData, setUserData] = useState("");
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        // 1. Get the balance first
+        const balanceSessionData = await AsyncStorage.getItem("balance");
+        const parsedBalanceData = JSON.parse(balanceSessionData);
+        setSaldo(parsedBalanceData.toString());
+
+        // 2. Then, get the session data
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        setUserData(parsedSessionData);
+      } catch (error) {
+        console.error("Error fetching balance: " + error);
+      }
+    };
+
+    getUserData();
+  }, []);
 
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
@@ -39,7 +65,7 @@ const Confirmation = ({
   };
 
   const [isHidden, setIsHidden] = useState(false);
-  const saldo = "2.971.946";
+  // const saldo = "2.971.946";
 
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
@@ -182,7 +208,7 @@ const Confirmation = ({
                 style={[styles.buttonContainer, { marginBottom: 10 }]}
               >
                 <Text style={styles.buttonText}>Pay</Text>
-                <Text style={styles.pricePay}>Rp 15.000</Text>
+                <Text style={styles.pricePay}>Rp {selectedPeople*3000}</Text>
                 <Image
                   source={require("../images/next-item.png")}
                   style={{ height: 40, width: 40, marginLeft: 10 }}
