@@ -59,7 +59,7 @@ export default function BottomBarPage() {
                     source={require("../images/history-item.png")}
                     style={{ width: 35, height: 35 }}
                   />
-                  <Text style={{ fonSize: 12, color: "#005E6A" }}>History</Text>
+                  <Text style={{ fontSize: 12, color: "#005E6A" }}>History</Text>
                 </View>
               );
             },

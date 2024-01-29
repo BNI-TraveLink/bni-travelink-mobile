@@ -11,9 +11,8 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import BottomBarOrderForm from "./BotomBarOrderForm";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Confirmation = async ({
+const Confirmation = ({
   isVisibleConfirm,
   selectedStation1,
   selectedStation2,
@@ -40,21 +39,7 @@ const Confirmation = async ({
   };
 
   const [isHidden, setIsHidden] = useState(false);
-
-  const sessionData = await AsyncStorage.getItem("session");
-  console.log("SessionData")
-  console.log(sessionData)
-  console.log("=================")
-  
-  const parsedData = JSON.parse(sessionData);
-  console.log("ParsedData")
-  console.log(parsedData)
-  console.log("=================")
-
-  const saldo = parsedData.saldo;
-  console.log("saldo")
-  console.log(saldo)
-  console.log("=================")
+  const saldo = "2.971.946";
 
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
