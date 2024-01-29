@@ -32,9 +32,6 @@ const TicketDetails = () => {
     return null;
   }
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
   const handleBack = () => {
     // Handle logic when the Pay button is pressed
     // For now, let's navigate to a new page named "PaymentSuccess"
