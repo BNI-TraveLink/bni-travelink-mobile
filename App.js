@@ -8,9 +8,10 @@ import HomeScreen from "./src/screens/homescreen";
 import Receipt from "./src/screens/Receipt";
 import TestApp from "./src/screens/TestApp";
 import TicketDetails from "./src/screens/TicketDetails";
+import EticketIn from "./src/screens/EticketIn";
 
 // export const FontThemeContext = createContext();
-const Stack = createStackNavigator();
+// const Stack = createStackNavigator();
 
 function App() {
   // Tentukan tema font di sini
@@ -42,6 +43,7 @@ function App() {
 
       {/* <Purchase></Purchase> */}
       {/* <Receipt></Receipt> */}
+      <EticketIn></EticketIn>
       {/* <TestApp></TestApp> */}
       {/* <TicketDetails></TicketDetails> */}
 
@@ -59,7 +61,7 @@ function App() {
         </NavigationContainer>
       </FontThemeContext.Provider> */}
 
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
@@ -70,7 +72,7 @@ function App() {
           <Stack.Screen name="Receipt" component={Receipt} />
           <Stack.Screen name="TicketDetails" component={TicketDetails} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
 
       <StatusBar style="auto" />
     </View>
