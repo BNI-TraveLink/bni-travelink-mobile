@@ -1,10 +1,22 @@
 import React, { useState } from "react";
-import { Image, ImageBackground, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { useFonts } from "expo-font";
+import {
+  ImageBackground,
+  TouchableOpacity,
+  Modal,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from "react-native";
 import GridMenuItem from "../components/GridMenuItem";
+import { useFonts } from "expo-font";
+import FormLogin from "../components/FormLogin"; // Import FormLogin component
+import axios from "axios";
 
 const FirstLogin = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [mpin, setMpin] = useState("");
 
   const handleLoginPress = () => {
     setModalVisible(true);
@@ -13,34 +25,35 @@ const FirstLogin = () => {
   const [fontsLoaded] = useFonts({
     "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
+    "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   });
 
   if (fontsLoaded) {
     return (
-      <ImageBackground
-        source={require("../images/background-container.png")}
-        style={styles.backgroundGradient}
-      >
-        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+        <ImageBackground
+          source={require("../images/background-container.png")}
+          style={styles.backgroundGradient}
+        >
           <View style={styles.appBar}>
+          <Image
+            source={require("../images/warning-item.png")}
+            style={{ height: 30, width: 30 }}
+          />
+          <View style={styles.centerContent}>
             <Image
-              source={require("../images/warning-item.png")}
-              style={{ height: 30, width: 30 }}
+              source={require("../images/logobniputih.png")}
+              style={styles.logo}
             />
-            <View style={styles.centerContent}>
-              <Image
-                source={require("../images/logobniputih.png")}
-                style={styles.logo}
-              />
-            </View>
           </View>
+        </View>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           <View>
             <Text style={styles.welcomeText}>Welcome!</Text>
           </View>
           <View>
             <Image
-              source={require("../images/travelink-item.png")}
+              source={require("../images/traveLink(1)1.png")}
               style={{ marginTop: 16, width: 358, height: 290 }}
             />
             <View style={styles.buttonLoginContainer}>
@@ -84,6 +97,20 @@ const FirstLogin = () => {
             </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Text style={styles.openModalText}></Text>
+        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <FormLogin
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        </Modal>
       </ImageBackground>
     );
   } else {
@@ -91,26 +118,35 @@ const FirstLogin = () => {
       <View>
         <Text>Loading...</Text>
       </View>
-    )
+    );
   }
 };
 
 const styles = StyleSheet.create({
   backgroundGradient: {
-    paddingTop: 45,
+    paddingTop: 30,
     height: 440,
   },
 
   appBar: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 8,
+    // // backgroundColor: 'white',
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'rgba(0, 0, 0, 0.1)',
+    // shadowColor: 'black',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.2,
+    // // elevation: 2,
+    paddingRight: 35,
   },
 
   centerContent: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    paddingRight: 35, // mengatur logo BNI ketengah
   },
 
   logo: {

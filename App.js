@@ -1,25 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-// import KrlOrderForm from './src/screens/KrlOrderForm';
-// import TraveLink from './src/screens/TraveLink';
-// import Purchase from './src/screens/Purchase';
-// import HomePageAfter from './src/screens/HomePageAfter';
-// import BottomBarPage from './src/components/BottomBar';
-// import HomePage from './src/screens/HomePage';
-import FirstLogin from './src/screens/FirstLogin';
-// import Coba from './src/screens/Coba';
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import SplashScreen from "./src/screens/SplashScreen";
+import FirstLogin from "./src/screens/FirstLogin";
+import HomePage from "./src/screens/HomePage";
+import Purchase from "./src/screens/Purchase";
+import TraveLink from "./src/screens/TraveLink";
+import KrlOrderForm from "./src/screens/KrlOrderForm";
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
     <View style={styles.container}>
-      {/* <HomePage/> */}
-      <FirstLogin/>
-      {/* <BottomBarPage/> */}
-      {/* <HomePageAfter/> */}
-      {/* <Purchase/> */}
-      {/* <TraveLink/> */}
-      {/* <KrlOrderForm/> */}
-      {/* <Coba/> */}
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Splash" component={SplashScreen}/>
+          <Stack.Screen name="FirstLogin" component={FirstLogin} />
+          <Stack.Screen name="Home" component={HomePage} />
+          <Stack.Screen name="Purchase" component={Purchase}/>
+          <Stack.Screen name="TraveLink" component={TraveLink}/>
+          <Stack.Screen name="KrlOrderForm" component={KrlOrderForm}/>
+        </Stack.Navigator>
+      </NavigationContainer>
       <StatusBar style="auto" />
     </View>
   );
@@ -31,3 +40,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
   },
 });
+
+export default App;

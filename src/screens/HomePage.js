@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ImageBackground,
@@ -10,14 +10,55 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
-import BottomBar from "../components/BottomBar";
+import { useNavigation } from "@react-navigation/native";
+import BottomBarPage from "../components/BottomBar";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomePage = () => {
   const [isHidden, setIsHidden] = useState(false);
-  const saldo = "2.971.946";
+  const [saldo, setSaldo] = useState(0);
+
+  useEffect(() => {
+    const getUserBalance = async () => {
+      console.log("USE EFFECT MASUKKK!!!")
+      try {
+        console.log("masuk ke tryyyyy")
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedData = JSON.parse(sessionData);
+        const userId = parsedData.userId;
+
+        console.log("userid: " + userId);
+        
+        const response = await axios.get("http://192.168.132.20:8081/balance/getBalanceByUserId/userId", {
+          params: { userId },
+        })
+    
+        console.log("==response==");
+        console.log(response.data);
+        console.log("=============");
+    
+        // const saldo = response.data.balance;
+        setSaldo(response.data.balance);
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    getUserBalance();
+  }, []);
 
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
+  };
+
+  const navigation = useNavigation();
+
+  const handleLogOutPress = () => {
+    navigation.navigate("FirstLogin");
+  };
+
+  const handlePurchasePress = () => {
+    navigation.navigate("Purchase");
   };
 
   const [fontsLoaded] = useFonts({
@@ -36,70 +77,71 @@ const HomePage = () => {
         source={require("../images/background-container.png")}
         style={styles.backgroundGradient}
       >
-        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-          <View style={styles.appBar}>
+        <View style={styles.appBar}>
+          <Image
+            source={require("../images/customer-service.png")}
+            style={{ height: 20, width: 20 }}
+          />
+          <Text style={styles.chatUs}>chatUs</Text>
+          <View style={styles.centerContent}>
             <Image
-              source={require("../images/customer-service.png")}
-              style={{ height: 20, width: 20 }}
+              source={require("../images/logobniputih.png")}
+              style={styles.logo}
             />
-            <Text style={styles.chatUs}>chatUs</Text>
-            <View style={styles.centerContent}>
-              <Image
-                source={require("../images/logobniputih.png")}
-                style={styles.logo}
-              />
-            </View>
-            <Image
-              source={require("../images/notification.png")}
-              style={{ marginRight: 8, height: 20, width: 16 }}
-            />
+          </View>
+          <Image
+            source={require("../images/notification.png")}
+            style={{ marginRight: 8, height: 20, width: 16 }}
+          />
+          <TouchableOpacity onPress={handleLogOutPress}>
             <Image
               source={require("../images/log-out.png")}
               style={{ height: 20, width: 20 }}
             />
-          </View>
-          <View>
-            <View style={styles.custProfile}>
-              <Text style={styles.custText}>Hello, Minara Club!</Text>
-              <View style={styles.profileContainer}>
-                <Image
-                  source={require("../images/profile.jpeg")}
-                  style={styles.circleImage}
-                ></Image>
-              </View>
-            </View>
-            <View style={styles.balanceContainer}>
-              <View style={styles.saldoContainer}>
-                <Text style={styles.saldoLabel}>Rp </Text>
-                <Text style={styles.saldoText}>
-                  {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
-                </Text>
-              </View>
-              <TouchableOpacity onPress={toggleVisibility}>
-                <Image
-                  source={
-                    isHidden
-                      ? require("../images/visible.png")
-                      : require("../images/not-visible.png")
-                  }
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.accountContainer}>
+          </TouchableOpacity>
+        </View>
+        <ScrollView>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+          <View style={styles.custProfile}>
+            <Text style={styles.custText}>Hello, Minara Club!</Text>
+            <View style={styles.profileContainer}>
               <Image
-                source={require("../images/solid_down.png")}
-                style={{ height: 25, width: 25, marginRight: 4 }}
-              />
-              <View style={{ alignItems: "center" }}>
-                <Text style={styles.accountText}>1946061123</Text>
-                <Text style={styles.accountLabel}>BNI Taplus Muda</Text>
-              </View>
-              <Image
-                source={require("../images/copy.png")}
-                style={{ height: 25, width: 25, marginLeft: 2 }}
+                source={require("../images/profile.jpeg")}
+                style={styles.circleImage}
               ></Image>
             </View>
+          </View>
+          <View style={styles.balanceContainer}>
+            <View style={styles.saldoContainer}>
+              <Text style={styles.saldoLabel}>Rp </Text>
+              <Text style={styles.saldoText}>
+                {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={toggleVisibility}>
+              <Image
+                source={
+                  isHidden
+                    ? require("../images/visible.png")
+                    : require("../images/not-visible.png")
+                }
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.accountContainer}>
+            <Image
+              source={require("../images/solid_down.png")}
+              style={{ height: 25, width: 25, marginRight: 4 }}
+            />
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.accountText}>1946061123</Text>
+              <Text style={styles.accountLabel}>BNI Taplus Muda</Text>
+            </View>
+            <Image
+              source={require("../images/copy.png")}
+              style={{ height: 25, width: 25, marginLeft: 2 }}
+            ></Image>
           </View>
           <View style={styles.menuContainer}>
             <View style={styles.gridContainer}>
@@ -111,10 +153,12 @@ const HomePage = () => {
                 imageSource={require("../images/payment-item.png")}
                 labelText={"Payment"}
               />
-              <GridHomeMenu
-                imageSource={require("../images/purchase-item.png")}
-                labelText={"Purchase"}
-              />
+              <TouchableOpacity onPress={handlePurchasePress}>
+                <GridHomeMenu
+                  imageSource={require("../images/purchase-item.png")}
+                  labelText={"Purchase"}
+                />
+              </TouchableOpacity>
               <GridHomeMenu
                 imageSource={require("../images/investment-item.png")}
                 labelText={"Investment"}
@@ -173,12 +217,24 @@ const HomePage = () => {
               <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
                 <View style={styles.myWalletContent}>
                   <Image
-                    source={require("../images/linkaja-item.png")}
+                    source={require("../images/ovo-item.png")}
                     style={{ width: 60, height: 60, objectFit: "contain" }}
                   />
                   <View style={{ marginLeft: 5 }}>
-                    <Text style={styles.nameLabel}>Ovo</Text>
-                    <Text style={styles.nameText}>Rp 145.000</Text>
+                    <Text style={styles.nameLabel}>OVO</Text>
+                    <Text style={styles.nameText}>Rp 19.460</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
+                <View style={styles.myWalletContent}>
+                  <Image
+                    source={require("../images/dana-item.png")}
+                    style={{ width: 60, height: 60, objectFit: "contain" }}
+                  />
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={styles.nameLabel}>DANA</Text>
+                    <Text style={styles.nameText}>Rp 26.297</Text>
                   </View>
                 </View>
               </View>
@@ -198,6 +254,8 @@ const HomePage = () => {
             </View>
           </ScrollView>
         </View>
+        </ScrollView>
+        {/* <BottomBarPage /> */}
       </ImageBackground>
     );
   }
@@ -205,13 +263,23 @@ const HomePage = () => {
 
 const styles = StyleSheet.create({
   backgroundGradient: {
-    paddingTop: 45,
-    height: 440,
+    paddingTop: 30,
+    // height: 440,
+    flex: 1,
   },
 
   appBar: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    padding: 8,
+    // backgroundColor: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: "rgba(0, 0, 0, 0.1)",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    // elevation: 2,
   },
 
   chatUs: {

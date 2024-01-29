@@ -1,39 +1,58 @@
 import { useFonts } from "expo-font";
-import { Image, ImageBackground, StyleSheet } from "react-native";
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { View } from "react-native";
 import GridHomeMenu from "../components/GridHomeMenu";
+import { useNavigation } from "@react-navigation/native";
 
 const TraveLink = () => {
+  const navigation = useNavigation();
+
+  const handleBackPress = () => {
+    navigation.navigate("Purchase");
+  };
+
+  const handleCommuterPress = () => {
+    navigation.navigate("KrlOrderForm");
+  };
+
   const [fontsLoaded] = useFonts({
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
+    "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   });
 
   if (fontsLoaded) {
     return (
       <ImageBackground
-        source={require("../images/background-container.png")}
+        source={require("../images/background-setengah.png")}
         style={styles.backgroundGradient}
       >
-        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-          <View style={styles.appBar}>
+        <View style={styles.appBar}>
+          <TouchableOpacity onPress={handleBackPress}>
             <Image
               source={require("../images/arrow-back-item.png")}
               style={{ height: 30, width: 30 }}
             />
-            <View style={styles.centerContent}>
-              <Image
-                source={require("../images/logobniputih.png")}
-                style={styles.logo}
-              />
-            </View>
+          </TouchableOpacity>
+          <View style={styles.centerContent}>
+            <Text style={styles.logoText}>BNI TraveLink</Text>
           </View>
+        </View>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           <View>
             <View style={styles.menuContainer}>
               <View style={styles.gridContainer}>
-                <GridHomeMenu
-                  imageSource={require("../images/commuter-item.png")}
-                  labelText={"Commuter"}
-                />
+                <TouchableOpacity onPress={handleCommuterPress}>
+                  <GridHomeMenu
+                    imageSource={require("../images/commuter-item.png")}
+                    labelText={"Commuter"}
+                  />
+                </TouchableOpacity>
                 <GridHomeMenu
                   imageSource={require("../images/tije-item.png")}
                   labelText={"TiJe"}
@@ -57,13 +76,22 @@ const TraveLink = () => {
 
 const styles = StyleSheet.create({
   backgroundGradient: {
-    paddingTop: 45,
-    height: 88,
+    paddingTop: 30,
+    height: 77,
   },
 
   appBar: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    padding: 8,
+    // backgroundColor: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: "rgba(0, 0, 0, 0.1)",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    // elevation: 2,
   },
 
   centerContent: {
@@ -73,9 +101,10 @@ const styles = StyleSheet.create({
     paddingRight: 35, // mengatur logo BNI ketengah
   },
 
-  logo: {
-    width: 132,
-    height: 40,
+  logoText: {
+    color: "white",
+    fontSize: 22,
+    fontFamily: "Inter-SemiBold",
   },
 
   menuContainer: {
