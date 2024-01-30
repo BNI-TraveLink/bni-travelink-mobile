@@ -9,6 +9,11 @@ import HomePage from "./src/screens/HomePage";
 import Purchase from "./src/screens/Purchase";
 import TraveLink from "./src/screens/TraveLink";
 import KrlOrderForm from "./src/screens/KrlOrderForm";
+import EticketIn from "./src/screens/EticketIn";
+import Validation from "./src/screens/Validation";
+import Receipt from "./src/screens/Receipt";
+import TicketDetails from "./src/screens/TicketDetails";
+import Confirmation from "./src/components/Confirmation";
 
 const Stack = createStackNavigator();
 
@@ -21,14 +26,22 @@ function App() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="Splash" component={SplashScreen}/>
+          <Stack.Screen name="Splash" component={SplashScreen} />
           <Stack.Screen name="FirstLogin" component={FirstLogin} />
           <Stack.Screen name="Home" component={HomePage} />
-          <Stack.Screen name="Purchase" component={Purchase}/>
-          <Stack.Screen name="TraveLink" component={TraveLink}/>
-          <Stack.Screen name="KrlOrderForm" component={KrlOrderForm}/>
+          <Stack.Screen name="Purchase" component={Purchase} />
+          <Stack.Screen name="TraveLink" component={TraveLink} />
+          <Stack.Screen name="KrlOrderForm" component={KrlOrderForm} />
+          <Stack.Screen name="Confirmation" component={Confirmation} />
+          <Stack.Screen name="Validation" component={Validation} />
+          <Stack.Screen name="Receipt" component={Receipt} />
+          <Stack.Screen name="TicketDetails" component={TicketDetails} />
+          <Stack.Screen name="EticketIn" component={EticketIn} />
         </Stack.Navigator>
       </NavigationContainer>
+
+      {/* <EticketIn></EticketIn> */}
+
       <StatusBar style="auto" />
     </View>
   );
