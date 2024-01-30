@@ -9,6 +9,8 @@ import {
 import { View } from "react-native";
 import GridHomeMenu from "../components/GridHomeMenu";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TraveLink = () => {
   const navigation = useNavigation();
@@ -17,9 +19,28 @@ const TraveLink = () => {
     navigation.navigate("Purchase");
   };
 
-  const handleCommuterPress = () => {
-    navigation.navigate("KrlOrderForm");
+  const handleCommuterPress = async () => {
+    try {
+      const url = 'http://192.168.132.20:8081/service/getStationByServiceName';
+  
+      // If you need to pass parameters, use the params option
+      const response = await axios.get(url, {
+        params: {
+          serviceName: 'KRL',
+        },
+      });
+  
+      console.log(response.data);
+
+      await navigation.navigate("KrlOrderForm")
+  
+      // Handle the response as needed
+    } catch (error) {
+      console.error('Error hitting the API:', error);
+      // Handle the error appropriately
+    }
   };
+  
 
   const [fontsLoaded] = useFonts({
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
