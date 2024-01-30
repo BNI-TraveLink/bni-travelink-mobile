@@ -15,7 +15,7 @@ const fontTheme = {
   medium: "Inter-Medium",
   semiBold: "Inter-SemiBold",
 };
-const Confirmation = () => {
+const Validation = () => {
   const [fontsLoaded] = useFonts({
     [fontTheme.regular]: require("../fonts/Inter/static/Inter-Regular.ttf"),
     [fontTheme.medium]: require("../fonts/Inter/static/Inter-Medium.ttf"),
@@ -45,7 +45,7 @@ const Confirmation = () => {
   const handleBack = () => {
     // Handle logic when the Pay button is pressed
     // For now, let's navigate to a new page named "PaymentSuccess"
-    navigation.navigate("HomeScreen");
+    navigation.navigate("KrlOrderForm");
   };
 
   return (
@@ -396,4 +396,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Confirmation;
+export default Validation;

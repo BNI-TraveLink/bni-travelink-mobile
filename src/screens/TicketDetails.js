@@ -33,15 +33,14 @@ const TicketDetails = () => {
   }
 
   const handleBack = () => {
-    // Handle logic when the Pay button is pressed
-    // For now, let's navigate to a new page named "PaymentSuccess"
     navigation.navigate("Receipt");
   };
-  //   const handlePay = () => {
-  //     // Handle logic when the Pay button is pressed
-  //     // For now, let's navigate to a new page named "PaymentSuccess"
-  //     navigation.navigate("Receipt");
-  //   };
+  const handleOpen = () => {
+    navigation.navigate("EticketIn");
+  };
+  const handleHome = () => {
+    navigation.navigate("Home");
+  };
 
   return (
     <View style={styles.container}>
@@ -63,7 +62,7 @@ const TicketDetails = () => {
 
         {/* Title (Purchase) */}
         <Text style={styles.title}>Ticket Details</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleHome}>
           {/* Left Icon (Back Arrow) */}
           <Image
             source={require("../images/ic_round-home.png")}
@@ -156,7 +155,7 @@ const TicketDetails = () => {
       <View style={styles.bottomWhiteBackground}>
         <TouchableOpacity
           style={styles.buttonContainer}
-          //   onPress={handlePay} // Menambahkan onPress event untuk menangani pembayaran
+          onPress={handleOpen} // Menambahkan onPress event untuk menangani pembayaran
         >
           <Text style={styles.buttonText}>Open E-Ticket</Text>
         </TouchableOpacity>

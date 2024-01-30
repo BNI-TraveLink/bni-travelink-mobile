@@ -33,6 +33,9 @@ const Receipt = () => {
     // For now, let's navigate to a new page named "PaymentSuccess"
     navigation.navigate("TicketDetails");
   };
+  const handleHome = () => {
+    navigation.navigate("Home");
+  };
 
   return (
     <View style={styles.container}>
@@ -46,7 +49,7 @@ const Receipt = () => {
       <View style={styles.appBarContainer}>
         {/* Title (Purchase) */}
         <Text style={styles.title}>Status</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleHome}>
           {/* Left Icon (Back Arrow) */}
           <Image
             source={require("../images/ic_round-home.png")}
