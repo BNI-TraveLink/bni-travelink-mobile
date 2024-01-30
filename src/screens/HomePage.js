@@ -15,41 +15,38 @@ import BottomBarPage from "../components/BottomBar";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HomePage = ({ selectedStation1, selectedStation2 }) => {
+const HomePage = () => {
   const [isHidden, setIsHidden] = useState(false);
-  // const [saldo, setSaldo] = useState(0);
-  const saldo = 10000000;
+  
+  const [saldo, setSaldo] = useState(0);
+  const [userData, setUserData] = useState("");
 
-  // useEffect(() => {
-  //   const getUserBalance = async () => {
-  //     console.log("USE EFFECT MASUKKK!!!");
-  //     try {
-  //       console.log("masuk ke tryyyyy");
-  //       const sessionData = await AsyncStorage.getItem("session");
-  //       const parsedData = JSON.parse(sessionData);
-  //       const userId = parsedData.userId;
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        // 1. Get the balance first
+        const balanceSessionData = await AsyncStorage.getItem("balance");
+        const parsedBalanceData = JSON.parse(balanceSessionData);
+        setSaldo(parsedBalanceData.toString());
 
-  //       console.log("userid: " + userId);
+        // 2. Then, get the session data
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        setUserData(parsedSessionData);
+      } catch (error) {
+        console.error("Error fetching balance: " + error);
+      }
+    };
 
-  //       const response = await axios.get(
-  //         "http://192.168.132.20:8081/balance/getBalanceByUserId/userId",
-  //         {
-  //           params: { userId },
-  //         }
-  //       );
+    getUserData();
+  }, []);
 
-  //       console.log("==response==");
-  //       console.log(response.data);
-  //       console.log("=============");
+  const getAsyncStorage = async ({ field }) => {
+    const sessionData = await AsyncStorage.getItem(field);
+    const parsedData = JSON.parse(sessionData);
 
-  //       // const saldo = response.data.balance;
-  //       setSaldo(response.data.balance);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   getUserBalance();
-  // }, []);
+    return parsedData;
+  }
 
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
@@ -73,14 +70,12 @@ const HomePage = ({ selectedStation1, selectedStation2 }) => {
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Inter-Bold": require("../fonts/Inter/static/Inter-Bold.ttf"),
-    "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
-    "Inter-Light": require("../fonts/Inter/static/Inter-Light.ttf"),
   });
 
   if (fontsLoaded) {
     return (
       <ImageBackground
-        source={require("../images/background-container-full.png")}
+        source={require("../images/background-container.png")}
         style={styles.backgroundGradient}
       >
         <View style={styles.appBar}>
@@ -107,197 +102,160 @@ const HomePage = ({ selectedStation1, selectedStation2 }) => {
           </TouchableOpacity>
         </View>
         <ScrollView>
-          <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-            <View style={styles.custProfile}>
-              <Text style={styles.custText}>Hello, Minara Club!</Text>
-              <View style={styles.profileContainer}>
-                <Image
-                  source={require("../images/profile.jpeg")}
-                  style={styles.circleImage}
-                ></Image>
-              </View>
-            </View>
-            <View style={styles.balanceContainer}>
-              <View style={styles.saldoContainer}>
-                <Text style={styles.saldoLabel}>Rp </Text>
-                <Text style={styles.saldoText}>
-                  {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
-                </Text>
-              </View>
-              <TouchableOpacity onPress={toggleVisibility}>
-                <Image
-                  source={
-                    isHidden
-                      ? require("../images/visible.png")
-                      : require("../images/not-visible.png")
-                  }
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.accountContainer}>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+          <View style={styles.custProfile}>
+            {/* <Text style={styles.custText}>Hello, Minara Club!</Text> */}
+            <Text style={styles.custText}>Hello, {userData.userId}!</Text>
+            <View style={styles.profileContainer}>
               <Image
-                source={require("../images/solid_down.png")}
-                style={{ height: 25, width: 25, marginRight: 4 }}
-              />
-              <View style={{ alignItems: "center" }}>
-                <Text style={styles.accountText}>1946061123</Text>
-                <Text style={styles.accountLabel}>BNI Taplus Muda</Text>
-              </View>
-              <Image
-                source={require("../images/copy.png")}
-                style={{ height: 25, width: 25, marginLeft: 2 }}
+                source={require("../images/profile.jpeg")}
+                style={styles.circleImage}
               ></Image>
             </View>
-            <View style={styles.menuContainer}>
-              <View style={styles.gridContainer}>
-                <GridHomeMenu
-                  imageSource={require("../images/transfer-item.png")}
-                  labelText={"Transfer"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/payment-item.png")}
-                  labelText={"Payment"}
-                />
-                <TouchableOpacity onPress={handlePurchasePress}>
-                  <GridHomeMenu
-                    imageSource={require("../images/purchase-item.png")}
-                    labelText={"Purchase"}
-                  />
-                </TouchableOpacity>
-                <GridHomeMenu
-                  imageSource={require("../images/investment-item.png")}
-                  labelText={"Investment"}
-                />
-              </View>
-              <View style={styles.gridContainer}>
-                <GridHomeMenu
-                  imageSource={require("../images/life-goals-item.png")}
-                  labelText={"Life Goals"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/digital-loan-item.png")}
-                  labelText={"Digital Loan"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/dikado-item.png")}
-                  labelText={"DiKado"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/another-menu-item.png")}
-                  labelText={"Another Menu"}
-                />
-              </View>
-            </View>
-            <View style={styles.pointContainer}>
-              <Text style={styles.pointText}>MyPoints</Text>
-              <Text style={styles.pointText}>1.946</Text>
-            </View>
-            <Text style={styles.titleBNITraveLink}>My BNI TraveLink</Text>
-            <View style={styles.myTravelinkContainer}>
-              <View
-                style={{
-                  marginLeft: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  marginTop: 12,
-                }}
-              >
-                <GridHomeMenu
-                  imageSource={require("../images/travelink-item.png")}
-                />
-                <View style={{ marginLeft: -70, marginTop: 20 }}>
-                  <Text style={styles.tittleCommuterLine}>Commuter Line</Text>
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.tittleDestination}>Jakarta</Text>
-                    <Text style={styles.tittleDestination}> - </Text>
-                    <Text style={styles.tittleDestination}>Tanjung Barat</Text>
-                  </View>
-                  <Text style={styles.tittleValid}>
-                    Valid until 15 Feb 2024, 23:59
-                  </Text>
-                </View>
-                <View
-                  style={[
-                    styles.activeContainer,
-                    { marginTop: 10, marginRight: 15 },
-                  ]}
-                >
-                  <Text style={styles.tittleActive}>Active</Text>
-                </View>
-              </View>
-            </View>
-            <Text style={styles.eWalletsText}>My E-Wallets</Text>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                <View style={styles.myWalletContainer}>
-                  <View style={styles.myWalletContent}>
-                    <Image
-                      source={require("../images/gopay-item.png")}
-                      style={{ width: 60, height: 60, objectFit: "contain" }}
-                    />
-                    <View style={{ marginLeft: 5 }}>
-                      <Text style={styles.nameLabel}>Go-Pay</Text>
-                      <Text style={styles.nameText}>Rp 11.023</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
-                  <View style={styles.myWalletContent}>
-                    <Image
-                      source={require("../images/linkaja-item.png")}
-                      style={{ width: 60, height: 60, objectFit: "contain" }}
-                    />
-                    <View style={{ marginLeft: 5 }}>
-                      <Text style={styles.nameLabel}>LinkAja</Text>
-                      <Text style={styles.nameText}>Rp 297.000</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
-                  <View style={styles.myWalletContent}>
-                    <Image
-                      source={require("../images/ovo-item.png")}
-                      style={{ width: 60, height: 60, objectFit: "contain" }}
-                    />
-                    <View style={{ marginLeft: 5 }}>
-                      <Text style={styles.nameLabel}>OVO</Text>
-                      <Text style={styles.nameText}>Rp 19.460</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
-                  <View style={styles.myWalletContent}>
-                    <Image
-                      source={require("../images/dana-item.png")}
-                      style={{ width: 60, height: 60, objectFit: "contain" }}
-                    />
-                    <View style={{ marginLeft: 5 }}>
-                      <Text style={styles.nameLabel}>DANA</Text>
-                      <Text style={styles.nameText}>Rp 26.297</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-            <Text style={styles.promoText}>Promotions & Information</Text>
-            <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
-              <View style={{ flexDirection: "row" }}>
-                <Image
-                  source={require("../images/promo1.png")}
-                  style={styles.promoContent}
-                />
-                <Image
-                  source={require("../images/promo2.png")}
-                  style={[styles.promoContent, { marginLeft: 10 }]}
-                />
-              </View>
-            </ScrollView>
           </View>
+          <View style={styles.balanceContainer}>
+            <View style={styles.saldoContainer}>
+              <Text style={styles.saldoLabel}>Rp </Text>
+              <Text style={styles.saldoText}>
+                {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={toggleVisibility}>
+              <Image
+                source={
+                  isHidden
+                    ? require("../images/visible.png")
+                    : require("../images/not-visible.png")
+                }
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.accountContainer}>
+            <Image
+              source={require("../images/solid_down.png")}
+              style={{ height: 25, width: 25, marginRight: 4 }}
+            />
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.accountText}>{userData.accountNumber}</Text>
+              <Text style={styles.accountLabel}>BNI Taplus Muda</Text>
+            </View>
+            <Image
+              source={require("../images/copy.png")}
+              style={{ height: 25, width: 25, marginLeft: 2 }}
+            ></Image>
+          </View>
+          <View style={styles.menuContainer}>
+            <View style={styles.gridContainer}>
+              <GridHomeMenu
+                imageSource={require("../images/transfer-item.png")}
+                labelText={"Transfer"}
+              />
+              <GridHomeMenu
+                imageSource={require("../images/payment-item.png")}
+                labelText={"Payment"}
+              />
+              <TouchableOpacity onPress={handlePurchasePress}>
+                <GridHomeMenu
+                  imageSource={require("../images/purchase-item.png")}
+                  labelText={"Purchase"}
+                />
+              </TouchableOpacity>
+              <GridHomeMenu
+                imageSource={require("../images/investment-item.png")}
+                labelText={"Investment"}
+              />
+            </View>
+            <View style={styles.gridContainer}>
+              <GridHomeMenu
+                imageSource={require("../images/life-goals-item.png")}
+                labelText={"Life Goals"}
+              />
+              <GridHomeMenu
+                imageSource={require("../images/digital-loan-item.png")}
+                labelText={"Digital Loan"}
+              />
+              <GridHomeMenu
+                imageSource={require("../images/dikado-item.png")}
+                labelText={"DiKado"}
+              />
+              <GridHomeMenu
+                imageSource={require("../images/another-menu-item.png")}
+                labelText={"Another Menu"}
+              />
+            </View>
+          </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointText}>MyPoints</Text>
+            <Text style={styles.pointText}>1.946</Text>
+          </View>
+          <Text style={styles.eWalletsText}>My E-Wallets</Text>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <View style={{ flexDirection: "row", marginBottom: 10 }}>
+              <View style={styles.myWalletContainer}>
+                <View style={styles.myWalletContent}>
+                  <Image
+                    source={require("../images/gopay-item.png")}
+                    style={{ width: 60, height: 60, objectFit: "contain" }}
+                  />
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={styles.nameLabel}>Go-Pay</Text>
+                    <Text style={styles.nameText}>Rp 11.023</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
+                <View style={styles.myWalletContent}>
+                  <Image
+                    source={require("../images/linkaja-item.png")}
+                    style={{ width: 60, height: 60, objectFit: "contain" }}
+                  />
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={styles.nameLabel}>LinkAja</Text>
+                    <Text style={styles.nameText}>Rp 297.000</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
+                <View style={styles.myWalletContent}>
+                  <Image
+                    source={require("../images/ovo-item.png")}
+                    style={{ width: 60, height: 60, objectFit: "contain" }}
+                  />
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={styles.nameLabel}>OVO</Text>
+                    <Text style={styles.nameText}>Rp 19.460</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
+                <View style={styles.myWalletContent}>
+                  <Image
+                    source={require("../images/dana-item.png")}
+                    style={{ width: 60, height: 60, objectFit: "contain" }}
+                  />
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={styles.nameLabel}>DANA</Text>
+                    <Text style={styles.nameText}>Rp 26.297</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
+          <Text style={styles.promoText}>Promotions & Information</Text>
+          <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                source={require("../images/promo1.png")}
+                style={styles.promoContent}
+              />
+              <Image
+                source={require("../images/promo2.png")}
+                style={[styles.promoContent, { marginLeft: 10 }]}
+              />
+            </View>
+          </ScrollView>
+        </View>
         </ScrollView>
         {/* <BottomBarPage /> */}
       </ImageBackground>
@@ -308,6 +266,7 @@ const HomePage = ({ selectedStation1, selectedStation2 }) => {
 const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
+    // height: 440,
     flex: 1,
   },
 
@@ -532,75 +491,6 @@ const styles = StyleSheet.create({
   promoContent: {
     width: 245,
     height: 124,
-  },
-
-  myTravelinkContainer: {
-    justifyContent: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 10,
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    height: 100,
-  },
-
-  tittleCommuterLine: {
-    color: "#005E6A",
-    fontSize: 13,
-    fontFamily: "Inter-Regular",
-  },
-
-  tittleDestination: {
-    color: "#005E6A",
-    fontSize: 14,
-    fontFamily: "Inter-SemiBold",
-    marginTop: 5,
-    marginBottom: 5,
-  },
-
-  tittleValid: {
-    color: "#F15A23",
-    fontSize: 10,
-    fontFamily: "Inter-Light",
-  },
-
-  activeContainer: {
-    justifyContent: "center",
-    backgroundColor: "#A1E496",
-    borderRadius: 20,
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-
-  tittleActive: {
-    color: "#005E6A",
-    fontSize: 14,
-    fontFamily: "Inter-Medium",
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 20,
-    marginRight: 20,
-  },
-
-  titleBNITraveLink: {
-    fontSize: 16,
-    color: "#005E6A",
-    fontFamily: "Inter-SemiBold",
-    paddingLeft: 13,
-    paddingRight: 13,
-    paddingTop: 17,
-    paddingBottom: 9,
   },
 });
 
