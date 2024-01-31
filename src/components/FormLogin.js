@@ -15,6 +15,10 @@ import { useNavigation } from "@react-navigation/native"; // Import useNavigatio
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import Constants from 'expo-constants';
+
+const apiUrl = Constants.manifest.extra.API_URL;  
+
 const FormLogin = ({ modalVisible, setModalVisible }) => {
   const [user_id, setUser_id] = useState("");
   const [mpin, setMpin] = useState("");
@@ -47,7 +51,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
         formData.append("userId", user_id);
         formData.append("mpin", mpin);
 
-        const responseLogin = await axios.post("http://192.168.132.20:8081/logins/hash", formData, {
+        const responseLogin = await axios.post(`${apiUrl}/logins/hash`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           }
@@ -57,7 +61,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
 
           const responseBalance = await axios.get(
-            `http://192.168.132.20:8081/balance/getBalanceByUserId/${responseLogin.data.userId}`
+            `${apiUrl}/balance/getBalanceByUserId/${responseLogin.data.userId}`
           );
 
           await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
