@@ -382,8 +382,6 @@ const styles = StyleSheet.create({
     width: 390,
     height: 130,
     backgroundColor: "#FFFFFF",
-    // alignItems: "",
-    // flexDirection: "flex-start",
   },
 
   textYourBalance: {

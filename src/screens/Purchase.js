@@ -24,7 +24,7 @@ const Purchase = () => {
   if (fontsLoaded) {
     return (
       <ImageBackground
-        source={require("../images/background-container.png")}
+        source={require("../images/background-setengah.png")}
         style={styles.backgroundGradient}
       >
         <View style={styles.appBar}>

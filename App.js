@@ -18,7 +18,7 @@ import HomeScreen from "./src/screens/homescreen";
 import TestApp from "./src/screens/TestApp";
 
 // export const FontThemeContext = createContext();
-// const Stack = createStackNavigator();
+const Stack = createStackNavigator();
 
 function App() {
   // Tentukan tema font di sini
