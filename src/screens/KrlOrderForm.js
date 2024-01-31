@@ -19,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const KrlOrderForm = () => {
   const [stations, setStations] = useState([]);
   const [serviceName, setServiceName] = useState("");
+  const [price, setPrice] = useState(0);
 
   const navigation = useNavigation();
 
@@ -34,6 +35,7 @@ const KrlOrderForm = () => {
         if (parsedData) {
           setStations(parsedData.stations);
           setServiceName(parsedData.service);
+          setPrice(parsedData.price);
           // await AsyncStorage.removeItem('travelinkData');
         } else {
           console.log('No stations found in AsyncStorage');
@@ -259,6 +261,7 @@ const KrlOrderForm = () => {
             selectedStation1={selectedStation1}
             selectedStation2={selectedStation2}
             selectedPeople={selectedPeople}
+            price={price}
           />
         </View>
       </ImageBackground>
