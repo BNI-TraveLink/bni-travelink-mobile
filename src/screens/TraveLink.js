@@ -96,6 +96,7 @@ const TraveLink = () => {
     const dataToSave = {
       service: travelinkService,
       stations: stations,
+      price: response.data[0].fkService.price
     };
 
     await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
