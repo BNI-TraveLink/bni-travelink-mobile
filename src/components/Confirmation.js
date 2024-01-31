@@ -71,6 +71,10 @@ const Confirmation = ({
     setIsHidden(!isHidden);
   };
 
+  const handlePay = () => {
+    navigation.navigate("Validation");
+  };
+
   if (fontsLoaded) {
     return (
       <View style={{ display: isVisibleConfirm ? "flex" : "none" }}>
@@ -176,7 +180,14 @@ const Confirmation = ({
         </View>
         <View style={styles.bottomWhiteBackground}>
           <View>
-            <View style={{ flexDirection: "row", marginTop: 10, marginBottom: 10, marginLeft: 5}}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 10,
+                marginBottom: 10,
+                marginLeft: 5,
+              }}
+            >
               <Image
                 source={require("../images/wallet-green-item.png")}
                 style={{ height: 40, width: 40 }}
@@ -206,9 +217,10 @@ const Confirmation = ({
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <TouchableOpacity
                 style={[styles.buttonContainer, { marginBottom: 10 }]}
+                onPress={handlePay}
               >
                 <Text style={styles.buttonText}>Pay</Text>
-                <Text style={styles.pricePay}>Rp {selectedPeople*3000}</Text>
+                <Text style={styles.pricePay}>Rp {selectedPeople * 3000}</Text>
                 <Image
                   source={require("../images/next-item.png")}
                   style={{ height: 40, width: 40, marginLeft: 10 }}

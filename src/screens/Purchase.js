@@ -79,7 +79,7 @@ const Purchase = () => {
                 />
                 <TouchableOpacity onPress={handleTraveLinkPress}>
                 <GridHomeMenu
-                  imageSource={require("../images/travelink-item.png")}
+                  imageSource={require("../images/traveLink-item.png")}
                   labelText={"BNI TraveLink"}
                 />
                 </TouchableOpacity>
