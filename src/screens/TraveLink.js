@@ -23,21 +23,22 @@ const TraveLink = () => {
     try {
       const url = 'http://192.168.132.20:8081/service/getStationByServiceName';
   
-      // If you need to pass parameters, use the params option
       const response = await axios.get(url, {
         params: {
           serviceName: 'KRL',
         },
       });
+
+      const stations = response.data.map((station) => ({
+        label: station.station_name,
+        value: station.station_name,
+      }));
   
-      console.log(response.data);
+      await AsyncStorage.setItem('stations', JSON.stringify(stations));
 
       await navigation.navigate("KrlOrderForm")
-  
-      // Handle the response as needed
     } catch (error) {
       console.error('Error hitting the API:', error);
-      // Handle the error appropriately
     }
   };
   
