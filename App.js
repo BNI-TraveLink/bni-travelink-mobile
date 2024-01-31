@@ -3,20 +3,19 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import SplashScreen from "./src/screens/SplashScreen";
 import FirstLogin from "./src/screens/FirstLogin";
 import HomePage from "./src/screens/HomePage";
 import Purchase from "./src/screens/Purchase";
 import TraveLink from "./src/screens/TraveLink";
 import KrlOrderForm from "./src/screens/KrlOrderForm";
-
-import Confirmation from "./src/screens/Confirmation";
-import HomeScreen from "./src/screens/homescreen";
-import Receipt from "./src/screens/Receipt";
-import TestApp from "./src/screens/TestApp";
-import TicketDetails from "./src/screens/TicketDetails";
 import EticketIn from "./src/screens/EticketIn";
+import Validation from "./src/screens/Validation";
+import Receipt from "./src/screens/Receipt";
+import TicketDetails from "./src/screens/TicketDetails";
+import Confirmation from "./src/components/Confirmation";
+import HomeScreen from "./src/screens/homescreen";
+import TestApp from "./src/screens/TestApp";
 
 // export const FontThemeContext = createContext();
 // const Stack = createStackNavigator();
@@ -37,54 +36,25 @@ function App() {
   // };
   return (
     <View style={styles.container}>
-      {/* <NavigationContainer>
+      <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
           }}
         >
-          <Stack.Screen name="Splash" component={SplashScreen}/>
+          <Stack.Screen name="Splash" component={SplashScreen} />
           <Stack.Screen name="FirstLogin" component={FirstLogin} />
           <Stack.Screen name="Home" component={HomePage} />
-          <Stack.Screen name="Purchase" component={Purchase}/>
-          <Stack.Screen name="TraveLink" component={TraveLink}/>
-          <Stack.Screen name="KrlOrderForm" component={KrlOrderForm}/>
-        </Stack.Navigator>
-      </NavigationContainer> */}
-
-      {/* <Purchase></Purchase> */}
-      {/* <Receipt></Receipt> */}
-      <EticketIn></EticketIn>
-      {/* <TestApp></TestApp> */}
-      {/* <TicketDetails></TicketDetails> */}
-
-      {/* Sediakan tema font melalui konteks */}
-      {/* <FontThemeContext.Provider value={fontTheme}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="Confirmation" component={Confirmation} />
-            <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </FontThemeContext.Provider> */}
-
-      {/* <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
+          <Stack.Screen name="Purchase" component={Purchase} />
+          <Stack.Screen name="TraveLink" component={TraveLink} />
+          <Stack.Screen name="KrlOrderForm" component={KrlOrderForm} />
           <Stack.Screen name="Confirmation" component={Confirmation} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="Validation" component={Validation} />
           <Stack.Screen name="Receipt" component={Receipt} />
           <Stack.Screen name="TicketDetails" component={TicketDetails} />
+          <Stack.Screen name="EticketIn" component={EticketIn} />
         </Stack.Navigator>
-      </NavigationContainer> */}
-
+      </NavigationContainer>
       <StatusBar style="auto" />
     </View>
   );

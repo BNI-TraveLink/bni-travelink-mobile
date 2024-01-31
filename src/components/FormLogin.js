@@ -47,7 +47,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
         formData.append("userId", user_id);
         formData.append("mpin", mpin);
 
-        const responseLogin = await axios.post("http://192.168.68.153:8081/logins/hash", formData, {
+        const responseLogin = await axios.post("http://192.168.132.20:8081/logins/hash", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           }
@@ -57,7 +57,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
 
           const responseBalance = await axios.get(
-            `http://192.168.68.153:8081/balance/getBalanceByUserId/${responseLogin.data.userId}`
+            `http://192.168.132.20:8081/balance/getBalanceByUserId/${responseLogin.data.userId}`
           );
 
           await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));

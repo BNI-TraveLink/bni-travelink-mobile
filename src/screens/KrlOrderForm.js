@@ -14,13 +14,33 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import { Dropdown } from "react-native-element-dropdown";
 import Confirmation from "../components/Confirmation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const KrlOrderForm = () => {
+  const [stations, setStations] = useState(null);
+
   const navigation = useNavigation();
 
   const handleBackPress = () => {
     navigation.navigate("TraveLink");
   };
+
+  useEffect(() => {
+    const getStations = async () => {
+      try {
+        const stationsString = await AsyncStorage.getItem('stations');
+        if (stationsString) {
+          setStations(JSON.parse(stationsString));
+        } else {
+          console.log('No stations found in AsyncStorage');
+        }
+      } catch (error) {
+        console.error('Error retrieving stations:', error);
+      }
+    };
+    
+    getStations();
+  }, [])
 
   const [fontsLoaded] = useFonts({
     "Poppins-Bold": require("../fonts/Poppins/Poppins-Bold.ttf"),
@@ -28,31 +48,31 @@ const KrlOrderForm = () => {
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
   });
 
-  const station = [
-    { label: "Bogor", value: "Bogor" },
-    { label: "Bojong Gede", value: "Bojong Gede" },
-    { label: "Cawang", value: "Cawang" },
-    { label: "Cikini", value: "Cikini" },
-    { label: "Cilebut", value: "Cilebut" },
-    { label: "Citayam", value: "Citayam" },
-    { label: "Depok", value: "Depok" },
-    { label: "Depok Baru", value: "Depok Baru" },
-    { label: "Duren Kalibata", value: "Duren Kalibata" },
-    { label: "Gongdangdia", value: "Gondangdia" },
-    { label: "Jakarta Kota", value: "Jakarta Kota" },
-    { label: "Juanda", value: "Juanda" },
-    { label: "Lenteng Agung", value: "Lenteng Agung" },
-    { label: "Mangga Besar", value: "Mangga Besar" },
-    { label: "Manggarai", value: "Manggarai" },
-    { label: "Pasar Minggu", value: "Pasar Minggu" },
-    { label: "Pasar Minggu Baru", value: "Pasar Minggu Baru" },
-    { label: "Pondok Cina", value: "Pondok Cina" },
-    { label: "Sawah Besar", value: "Sawah Besar" },
-    { label: "Tanjung Barat", value: "Tanjung Barat" },
-    { label: "Tebet", value: "Tebet" },
-    { label: "Univ. Indonesia", value: "Univ. Indonesia" },
-    { label: "Univ. Pancasila", value: "Univ.Pancasila" },
-  ];
+  // const station = [
+  //   { label: "Bogor", value: "Bogor" },
+  //   { label: "Bojong Gede", value: "Bojong Gede" },
+  //   { label: "Cawang", value: "Cawang" },
+  //   { label: "Cikini", value: "Cikini" },
+  //   { label: "Cilebut", value: "Cilebut" },
+  //   { label: "Citayam", value: "Citayam" },
+  //   { label: "Depok", value: "Depok" },
+  //   { label: "Depok Baru", value: "Depok Baru" },
+  //   { label: "Duren Kalibata", value: "Duren Kalibata" },
+  //   { label: "Gongdangdia", value: "Gondangdia" },
+  //   { label: "Jakarta Kota", value: "Jakarta Kota" },
+  //   { label: "Juanda", value: "Juanda" },
+  //   { label: "Lenteng Agung", value: "Lenteng Agung" },
+  //   { label: "Mangga Besar", value: "Mangga Besar" },
+  //   { label: "Manggarai", value: "Manggarai" },
+  //   { label: "Pasar Minggu", value: "Pasar Minggu" },
+  //   { label: "Pasar Minggu Baru", value: "Pasar Minggu Baru" },
+  //   { label: "Pondok Cina", value: "Pondok Cina" },
+  //   { label: "Sawah Besar", value: "Sawah Besar" },
+  //   { label: "Tanjung Barat", value: "Tanjung Barat" },
+  //   { label: "Tebet", value: "Tebet" },
+  //   { label: "Univ. Indonesia", value: "Univ. Indonesia" },
+  //   { label: "Univ. Pancasila", value: "Univ.Pancasila" },
+  // ];
 
   const [selectedStation1, setSelectedStation1] = useState(null);
   const [selectedStation2, setSelectedStation2] = useState(null);
@@ -125,7 +145,7 @@ const KrlOrderForm = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={station}
+                    data={stations}
                     search
                     maxHeight={300}
                     labelField="label"
@@ -170,7 +190,7 @@ const KrlOrderForm = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={station}
+                    data={stations}
                     search
                     maxHeight={300}
                     labelField="label"
@@ -221,7 +241,7 @@ const KrlOrderForm = () => {
             </View>
           </View>
           <Confirmation
-          // set order from krl
+            // set order from krl
             isVisibleConfirm={isConfirmationVisible}
             selectedStation1={selectedStation1}
             selectedStation2={selectedStation2}

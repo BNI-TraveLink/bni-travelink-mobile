@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useFonts } from "expo-font";
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const fontTheme = {
   regular: "Inter-Regular",
@@ -43,18 +43,18 @@ const EticketIn = () => {
   //   "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   //   "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
   // });
-  //   const navigation = useNavigation();
+  const navigation = useNavigation();
 
   if (!fontsLoaded) {
     // You can return an empty View or null for now, as we are only interested in the app bar
     return null;
   }
-
-  //   const handlePay = () => {
-  //     // Handle logic when the Pay button is pressed
-  //     // For now, let's navigate to a new page named "PaymentSuccess"
-  //     navigation.navigate("Receipt");
-  //   };
+  const handleBack = () => {
+    navigation.navigate("TicketDetails");
+  };
+  const handleHome = () => {
+    navigation.navigate("Home");
+  };
 
   return (
     <View style={styles.container}>
@@ -66,7 +66,7 @@ const EticketIn = () => {
 
       {/* App Bar */}
       <View style={styles.appBarContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleBack}>
           {/* Left Icon (Back Arrow) */}
           <Image
             source={require("../images/ion_arrow-back.png")}
@@ -76,7 +76,7 @@ const EticketIn = () => {
 
         {/* Title (Purchase) */}
         <Text style={styles.title}>E-Ticket</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleHome}>
           {/* Left Icon (Back Arrow) */}
           <Image
             source={require("../images/ic_round-home.png")}
@@ -353,16 +353,18 @@ const styles = StyleSheet.create({
     height: 20,
   },
   warningfilledBackground: {
+    position: "relative",
     height: 43,
     backgroundColor: "#DECAF8",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
+    left: -10,
     marginHorizontal: 5,
-    // marginBottom: 50,
     marginLeft: 15,
-    marginTop: 160, // Atur jarak antara teks peringatan dan elemen di bawahnya// Gunakan posisi relatif untuk tata letak
+    marginTop: 270, // Atur jarak antara teks peringatan dan elemen di bawahnya// Gunakan posisi relatif untuk tata letak
+    // zIndex: 1,
   },
   warningImage: {
     width: 20,
@@ -376,7 +378,9 @@ const styles = StyleSheet.create({
     marginLeft: 22,
     color: "#5D21D1",
   },
-  accordion1Content: {},
+  accordion1Content: {
+    top: 0,
+  },
   accordionContent: {
     width: 361,
     height: 439,
@@ -386,8 +390,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderRadius: 20,
     paddingHorizontal: 90,
+    paddingVertical: 20,
     paddingBottom: 90,
-
+    marginBottom: -30,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -421,12 +426,14 @@ const styles = StyleSheet.create({
     marginBottom: 20, // Atur jarak antara setiap accordion
     position: "relative", // Gunakan posisi relatif untuk konten di dalamnya
   },
-  // scrollContainer: {
-  //   height: "10px",
-  // },
+  scrollContainer: {
+    height: "500px",
+  },
   accordion2: {
-    marginBottom: 70,
-    marginTop: 10,
+    marginTop: -20, // Menyesuaikan margin atas untuk accordion
+    marginBottom: -80,
+    paddingBottom: 80,
+    // zIndex: 0, // Menempatkan accordion di bawah teks peringatan
   },
 });
 
