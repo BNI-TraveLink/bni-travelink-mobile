@@ -13,6 +13,10 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
+import Constants from 'expo-constants';
+
+const apiUrl = Constants.manifest.extra.API_URL;
+
 const TraveLink = () => {
   const navigation = useNavigation();
   const [stations, setStations] = useState([]);
@@ -25,11 +29,8 @@ const TraveLink = () => {
     setStations([]);
 
     try {
-      getListStations("KRL");
-
-      setTimeout(() => {}, 200);
-      if (stations.length > 0)
-      await navigation.navigate("KrlOrderForm");
+      await getListStations("KRL");
+     navigation.navigate("KrlOrderForm");
     } catch (error) {
       console.error('Error hitting the API:', error);
     }
@@ -39,11 +40,9 @@ const TraveLink = () => {
     setStations([]);
 
     try {
-      getListStations("TJ");
+     await  getListStations("TJ");
 
-      setTimeout(() => {}, 200);
-      if (stations.length > 0)
-      await navigation.navigate("KrlOrderForm");
+     navigation.navigate("KrlOrderForm");
     } catch (error) {
       console.error('Error hitting the API:', error);
     }
@@ -53,12 +52,11 @@ const TraveLink = () => {
     setStations([]);
 
     try {
-      getListStations("MRT");
+      await getListStations("MRT");
 
-      setTimeout(() => {}, 200);
 
-      if (stations.length > 0)
-      await navigation.navigate("KrlOrderForm");
+
+      navigation.navigate("KrlOrderForm");
     } catch (error) {
       console.error('Error hitting the API:', error);
     }
@@ -68,7 +66,9 @@ const TraveLink = () => {
     setStations([]);
 
     try {
-      getListStations("LRT");
+      await getListStations("LRT");
+
+
 
       setTimeout(() => {}, 200);
 
@@ -82,23 +82,31 @@ const TraveLink = () => {
   const getListStations = async (travelinkService) => {
     const url = 'http://192.168.132.20:8081/service/getStationByServiceName';
   
-    const response = await axios.get(url, {
-      params: {
-        serviceName: travelinkService,
-      },
-    });
+    try {
+      const response = await axios.get(url, {
+        params: {
+          serviceName: travelinkService,
+        },
+      });
 
-    setStations(response.data.map((station) => ({
-      label: station.station_name,
-      value: station.station_name,
-    })));
+      const newStations = response.data.map((station) => ({
+        label: station.station_name,
+        value: station.station_name,
+      }));
 
-    const dataToSave = {
-      service: travelinkService,
-      stations: stations,
-    };
+      setStations(newStations);
 
-    await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
+      const dataToSave = {
+        service: travelinkService,
+        stations: newStations, // Use the updated stations
+        price: response.data[0].fkService.price
+         };
+
+      await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
+    } catch (error) {
+      console.error('Error getting station data:', error);
+      throw error; // Rethrow the error to be caught in handleMrtPress
+    }
   }
 
   const [fontsLoaded] = useFonts({
