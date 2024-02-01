@@ -12,6 +12,11 @@ import GridMenuItem from "../components/GridMenuItem";
 import { useFonts } from "expo-font";
 import FormLogin from "../components/FormLogin"; // Import FormLogin component
 import axios from "axios";
+import { Dimensions } from "react-native";
+
+const window = Dimensions.get('window');
+const windowWidth = window.width;
+const windowHeight = window.height;
 
 const FirstLogin = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -53,8 +58,8 @@ const FirstLogin = () => {
           </View>
           <View>
             <Image
-              source={require("../images/traveLink(1)1.png")}
-              style={{ marginTop: 16, width: 358, height: 290 }}
+              source={require("../images/first_pict.png")}
+              style={styles.firstPict}
             />
             <View style={styles.buttonLoginContainer}>
               <TouchableOpacity
@@ -125,7 +130,7 @@ const FirstLogin = () => {
 const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
-    height: 440,
+    height: windowHeight * 0.475,
   },
 
   appBar: {
@@ -141,6 +146,15 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.2,
     // // elevation: 2,
     paddingRight: 35,
+  },
+
+
+firstPict: {
+  width: windowWidth, // Adjust width to 80% of window width
+  height: windowHeight * 0.38, // Adjust height to 25% of window height
+  resizeMode: 'contain', // This ensures the image scales correctly within the bounds you've set
+  alignSelf: 'center', // Center the image horizontally within its container
+  marginTop: 16, // Adjust marginTop if needed
   },
 
   centerContent: {
@@ -174,15 +188,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#F15A23",
     padding: 10,
     borderRadius: 20,
-    marginTop: 110,
-    height: 50,
-    width: 320,
+    marginTop: 100,
+    minHeight: windowHeight * 0.05,
+    width: windowWidth * 0.8,
+    justifyContent: "center"
   },
 
   buttonLoginText: {
     color: "white",
-    fontSize: 20,
+    fontSize: windowWidth * 0.05,
     textAlign: "center",
+    // justifyContent: "center",
     fontFamily: "Poppins-SemiBold",
   },
 
@@ -203,7 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderRadius: 20,
-    marginTop: 130,
+    marginTop: 50,
     width: 90,
     height: 40,
     borderColor: "#005E6A",
