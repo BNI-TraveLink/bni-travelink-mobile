@@ -12,34 +12,101 @@ import { useNavigation } from "@react-navigation/native";
 import HistoryTraveLink from "../components/HistoryTraveLink";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+
+import Constants from 'expo-constants';
+
+const apiUrl = Constants.manifest.extra.API_URL;
 
 const TraveLink = () => {
   const navigation = useNavigation();
+  const [stations, setStations] = useState([]);
 
   const handleBackPress = () => {
     navigation.navigate("Purchase");
   };
 
   const handleCommuterPress = async () => {
-    try {
-      const url = 'http://192.168.132.20:8081/service/getStationByServiceName';
+    setStations([]);
 
+    try {
+      await getListStations("KRL");
+     navigation.navigate("KrlOrderForm");
+    } catch (error) {
+      console.error('Error hitting the API:', error);
+    }
+  };
+
+  const handleTiJePress = async () => {
+    setStations([]);
+
+    try {
+     await  getListStations("TJ");
+
+     navigation.navigate("KrlOrderForm");
+    } catch (error) {
+      console.error('Error hitting the API:', error);
+    }
+  }
+
+  const handleMrtPress = async () => {
+    setStations([]);
+
+    try {
+      await getListStations("MRT");
+
+
+
+      navigation.navigate("KrlOrderForm");
+    } catch (error) {
+      console.error('Error hitting the API:', error);
+    }
+  }
+
+  const handleLrtPress = async () => {
+    setStations([]);
+
+    try {
+      await getListStations("LRT");
+
+
+
+      setTimeout(() => {}, 200);
+
+      if (stations.length > 0)
+      await navigation.navigate("KrlOrderForm");
+    } catch (error) {
+      console.error('Error hitting the API:', error);
+    }
+  }
+
+  const getListStations = async (travelinkService) => {
+    const url = 'http://192.168.132.20:8081/service/getStationByServiceName';
+
+    try {
       const response = await axios.get(url, {
         params: {
-          serviceName: 'KRL',
+          serviceName: travelinkService,
         },
       });
 
-      const stations = response.data.map((station) => ({
+      const newStations = response.data.map((station) => ({
         label: station.station_name,
         value: station.station_name,
       }));
 
-      await AsyncStorage.setItem('stations', JSON.stringify(stations));
+      setStations(newStations);
 
-      await navigation.navigate("KrlOrderForm")
+      const dataToSave = {
+        service: travelinkService,
+        stations: newStations, // Use the updated stations
+        price: response.data[0].fkService.price
+         };
+
+      await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
     } catch (error) {
-      console.error('Error hitting the API:', error);
+      console.error('Error getting station data:', error);
+      throw error; // Rethrow the error to be caught in handleMrtPress
     }
   };
 
@@ -76,18 +143,24 @@ const TraveLink = () => {
                     labelText={"Commuter"}
                   />
                 </TouchableOpacity>
-                <GridHomeMenu
-                  imageSource={require("../images/tije-item.png")}
-                  labelText={"TiJe"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/mrt-item.png")}
-                  labelText={"MRT"}
-                />
-                <GridHomeMenu
-                  imageSource={require("../images/lrt-item.png")}
-                  labelText={"LRT"}
-                />
+                <TouchableOpacity onPress={handleTiJePress}>
+                  <GridHomeMenu
+                    imageSource={require("../images/tije-item.png")}
+                    labelText={"TiJe"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleMrtPress}>
+                  <GridHomeMenu
+                    imageSource={require("../images/mrt-item.png")}
+                    labelText={"MRT"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleLrtPress}>
+                  <GridHomeMenu
+                    imageSource={require("../images/lrt-item.png")}
+                    labelText={"LRT"}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </View>

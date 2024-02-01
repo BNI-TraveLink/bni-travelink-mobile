@@ -19,6 +19,7 @@ const Confirmation = ({
   selectedStation1,
   selectedStation2,
   selectedPeople,
+  price,
 }) => {
   const navigation = useNavigation();
   const [errorText, setErrorText] = useState("");
@@ -98,7 +99,7 @@ const Confirmation = ({
                 Valid until 15 Feb 2024, 23:59
               </Text>
             </View>
-            <Text style={styles.textPriceTicket}>Rp 3.000</Text>
+            <Text style={styles.textPriceTicket}>Rp {price}</Text>
           </View>
         </View>
         <View style={styles.unguContainer}>
@@ -220,7 +221,7 @@ const Confirmation = ({
                 onPress={handlePay}
               >
                 <Text style={styles.buttonText}>Pay</Text>
-                <Text style={styles.pricePay}>Rp {selectedPeople * 3000}</Text>
+                <Text style={styles.pricePay}>Rp {selectedPeople * price}</Text>
                 <Image
                   source={require("../images/next-item.png")}
                   style={{ height: 40, width: 40, marginLeft: 10 }}
