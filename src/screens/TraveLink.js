@@ -81,7 +81,7 @@ const TraveLink = () => {
   }
 
   const getListStations = async (travelinkService) => {
-    const url = 'http://192.168.132.20:8081/service/getStationByServiceName';
+    const url = `${apiUrl}/service/getStationByServiceName`;
 
     try {
       const response = await axios.get(url, {

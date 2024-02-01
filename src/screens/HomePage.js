@@ -62,6 +62,14 @@ const HomePage = () => {
     navigation.navigate("Purchase");
   };
 
+  const handleHistoryActive = () => {
+    navigation.navigate("TraveLink");
+  };
+
+  const handleHistoryReorder = () => {
+    navigation.navigate("TraveLink");
+  };
+
   const [fontsLoaded] = useFonts({
     "Poppins-Regular": require("../fonts/Poppins/Poppins-Regular.ttf"),
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
@@ -191,6 +199,7 @@ const HomePage = () => {
               <Text style={styles.pointText}>1.946</Text>
             </View>
             <Text style={styles.tittleBNITraveLink}>My BNI TraveLink</Text>
+            <TouchableOpacity onPress={handleHistoryActive}>
             <View style={styles.historyContainer}>
               <View style={styles.historyContent}>
                 <View style={styles.listContainer}>
@@ -212,7 +221,7 @@ const HomePage = () => {
                   <View style={styles.listRightContainer}>
                     <View style={styles.activeContainer}>
                       <View style={styles.activeContent}>
-                        <Text style={styles.tittleActive}>Active</Text>
+                        <Text style={styles.tittleActive}>  Active </Text>
                       </View>
                     </View>
                     <Text
@@ -227,6 +236,45 @@ const HomePage = () => {
                 </View>
               </View>
             </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleHistoryReorder}>
+            <View style={styles.historyContainer}>
+              <View style={styles.historyContent}>
+                <View style={styles.listContainer}>
+                  <Image
+                    source={require("../images/commuter-historyItem.png")}
+                    style={{ height: 40, width: 40 }}
+                  ></Image>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.tittleTraveLink}>Commuter Line</Text>
+                    <View style={styles.destinationContainer}>
+                      <Text style={styles.tittleDestination}>Jakarta Kota</Text>
+                      <Text style={styles.tittleDestination}>-</Text>
+                      <Text style={styles.tittleDestination}>
+                        Tanjung Barat
+                      </Text>
+                    </View>
+                    <Text style={styles.tittleDate}>Valid until 15 Feb 2024, 23.59</Text>
+                  </View>
+                  <View style={styles.listRightContainer}>
+                    <View style={styles.reorderContainer}>
+                      <View style={styles.reorderContent}>
+                        <Text style={styles.tittleReorder}>Reorder</Text>
+                      </View>
+                    </View>
+                    <Text
+                      style={[
+                        styles.tittleOrderID,
+                        { marginTop: 12, marginRight: 10 },
+                      ]}
+                    >
+                      #0003
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            </TouchableOpacity>
             <Text style={styles.eWalletsText}>My E-Wallets</Text>
             <ScrollView
               horizontal={true}
@@ -540,7 +588,6 @@ const styles = StyleSheet.create({
     paddingLeft: 13,
     paddingRight: 13,
     paddingTop: 17,
-    paddingBottom: 9,
   },
 
   historyContainer: {
@@ -554,6 +601,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    marginTop: 10
   },
 
   historyContent: {
@@ -628,7 +676,33 @@ const styles = StyleSheet.create({
 
   listRightContainer: {
     alignItems: "flex-end",
-    marginLeft: 120,
+    marginLeft: 115,
+  },
+
+  reorderContainer: {
+    backgroundColor: "#82E5F2",
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+  reorderContent: {
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+
+  tittleReorder: {
+    color: "#005E6A",
+    fontFamily: "Inter-Medium",
+    fontSize: 12,
   },
 });
 
