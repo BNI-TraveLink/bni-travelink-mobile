@@ -10,7 +10,6 @@ import {
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import BottomBarOrderForm from "./BotomBarOrderForm";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

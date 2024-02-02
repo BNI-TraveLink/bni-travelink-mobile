@@ -11,9 +11,9 @@ import {
 import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
 import { useNavigation } from "@react-navigation/native";
-import BottomBarPage from "../components/BottomBar";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BottomBarPage from "../components/BottomBarPage";
 
 const HomePage = () => {
   const [isHidden, setIsHidden] = useState(false);
@@ -346,7 +346,7 @@ const HomePage = () => {
             </ScrollView>
           </View>
         </ScrollView>
-        {/* <BottomBarPage /> */}
+        <BottomBarPage/>
       </ImageBackground>
     );
   }
