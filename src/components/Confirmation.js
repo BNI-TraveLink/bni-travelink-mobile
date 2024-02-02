@@ -14,6 +14,9 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BottomBarOrderForm from "./BotomBarOrderForm";
 
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;
+
 const Confirmation = ({
   isVisibleConfirm,
   selectedStation1,
@@ -72,7 +75,17 @@ const Confirmation = ({
     setIsHidden(!isHidden);
   };
 
-  const handlePay = () => {
+  const handlePay = async () => {
+    // // Generate Ticket by Order Id
+    // const orderId = "35";
+    // const generateTicketResponse = await axios.post(
+    //   `${apiUrl}/tickets/GenerateTicket/${orderId}`
+    // );
+
+    // console.log("=================");
+    // console.log(generateTicketResponse);
+    // console.log("=================");
+
     navigation.navigate("Validation");
   };
 

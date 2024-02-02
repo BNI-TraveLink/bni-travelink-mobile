@@ -92,7 +92,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               0001
@@ -104,7 +104,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               930081
@@ -118,7 +118,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               15 Feb 2023
@@ -132,7 +132,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               09:35:41 WIB
@@ -144,7 +144,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               1946061123
@@ -156,7 +156,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               Rp 15.000
@@ -168,7 +168,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               0
@@ -176,13 +176,13 @@ const Receipt = () => {
           </View>
           <View style={styles.paymentConfirmationRow}>
             <View style={styles.blueOverlay}></View>
-            <Text style={styles.paymentConfirmationLabel}>Total Payment</Text>
+            <Text style={styles.paymentConfirmationLabel2}>Total Payment</Text>
 
             <Text
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               Rp 15.000
@@ -354,12 +354,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 17,
     fontWeight: "500",
   },
+  paymentConfirmationLabel2: {
+    marginLeft: 120,
+    right: 100,
+    fontSize: 14,
+    textAlign: "left",
+    color: "#005E6A",
+    paddingHorizontal: 17,
+    fontWeight: "600",
+    // fontFamily: "Inter-SemiBold",
+  },
   paymentConfirmationValue: {
     // position: "absolute",
     marginRight: 40,
     textAlign: "right",
     fontSize: 14,
     fontWeight: "600",
+    // fontFamily: "Inter-SemiBold",
   },
   buttonContainerRow: {
     flexDirection: "row",
