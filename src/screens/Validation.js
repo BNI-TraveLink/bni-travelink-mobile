@@ -90,7 +90,7 @@ const Validation = () => {
 
 
       } catch (error) {
-        console.error("Error fetching data: " + error);
+        console.log("Error fetching data: " + error);
       }
     };
 
@@ -139,7 +139,7 @@ const Validation = () => {
         // hit generatepayment
       }
     } catch (error) {
-      console.error("Error in handleTransactionPassword:", error);
+      console.log("Error in handleTransactionPassword:", error);
     }
   };
 
@@ -169,7 +169,7 @@ const Validation = () => {
       orderID = response.data;
     } catch (error) {
 
-      console.error('API Error:', error.message);
+      console.log('API Error:', error.message);
     }
   };
 
@@ -195,9 +195,24 @@ const Validation = () => {
       console.log("okeh");
     } catch (error) {
       // Handle errors here
-      console.error('API Error:', error.message);
+      console.log('API Error:', error.message);
     }
   };
+
+  const generateTicket= async ()=> {
+
+   
+    try{
+      const orderId = orderID;
+      const generateTicketResponse = await axios.post(
+        `${API_URL}/tickets/GenerateTicket/${orderId}`
+      );
+    }catch(Error){
+      console.log("Error when Generate Ticket" + Error);
+    }
+
+   
+  }
 
 
 
@@ -210,6 +225,7 @@ const Validation = () => {
     console.log("eak");
      await  updatePayment();
      await AsyncStorage.setItem("orderId", JSON.stringify( orderID));
+    await generateTicket();
 
       navigation.navigate("Receipt");
   };

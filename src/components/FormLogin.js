@@ -74,7 +74,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           navigation.navigate("Home");
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       setModalVisible(true); // Open the modal if there's an error
       setIsLoggedIn(false);
       setErrorText("User ID or MPIN is Incorrect");

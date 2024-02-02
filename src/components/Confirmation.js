@@ -52,7 +52,7 @@ const Confirmation = ({
         setServiceName(parsedServiceData.service);
 
       } catch (error) {
-        console.log("Error fetching balance: " + error);
+        console.log("Error fetching data: " + error);
       }
     };
 
@@ -126,7 +126,7 @@ const Confirmation = ({
       // Navigate to the "Validation" screen
       navigation.navigate("Validation");
     } catch (error) {
-      console.error("Error handling payment:", error.message);
+      console.log("Error handling payment:", error.message);
     }
   };
 

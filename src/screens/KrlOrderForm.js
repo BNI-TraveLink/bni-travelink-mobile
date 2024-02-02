@@ -57,7 +57,7 @@ const KrlOrderForm = () => {
           console.log("No stations found in AsyncStorage");
         }
       } catch (error) {
-        console.error("Error retrieving stations:", error);
+        console.log("Error retrieving stations:", error);
       }
     };
 

@@ -34,7 +34,7 @@ const HomePage = () => {
         const parsedSessionData = JSON.parse(sessionData);
         setUserData(parsedSessionData);
       } catch (error) {
-        console.error("Error fetching balance: " + error);
+        console.log("Error fetching balance: " + error);
       }
     };
 

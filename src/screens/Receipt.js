@@ -98,6 +98,7 @@ const Receipt = () => {
             console.log("transaction",transaction);
             console.log("transaction",transaction.data);
             console.log("date",transaction.data.createdAt);
+            await AsyncStorage.setItem("transaction", JSON.stringify( transaction.data));
            
             createdAtDate = new Date(transaction.data.createdAt);
           const newDatePart = createdAtDate.toISOString().split('T')[0];
@@ -116,14 +117,14 @@ const Receipt = () => {
 
 
           } catch (error) {
-            console.error("Error fetching transaction: " + error);
+            console.log("Error fetching transaction: " + error);
           }
         };
   
         // Call getUserData to initiate data retrieval
         await getUserData();
       } catch (error) {
-        console.error("Error fetching data: " + error);
+        console.log("Error fetching data: " + error);
       }
     };
   
