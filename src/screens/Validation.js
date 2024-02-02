@@ -23,10 +23,8 @@ const Validation = () => {
 
   const [password, setPassword] = useState(""); // State untuk menyimpan kata sandi
   const [showPassword, setShowPassword] = useState(false);
-  // const [fontsLoaded] = useFonts({
-  //   "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
-  //   "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
-  // });
+  const [errorMessage, setErrorMessage] = useState("");
+
   const navigation = useNavigation();
 
   if (!fontsLoaded) {
@@ -37,16 +35,26 @@ const Validation = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  // const handlePay = () => {
+  //   // Handle logic when the Pay button is pressed
+  //   // For now, let's navigate to a new page named "PaymentSuccess"
+  //   navigation.navigate("Receipt");
+  // };
+
   const handlePay = () => {
-    // Handle logic when the Pay button is pressed
-    // For now, let's navigate to a new page named "PaymentSuccess"
-    navigation.navigate("Receipt");
+    // Memeriksa apakah kata sandi transaksi sesuai dengan yang diharapkan
+    if (password === "111") {
+      // Jika sesuai, navigasikan ke halaman berikutnya
+      navigation.navigate("Receipt");
+    } else {
+      // Jika tidak sesuai, tampilkan pesan kesalahan
+      setErrorMessage("Transaction password is incorrect!");
+    }
   };
-  const handleBack = () => {
-    // Handle logic when the Pay button is pressed
-    // For now, let's navigate to a new page named "PaymentSuccess"
-    navigation.navigate("KrlOrderForm");
-  };
+
+  // const handleBack = () => {
+  //   navigation.navigate("KrlOrderForm");
+  // };
 
   return (
     <View style={styles.container}>
@@ -118,7 +126,7 @@ const Validation = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               Rp 15.000
@@ -130,7 +138,7 @@ const Validation = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               0
@@ -152,7 +160,7 @@ const Validation = () => {
               <TextInput
                 style={styles.passwordInput}
                 secureTextEntry={!showPassword}
-                placeholder=" "
+                placeholder=" " // Letakkan placeholder di sini
                 value={password}
                 onChangeText={(text) => setPassword(text)}
               />
@@ -168,6 +176,10 @@ const Validation = () => {
               style={styles.VisibilityImage}
             />
           </TouchableOpacity>
+          {/* Show error message if there's any */}
+          {errorMessage !== "" && (
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
+          )}
         </View>
       </View>
       {/* White background at the bottom with a button */}
@@ -260,6 +272,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "left",
     color: "#005E6A",
+    fontFamily: fontTheme.medium,
   },
   paymentConfirmationValue: {
     textAlign: "right",
@@ -275,6 +288,9 @@ const styles = StyleSheet.create({
   interRegular: {
     fontFamily: fontTheme.regular,
   },
+  interMedium: {
+    fontFamily: fontTheme.medium,
+  },
   paymentConfirmationRow1: {
     paddingTop: 20,
     flexDirection: "row",
@@ -283,7 +299,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   paymentConfirmationLabel1: {
-    // fontWeight: "bold",
+    fontFamily: fontTheme.medium,
     color: "#005E6A",
     fontSize: 14,
     textAlign: "left",
@@ -381,7 +397,6 @@ const styles = StyleSheet.create({
     // top: 18,
     // paddingTop: 10,
     fontSize: 14,
-
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -393,6 +408,12 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     // marginBottom: 5,
     marginTop: 5,
+  },
+  errorMessage: {
+    color: "red", // Set the text color to red
+    fontSize: 12, // Set the font size
+    marginTop: 5, // Add some top margin for spacing
+    textAlign: "center",
   },
 });
 

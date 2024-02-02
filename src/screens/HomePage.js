@@ -200,80 +200,88 @@ const HomePage = () => {
             </View>
             <Text style={styles.tittleBNITraveLink}>My BNI TraveLink</Text>
             <TouchableOpacity onPress={handleHistoryActive}>
-            <View style={styles.historyContainer}>
-              <View style={styles.historyContent}>
-                <View style={styles.listContainer}>
-                  <Image
-                    source={require("../images/commuter-historyItem.png")}
-                    style={{ height: 40, width: 40 }}
-                  ></Image>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.tittleTraveLink}>Commuter Line</Text>
-                    <View style={styles.destinationContainer}>
-                      <Text style={styles.tittleDestination}>Jakarta Kota</Text>
-                      <Text style={styles.tittleDestination}>-</Text>
-                      <Text style={styles.tittleDestination}>
-                        Tanjung Barat
+              <View style={styles.historyContainer}>
+                <View style={styles.historyContent}>
+                  <View style={styles.listContainer}>
+                    <Image
+                      source={require("../images/commuter-historyItem.png")}
+                      style={{ height: 40, width: 40 }}
+                    ></Image>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.tittleTraveLink}>Commuter Line</Text>
+                      <View style={styles.destinationContainer}>
+                        <Text style={styles.tittleDestination}>
+                          Jakarta Kota
+                        </Text>
+                        <Text style={styles.tittleDestination}>-</Text>
+                        <Text style={styles.tittleDestination}>
+                          Tanjung Barat
+                        </Text>
+                      </View>
+                      <Text style={styles.tittleDate}>
+                        Valid until 15 Feb 2024, 23.59
                       </Text>
                     </View>
-                    <Text style={styles.tittleDate}>Valid until 15 Feb 2024, 23.59</Text>
-                  </View>
-                  <View style={styles.listRightContainer}>
-                    <View style={styles.activeContainer}>
-                      <View style={styles.activeContent}>
-                        <Text style={styles.tittleActive}>  Active </Text>
+                    <View style={styles.listRightContainer}>
+                      <View style={styles.activeContainer}>
+                        <View style={styles.activeContent}>
+                          <Text style={styles.tittleActive}> Active </Text>
+                        </View>
                       </View>
+                      <Text
+                        style={[
+                          styles.tittleOrderID,
+                          { marginTop: 12, marginRight: 10 },
+                        ]}
+                      >
+                        #0003
+                      </Text>
                     </View>
-                    <Text
-                      style={[
-                        styles.tittleOrderID,
-                        { marginTop: 12, marginRight: 10 },
-                      ]}
-                    >
-                      #0003
-                    </Text>
                   </View>
                 </View>
               </View>
-            </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleHistoryReorder}>
-            <View style={styles.historyContainer}>
-              <View style={styles.historyContent}>
-                <View style={styles.listContainer}>
-                  <Image
-                    source={require("../images/commuter-historyItem.png")}
-                    style={{ height: 40, width: 40 }}
-                  ></Image>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.tittleTraveLink}>Commuter Line</Text>
-                    <View style={styles.destinationContainer}>
-                      <Text style={styles.tittleDestination}>Jakarta Kota</Text>
-                      <Text style={styles.tittleDestination}>-</Text>
-                      <Text style={styles.tittleDestination}>
-                        Tanjung Barat
+              <View style={styles.historyContainer}>
+                <View style={styles.historyContent}>
+                  <View style={styles.listContainer}>
+                    <Image
+                      source={require("../images/commuter-historyItem.png")}
+                      style={{ height: 40, width: 40 }}
+                    ></Image>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.tittleTraveLink}>Commuter Line</Text>
+                      <View style={styles.destinationContainer}>
+                        <Text style={styles.tittleDestination}>
+                          Jakarta Kota
+                        </Text>
+                        <Text style={styles.tittleDestination}>-</Text>
+                        <Text style={styles.tittleDestination}>
+                          Tanjung Barat
+                        </Text>
+                      </View>
+                      <Text style={styles.tittleDate}>
+                        Valid until 15 Feb 2024, 23.59
                       </Text>
                     </View>
-                    <Text style={styles.tittleDate}>Valid until 15 Feb 2024, 23.59</Text>
-                  </View>
-                  <View style={styles.listRightContainer}>
-                    <View style={styles.reorderContainer}>
-                      <View style={styles.reorderContent}>
-                        <Text style={styles.tittleReorder}>Reorder</Text>
+                    <View style={styles.listRightContainer}>
+                      <View style={styles.reorderContainer}>
+                        <View style={styles.reorderContent}>
+                          <Text style={styles.tittleReorder}>Reorder</Text>
+                        </View>
                       </View>
+                      <Text
+                        style={[
+                          styles.tittleOrderID,
+                          { marginTop: 12, marginRight: 10 },
+                        ]}
+                      >
+                        #0003
+                      </Text>
                     </View>
-                    <Text
-                      style={[
-                        styles.tittleOrderID,
-                        { marginTop: 12, marginRight: 10 },
-                      ]}
-                    >
-                      #0003
-                    </Text>
                   </View>
                 </View>
               </View>
-            </View>
             </TouchableOpacity>
             <Text style={styles.eWalletsText}>My E-Wallets</Text>
             <ScrollView
@@ -346,7 +354,7 @@ const HomePage = () => {
             </ScrollView>
           </View>
         </ScrollView>
-        <BottomBarPage/>
+        <BottomBarPage />
       </ImageBackground>
     );
   }
@@ -601,7 +609,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginTop: 10
+    marginTop: 10,
   },
 
   historyContent: {
