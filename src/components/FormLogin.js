@@ -14,10 +14,13 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {API_URL} from "@env";
 
-import Constants from 'expo-constants';
 
-const apiUrl = Constants.manifest.extra.API_URL;  
+// import Constants from 'expo-constants';
+
+// const apiUrl = Constants.manifest.extra.API_URL;  
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;  
 
 const FormLogin = ({ modalVisible, setModalVisible }) => {
   const [user_id, setUser_id] = useState("");
@@ -50,8 +53,9 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
         const formData = new FormData();
         formData.append("userId", user_id);
         formData.append("mpin", mpin);
-
-        const responseLogin = await axios.post(`${apiUrl}/logins/hash`, formData, {
+        
+        console.log("apiurl",API_URL);
+        const responseLogin = await axios.post(`${API_URL}/logins/hash`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           }
@@ -61,7 +65,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
 
           const responseBalance = await axios.get(
-            `${apiUrl}/balance/getBalanceByUserId/${responseLogin.data.userId}`
+            `${API_URL}/balance/getBalanceByUserId/${responseLogin.data.userId}`
           );
 
           await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
@@ -71,14 +75,17 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
         }
       } catch (error) {
         console.error(error);
+      setModalVisible(true); // Open the modal if there's an error
+      setIsLoggedIn(false);
+      setErrorText("User ID or MPIN is Incorrect");
+        
       }
 
     } else {
       console.log("Login failed. Check your User ID and MPIN.");
-      setModalVisible(true);
-      setIsLoggedIn(false);
-      setErrorText("User ID or MPIN is Incorrect"); // Set pesan kesalahan
-      console.log("Error Text:", errorText); // Tambahkan log ini
+    setModalVisible(true); // Open the modal if there's an error
+    setIsLoggedIn(false);
+    setErrorText("User ID or MPIN is Incorrect");
     }
   };
 

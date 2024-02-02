@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BottomBarOrderForm from "./BotomBarOrderForm";
+import {API_URL} from "@env";
 
 const Confirmation = ({
   isVisibleConfirm,
@@ -26,6 +27,12 @@ const Confirmation = ({
 
   const [saldo, setSaldo] = useState(0);
   const [userData, setUserData] = useState("");
+  const [orderId, setOrderId] = useState(null);
+  const [serviceName, setServiceName] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [destination, setDestination] = useState("");
+  const [amount,setAmount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -39,8 +46,13 @@ const Confirmation = ({
         const sessionData = await AsyncStorage.getItem("session");
         const parsedSessionData = JSON.parse(sessionData);
         setUserData(parsedSessionData);
+
+        const serviceData = await AsyncStorage.getItem("travelinkData");
+        const parsedServiceData = JSON.parse(serviceData);
+        setServiceName(parsedServiceData.service);
+
       } catch (error) {
-        console.error("Error fetching balance: " + error);
+        console.error("Error fetching data: " + error);
       }
     };
 
@@ -54,6 +66,26 @@ const Confirmation = ({
     "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
     "Inter-Bold": require("../fonts/Inter/static/Inter-Bold.ttf"),
   });
+
+
+  const generatePayment = async () => {
+    try {
+
+      await AsyncStorage.setItem("serviceName", JSON.stringify( serviceName));
+      await AsyncStorage.setItem("departure", JSON.stringify( selectedStation1));
+      await AsyncStorage.setItem("destination", JSON.stringify( selectedStation2));
+      await AsyncStorage.setItem("amount", JSON.stringify( selectedPeople));
+      await AsyncStorage.setItem("totalPrice", JSON.stringify( selectedPeople * price));
+
+
+      // await AsyncStorage.setItem("paymentRequest", JSON.stringify(Array.from(formData.entries())));
+
+    } catch (error) {
+      // Handle errors here
+      console.error('Error build Request :', error.message);
+    }
+  };
+
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -72,8 +104,30 @@ const Confirmation = ({
     setIsHidden(!isHidden);
   };
 
-  const handlePay = () => {
-    navigation.navigate("Validation");
+  const handlePay = async () => {
+    try {
+      // Generate and store payment details
+      await generatePayment();
+
+      // Fetch and update the stored values
+      const serviceNameData = await AsyncStorage.getItem("serviceName");
+      const departureData = await AsyncStorage.getItem("departure");
+      const destinationData = await AsyncStorage.getItem("destination");
+      const amountData = await AsyncStorage.getItem("amount");
+      const totalPriceData = await AsyncStorage.getItem("totalPrice");
+
+      // Update the state with the fetched values
+      setServiceName(JSON.parse(serviceNameData));
+      setDeparture(JSON.parse(departureData));
+      setDestination(JSON.parse(destinationData));
+      setAmount(JSON.parse(amountData));
+      setTotalPrice(JSON.parse(totalPriceData));
+
+      // Navigate to the "Validation" screen
+      navigation.navigate("Validation");
+    } catch (error) {
+      console.error("Error handling payment:", error.message);
+    }
   };
 
   if (fontsLoaded) {

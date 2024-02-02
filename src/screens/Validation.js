@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Image,
@@ -9,6 +9,13 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {API_URL} from "@env";
+
+
+
+
 
 const fontTheme = {
   regular: "Inter-Regular",
@@ -29,6 +36,69 @@ const Validation = () => {
   // });
   const navigation = useNavigation();
 
+  const [saldo, setSaldo] = useState(0);
+  const [userData, setUserData] = useState("");
+  const [orderId, setOrderId] = useState(null);
+  const [serviceName, setServiceName] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [destination, setDestination] = useState("");
+  const [user_id, setUser_id] = useState("");
+  const [requestData, setRequestData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [state, setState] = useState(null);
+  const [amount,setAmount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // const orderID = "";
+  let orderID = "";
+  
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        // 1. Get the balance first
+        const balanceSessionData = await AsyncStorage.getItem("balance");
+        const parsedBalanceData = JSON.parse(balanceSessionData);
+        setSaldo(parsedBalanceData.toString());
+
+        // 2. Then, get the session data
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        setUserData(parsedSessionData);
+        setUser_id(parsedSessionData.userId);
+
+        const serviceData = await AsyncStorage.getItem("travelinkData");
+        const parsedServiceData = JSON.parse(serviceData);
+        setServiceName(parsedServiceData.service);
+
+        const departureData = await AsyncStorage.getItem("departure");
+        const parsedDepartureData = JSON.parse(departureData);
+        setDeparture(parsedDepartureData);
+
+        const destinationData = await AsyncStorage.getItem("destination");
+        const parsedDestinationData = JSON.parse(destinationData);
+        setDestination(parsedDestinationData);
+
+        const amountData = await AsyncStorage.getItem("amount");
+        const parsedAmountData = JSON.parse(amountData);
+        setAmount(parsedAmountData);
+
+        const totalPriceData = await AsyncStorage.getItem("totalPrice");
+        const parsedTotalPricedData = JSON.parse(totalPriceData);
+        setTotalPrice(parsedTotalPricedData);
+        
+       
+        
+
+        
+      } catch (error) {
+        console.error("Error fetching data: " + error);
+      }
+    };
+
+    getUserData();
+  }, []);
+
   if (!fontsLoaded) {
     // You can return an empty View or null for now, as we are only interested in the app bar
     return null;
@@ -37,11 +107,115 @@ const Validation = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  const handlePay = () => {
-    // Handle logic when the Pay button is pressed
-    // For now, let's navigate to a new page named "PaymentSuccess"
-    navigation.navigate("Receipt");
+
+
+  const handleTransactionPassword = async () => {
+    try {
+      
+      setIsLoggedIn(true);
+      const formData = new FormData();
+      formData.append("userId", user_id);
+      formData.append("transactionPassword", password);
+  
+      console.log("Sending request to server...");
+  
+      const responseLogin = await axios.post(
+        `${API_URL}/logins/TransactionPasswordHash`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("response status", responseLogin.status);
+      console.log("response login", responseLogin);
+      console.log("Response received from server:", responseLogin.data);
+  
+      if (responseLogin.status === 200 || responseLogin.status === 201) {
+      
+        // generatePayment();
+       
+        console.log(isLoggedIn);
+        // await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
+        // hit generatepayment
+      }
+    } catch (error) {
+      console.error("Error in handleTransactionPassword:", error);
+    }
   };
+
+  
+  const generatePayment = async () => {
+    try {
+   
+      const formData = new FormData();
+      
+      formData.append('userId', user_id);
+      formData.append('serviceName', serviceName);
+      formData.append('departure', departure);
+      formData.append('destination', destination);
+      formData.append('amount', amount);
+      formData.append('totalPrice', totalPrice);
+
+      // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
+  
+      const response = await axios.post(`${API_URL}/payment/GeneratePayment`, formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+  
+      
+      // setOrderId(response.data);
+      orderID = response.data;
+    } catch (error) {
+      
+      console.error('API Error:', error.message);
+    }
+  };
+
+  const updatePayment = async () => {
+    try {
+   
+      const formData = new FormData();
+      
+      formData.append('orderId', orderID);
+      formData.append('userid', user_id);
+      formData.append('val', ("-" + totalPrice.toString())) ;
+
+      // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
+  
+      const response = await axios.post(`${API_URL}/payment/updatePayment`, formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+  
+      // Set the API response in the state
+      //generate tiket disini
+      console.log("okeh");
+    } catch (error) {
+      // Handle errors here
+      console.error('API Error:', error.message);
+    }
+  };
+
+  
+
+
+  const handlePay = async () => {
+    await handleTransactionPassword();
+    await  generatePayment();
+    console.log("orderid", orderId); 
+    console.log("orderiD", orderID); 
+    console.log("eak");
+     await  updatePayment();
+     await AsyncStorage.setItem("orderId", JSON.stringify( orderID));
+
+      navigation.navigate("Receipt");
+  };
+  
   const handleBack = () => {
     // Handle logic when the Pay button is pressed
     // For now, let's navigate to a new page named "PaymentSuccess"
@@ -96,7 +270,7 @@ const Validation = () => {
                 { maxWidth: 200 },
               ]}
             >
-              Commuter Line
+              {serviceName}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>
@@ -109,7 +283,7 @@ const Validation = () => {
                 { maxWidth: 200 },
               ]}
             >
-              1946061123
+              {userData.accountNumber}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>
@@ -121,7 +295,7 @@ const Validation = () => {
                 styles.interRegular,
               ]}
             >
-              Rp 15.000
+              Rp {totalPrice}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>

@@ -16,11 +16,15 @@ import { Dropdown } from "react-native-element-dropdown";
 import Confirmation from "../components/Confirmation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BottomBarOrderForm from "../components/BotomBarOrderForm";
+import axios from "axios";
+import { API_URL } from "@env";
 
 const KrlOrderForm = () => {
   const [stations, setStations] = useState([]);
   const [serviceName, setServiceName] = useState("");
   const [price, setPrice] = useState(0);
+  const [loginResponse, setLoginResponse] = useState([]);
+  const [userId, setUserId] = useState("");
 
   const navigation = useNavigation();
 
@@ -33,11 +37,22 @@ const KrlOrderForm = () => {
       try {
         const storedData = await AsyncStorage.getItem("travelinkData");
         const parsedData = JSON.parse(storedData);
-        if (parsedData) {
+
+        console.log("hehe");
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        console.log ("parsedsessiondata",parsedSessionData)
+        if (parsedData && parsedSessionData) {
           setStations(parsedData.stations);
           setServiceName(parsedData.service);
           setPrice(parsedData.price);
           // await AsyncStorage.removeItem('travelinkData');
+
+          setLoginResponse(parsedSessionData);
+          setUserId(parsedSessionData.userId);
+          console.log("login response", loginResponse.userId);
+          console.log("userid", userId);
+
         } else {
           console.log("No stations found in AsyncStorage");
         }
@@ -45,6 +60,7 @@ const KrlOrderForm = () => {
         console.error("Error retrieving stations:", error);
       }
     };
+
 
     getStations();
   }, []);
@@ -93,11 +109,11 @@ const KrlOrderForm = () => {
   };
 
   const people = [
-    { label: "1 people", value: "1" },
-    { label: "2 people", value: "2" },
-    { label: "3 people", value: "3" },
-    { label: "4 people", value: "4" },
-    { label: "5 people", value: "5" },
+    { label: "1 people", value: 1 },
+    { label: "2 people", value: 2 },
+    { label: "3 people", value: 3 },
+    { label: "4 people", value: 4 },
+    { label: "5 people", value: 5 },
   ];
 
   const [selectedPeople, setSelectedPeople] = useState(null);
@@ -214,7 +230,7 @@ const KrlOrderForm = () => {
                       onChangeText={(item) => {
                         setSelectedStation2(item.value);
                       }}
-                      placeholder="Select Departure Station"
+                      placeholder="Select Destination Station"
                       style={styles.placeholderStyle}
                     />
                   )}
@@ -245,7 +261,7 @@ const KrlOrderForm = () => {
                     onChangeText={(item) => {
                       setSelectedPeople(item.value);
                     }}
-                    placeholder="Select Departure Station"
+                    placeholder="Max 5 People"
                     style={styles.placeholderStyle}
                   />
                 </View>
