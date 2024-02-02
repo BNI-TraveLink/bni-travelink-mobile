@@ -14,9 +14,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
-import Constants from "expo-constants";
-
-const apiUrl = Constants.manifest.extra.API_URL;
+import {API_URL} from "@env";
 
 const TraveLink = () => {
   const navigation = useNavigation();
@@ -31,9 +29,9 @@ const TraveLink = () => {
 
     try {
       await getListStations("KRL");
-      navigation.navigate("KrlOrderForm");
+     navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.error("Error hitting the API:", error);
+      console.log('Error hitting the API:', error);
     }
   };
 
@@ -45,7 +43,7 @@ const TraveLink = () => {
 
      navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.error("Error hitting the API:", error);
+      console.log('Error hitting the API:', error);
     }
   };
 
@@ -57,7 +55,7 @@ const TraveLink = () => {
 
       navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.error("Error hitting the API:", error);
+      console.log("Error hitting the API:", error);
     }
   };
 
@@ -69,14 +67,15 @@ const TraveLink = () => {
 
       setTimeout(() => {}, 200);
 
-      if (stations.length > 0) await navigation.navigate("KrlOrderForm");
+      if (stations.length > 0)
+      await navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.error("Error hitting the API:", error);
+      console.log('Error hitting the API:', error);
     }
   };
 
   const getListStations = async (travelinkService) => {
-    const url = `${apiUrl}/service/getStationByServiceName`;
+    const url = `${API_URL}/service/getStationByServiceName`;
 
     try {
       const response = await axios.get(url, {
@@ -98,12 +97,13 @@ const TraveLink = () => {
         price: response.data[0].fkService.price
          };
 
-      await AsyncStorage.setItem("travelinkData", JSON.stringify(dataToSave));
+      await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
     } catch (error) {
-      console.error("Error getting station data:", error);
+      console.log('Error getting station data:', error);
       throw error; // Rethrow the error to be caught in handleMrtPress
     }
   };
+
 
   const [fontsLoaded] = useFonts({
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
