@@ -3,8 +3,13 @@ import GradientBackground from "../components/GradientBackground";
 import { Animated, View, Text, Image, StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import { useNavigation } from "@react-navigation/native";
+import { Dimensions } from "react-native";
 
 const InterRegular = require("../fonts/Inter/static/Inter-Regular.ttf");
+
+const window = Dimensions.get('window');
+const windowWidth = window.width;
+const windowHeight = window.height;
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -73,6 +78,11 @@ const SplashScreen = () => {
             <Text style={[styles.hakcipta, { fontFamily: "Inter-Regular" }]}>
               Hak Cipta ⓒ 2023 BNI Mobile Banking
             </Text>
+            {/* Menambahkan gambar pattern di bawah */}
+            <Image
+              source={require("../images/patternbawah.png")}
+              style={styles.patternBawah}
+            />
           </View>
         </Animated.View>
       )}
@@ -87,8 +97,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    width: 390,
-    height: 361,
+    width: windowWidth,
+    height: windowHeight * 0.4,
   },
   iconbni: {
     width: 188,
@@ -99,31 +109,35 @@ const styles = StyleSheet.create({
     marginRight: 97.78,
   },
   iconlps: {
-    width: 80,
-    height: 80,
-    marginTop: 571,
+    width: windowWidth * 0.2,
+    height: windowHeight * 0.1,
     marginBottom: 193,
     marginLeft: 155,
     marginRight: 155,
+    marginVertical: windowHeight * 0.65
   },
   text: {
-    width: 297,
-    height: 20,
     color: "#696969",
-    fontSize: 7,
+    fontSize: windowHeight * 0.012,
     textAlign: "center",
     marginTop: 627,
+    marginVertical: 0.7,
     marginBottom: 1,
   },
   hakcipta: {
-    width: 297,
-    height: 10,
     color: "#696969",
-    fontSize: 7,
+    fontSize: windowWidth * 0.025,
     textAlign: "center",
     marginTop: 10,
     marginBottom: 165,
     paddingHorizontal: 50,
+  },
+  patternBawah: {
+    position: "absolute", // Menempatkan gambar di bagian bawah layar
+    bottom: -25, // Pastikan berada di tepi bawah
+    width: windowWidth, // Lebar gambar sama dengan lebar jendela
+    height: windowHeight * 0.25,
+    resizeMode: "cover", // Pastikan gambar menutupi area yang ditentukan tanpa kehilangan proporsi
   },
 });
 
