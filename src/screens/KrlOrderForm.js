@@ -132,7 +132,7 @@ const KrlOrderForm = () => {
             <Text style={styles.logoText}>{serviceName}</Text>
           </View>
         </View>
-        <View style={{ paddingLeft: 10, paddingRight: 10, height: 400 }}>
+        <View style={{ paddingLeft: 10, paddingRight: 10, height: 390 }}>
           <View>
             <View style={styles.menuContainer}>
               <View style={{ alignItems: "center" }}>
@@ -252,7 +252,8 @@ const KrlOrderForm = () => {
               </View>
             </View>
           </View>
-          <Confirmation
+        </View>
+        <Confirmation
             // set order from krl
             isVisibleConfirm={isConfirmationVisible}
             selectedStation1={selectedStation1}
@@ -260,7 +261,6 @@ const KrlOrderForm = () => {
             selectedPeople={selectedPeople}
             price={price}
           />
-        </View>
         {/* <BottomBarOrderForm /> */}
       </ImageBackground>
     );
