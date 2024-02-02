@@ -11,13 +11,13 @@ import {
 import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
 import { useNavigation } from "@react-navigation/native";
-import BottomBarPage from "../components/BottomBar";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BottomBarPage from "../components/BottomBarPage";
 
 const HomePage = () => {
   const [isHidden, setIsHidden] = useState(false);
-  
+
   const [saldo, setSaldo] = useState(0);
   const [userData, setUserData] = useState("");
 
@@ -46,7 +46,7 @@ const HomePage = () => {
     const parsedData = JSON.parse(sessionData);
 
     return parsedData;
-  }
+  };
 
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
@@ -62,6 +62,14 @@ const HomePage = () => {
     navigation.navigate("Purchase");
   };
 
+  const handleHistoryActive = () => {
+    navigation.navigate("TraveLink");
+  };
+
+  const handleHistoryReorder = () => {
+    navigation.navigate("TraveLink");
+  };
+
   const [fontsLoaded] = useFonts({
     "Poppins-Regular": require("../fonts/Poppins/Poppins-Regular.ttf"),
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
@@ -70,12 +78,13 @@ const HomePage = () => {
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Inter-Bold": require("../fonts/Inter/static/Inter-Bold.ttf"),
+    "Inter-Light": require("../fonts/Inter/static/Inter-Light.ttf"),
   });
 
   if (fontsLoaded) {
     return (
       <ImageBackground
-        source={require("../images/background-container.png")}
+        source={require("../images/background-container-full.png")}
         style={styles.backgroundGradient}
       >
         <View style={styles.appBar}>
@@ -102,162 +111,242 @@ const HomePage = () => {
           </TouchableOpacity>
         </View>
         <ScrollView>
-        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-          <View style={styles.custProfile}>
-            {/* <Text style={styles.custText}>Hello, Minara Club!</Text> */}
-            <Text style={styles.custText}>Hello, {userData.userId}!</Text>
-            <View style={styles.profileContainer}>
-              <Image
-                source={require("../images/profile.jpeg")}
-                style={styles.circleImage}
-              ></Image>
+          <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+            <View style={styles.custProfile}>
+              {/* <Text style={styles.custText}>Hello, Minara Club!</Text> */}
+              <Text style={styles.custText}>Hello, {userData.userId}!</Text>
+              <View style={styles.profileContainer}>
+                <Image
+                  source={require("../images/profile.jpeg")}
+                  style={styles.circleImage}
+                ></Image>
+              </View>
             </View>
-          </View>
-          <View style={styles.balanceContainer}>
-            <View style={styles.saldoContainer}>
-              <Text style={styles.saldoLabel}>Rp </Text>
-              <Text style={styles.saldoText}>
-                {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
-              </Text>
-            </View>
-            <TouchableOpacity onPress={toggleVisibility}>
-              <Image
-                source={
-                  isHidden
-                    ? require("../images/visible.png")
-                    : require("../images/not-visible.png")
-                }
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.accountContainer}>
-            <Image
-              source={require("../images/solid_down.png")}
-              style={{ height: 25, width: 25, marginRight: 4 }}
-            />
-            <View style={{ alignItems: "center" }}>
-              <Text style={styles.accountText}>{userData.accountNumber}</Text>
-              <Text style={styles.accountLabel}>BNI Taplus Muda</Text>
-            </View>
-            <Image
-              source={require("../images/copy.png")}
-              style={{ height: 25, width: 25, marginLeft: 2 }}
-            ></Image>
-          </View>
-          <View style={styles.menuContainer}>
-            <View style={styles.gridContainer}>
-              <GridHomeMenu
-                imageSource={require("../images/transfer-item.png")}
-                labelText={"Transfer"}
-              />
-              <GridHomeMenu
-                imageSource={require("../images/payment-item.png")}
-                labelText={"Payment"}
-              />
-              <TouchableOpacity onPress={handlePurchasePress}>
-                <GridHomeMenu
-                  imageSource={require("../images/purchase-item.png")}
-                  labelText={"Purchase"}
+            <View style={styles.balanceContainer}>
+              <View style={styles.saldoContainer}>
+                <Text style={styles.saldoLabel}>Rp </Text>
+                <Text style={styles.saldoText}>
+                  {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={toggleVisibility}>
+                <Image
+                  source={
+                    isHidden
+                      ? require("../images/visible.png")
+                      : require("../images/not-visible.png")
+                  }
+                  style={styles.icon}
                 />
               </TouchableOpacity>
-              <GridHomeMenu
-                imageSource={require("../images/investment-item.png")}
-                labelText={"Investment"}
-              />
             </View>
-            <View style={styles.gridContainer}>
-              <GridHomeMenu
-                imageSource={require("../images/life-goals-item.png")}
-                labelText={"Life Goals"}
-              />
-              <GridHomeMenu
-                imageSource={require("../images/digital-loan-item.png")}
-                labelText={"Digital Loan"}
-              />
-              <GridHomeMenu
-                imageSource={require("../images/dikado-item.png")}
-                labelText={"DiKado"}
-              />
-              <GridHomeMenu
-                imageSource={require("../images/another-menu-item.png")}
-                labelText={"Another Menu"}
-              />
-            </View>
-          </View>
-          <View style={styles.pointContainer}>
-            <Text style={styles.pointText}>MyPoints</Text>
-            <Text style={styles.pointText}>1.946</Text>
-          </View>
-          <Text style={styles.eWalletsText}>My E-Wallets</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{ flexDirection: "row", marginBottom: 10 }}>
-              <View style={styles.myWalletContainer}>
-                <View style={styles.myWalletContent}>
-                  <Image
-                    source={require("../images/gopay-item.png")}
-                    style={{ width: 60, height: 60, objectFit: "contain" }}
-                  />
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={styles.nameLabel}>Go-Pay</Text>
-                    <Text style={styles.nameText}>Rp 11.023</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
-                <View style={styles.myWalletContent}>
-                  <Image
-                    source={require("../images/linkaja-item.png")}
-                    style={{ width: 60, height: 60, objectFit: "contain" }}
-                  />
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={styles.nameLabel}>LinkAja</Text>
-                    <Text style={styles.nameText}>Rp 297.000</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
-                <View style={styles.myWalletContent}>
-                  <Image
-                    source={require("../images/ovo-item.png")}
-                    style={{ width: 60, height: 60, objectFit: "contain" }}
-                  />
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={styles.nameLabel}>OVO</Text>
-                    <Text style={styles.nameText}>Rp 19.460</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
-                <View style={styles.myWalletContent}>
-                  <Image
-                    source={require("../images/dana-item.png")}
-                    style={{ width: 60, height: 60, objectFit: "contain" }}
-                  />
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={styles.nameLabel}>DANA</Text>
-                    <Text style={styles.nameText}>Rp 26.297</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </ScrollView>
-          <Text style={styles.promoText}>Promotions & Information</Text>
-          <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
-            <View style={{ flexDirection: "row" }}>
+            <View style={styles.accountContainer}>
               <Image
-                source={require("../images/promo1.png")}
-                style={styles.promoContent}
+                source={require("../images/solid_down.png")}
+                style={{ height: 25, width: 25, marginRight: 4 }}
               />
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.accountText}>{userData.accountNumber}</Text>
+                <Text style={styles.accountLabel}>BNI Taplus Muda</Text>
+              </View>
               <Image
-                source={require("../images/promo2.png")}
-                style={[styles.promoContent, { marginLeft: 10 }]}
-              />
+                source={require("../images/copy.png")}
+                style={{ height: 25, width: 25, marginLeft: 2 }}
+              ></Image>
             </View>
-          </ScrollView>
-        </View>
+            <View style={styles.menuContainer}>
+              <View style={styles.gridContainer}>
+                <GridHomeMenu
+                  imageSource={require("../images/transfer-item.png")}
+                  labelText={"Transfer"}
+                />
+                <GridHomeMenu
+                  imageSource={require("../images/payment-item.png")}
+                  labelText={"Payment"}
+                />
+                <TouchableOpacity onPress={handlePurchasePress}>
+                  <GridHomeMenu
+                    imageSource={require("../images/purchase-item.png")}
+                    labelText={"Purchase"}
+                  />
+                </TouchableOpacity>
+                <GridHomeMenu
+                  imageSource={require("../images/investment-item.png")}
+                  labelText={"Investment"}
+                />
+              </View>
+              <View style={styles.gridContainer}>
+                <GridHomeMenu
+                  imageSource={require("../images/life-goals-item.png")}
+                  labelText={"Life Goals"}
+                />
+                <GridHomeMenu
+                  imageSource={require("../images/digital-loan-item.png")}
+                  labelText={"Digital Loan"}
+                />
+                <GridHomeMenu
+                  imageSource={require("../images/dikado-item.png")}
+                  labelText={"DiKado"}
+                />
+                <GridHomeMenu
+                  imageSource={require("../images/another-menu-item.png")}
+                  labelText={"Another Menu"}
+                />
+              </View>
+            </View>
+            <View style={styles.pointContainer}>
+              <Text style={styles.pointText}>MyPoints</Text>
+              <Text style={styles.pointText}>1.946</Text>
+            </View>
+            <Text style={styles.tittleBNITraveLink}>My BNI TraveLink</Text>
+            <TouchableOpacity onPress={handleHistoryActive}>
+            <View style={styles.historyContainer}>
+              <View style={styles.historyContent}>
+                <View style={styles.listContainer}>
+                  <Image
+                    source={require("../images/commuter-historyItem.png")}
+                    style={{ height: 40, width: 40 }}
+                  ></Image>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.tittleTraveLink}>Commuter Line</Text>
+                    <View style={styles.destinationContainer}>
+                      <Text style={styles.tittleDestination}>Jakarta Kota</Text>
+                      <Text style={styles.tittleDestination}>-</Text>
+                      <Text style={styles.tittleDestination}>
+                        Tanjung Barat
+                      </Text>
+                    </View>
+                    <Text style={styles.tittleDate}>Valid until 15 Feb 2024, 23.59</Text>
+                  </View>
+                  <View style={styles.listRightContainer}>
+                    <View style={styles.activeContainer}>
+                      <View style={styles.activeContent}>
+                        <Text style={styles.tittleActive}>  Active </Text>
+                      </View>
+                    </View>
+                    <Text
+                      style={[
+                        styles.tittleOrderID,
+                        { marginTop: 12, marginRight: 10 },
+                      ]}
+                    >
+                      #0003
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleHistoryReorder}>
+            <View style={styles.historyContainer}>
+              <View style={styles.historyContent}>
+                <View style={styles.listContainer}>
+                  <Image
+                    source={require("../images/commuter-historyItem.png")}
+                    style={{ height: 40, width: 40 }}
+                  ></Image>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.tittleTraveLink}>Commuter Line</Text>
+                    <View style={styles.destinationContainer}>
+                      <Text style={styles.tittleDestination}>Jakarta Kota</Text>
+                      <Text style={styles.tittleDestination}>-</Text>
+                      <Text style={styles.tittleDestination}>
+                        Tanjung Barat
+                      </Text>
+                    </View>
+                    <Text style={styles.tittleDate}>Valid until 15 Feb 2024, 23.59</Text>
+                  </View>
+                  <View style={styles.listRightContainer}>
+                    <View style={styles.reorderContainer}>
+                      <View style={styles.reorderContent}>
+                        <Text style={styles.tittleReorder}>Reorder</Text>
+                      </View>
+                    </View>
+                    <Text
+                      style={[
+                        styles.tittleOrderID,
+                        { marginTop: 12, marginRight: 10 },
+                      ]}
+                    >
+                      #0003
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            </TouchableOpacity>
+            <Text style={styles.eWalletsText}>My E-Wallets</Text>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <View style={{ flexDirection: "row", marginBottom: 10 }}>
+                <View style={styles.myWalletContainer}>
+                  <View style={styles.myWalletContent}>
+                    <Image
+                      source={require("../images/gopay-item.png")}
+                      style={{ width: 60, height: 60, objectFit: "contain" }}
+                    />
+                    <View style={{ marginLeft: 5 }}>
+                      <Text style={styles.nameLabel}>Go-Pay</Text>
+                      <Text style={styles.nameText}>Rp 11.023</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
+                  <View style={styles.myWalletContent}>
+                    <Image
+                      source={require("../images/linkaja-item.png")}
+                      style={{ width: 60, height: 60, objectFit: "contain" }}
+                    />
+                    <View style={{ marginLeft: 5 }}>
+                      <Text style={styles.nameLabel}>LinkAja</Text>
+                      <Text style={styles.nameText}>Rp 297.000</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
+                  <View style={styles.myWalletContent}>
+                    <Image
+                      source={require("../images/ovo-item.png")}
+                      style={{ width: 60, height: 60, objectFit: "contain" }}
+                    />
+                    <View style={{ marginLeft: 5 }}>
+                      <Text style={styles.nameLabel}>OVO</Text>
+                      <Text style={styles.nameText}>Rp 19.460</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={[styles.myWalletContainer, { marginLeft: 10 }]}>
+                  <View style={styles.myWalletContent}>
+                    <Image
+                      source={require("../images/dana-item.png")}
+                      style={{ width: 60, height: 60, objectFit: "contain" }}
+                    />
+                    <View style={{ marginLeft: 5 }}>
+                      <Text style={styles.nameLabel}>DANA</Text>
+                      <Text style={styles.nameText}>Rp 26.297</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+            <Text style={styles.promoText}>Promotions & Information</Text>
+            <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
+              <View style={{ flexDirection: "row" }}>
+                <Image
+                  source={require("../images/promo1.png")}
+                  style={styles.promoContent}
+                />
+                <Image
+                  source={require("../images/promo2.png")}
+                  style={[styles.promoContent, { marginLeft: 10 }]}
+                />
+              </View>
+            </ScrollView>
+          </View>
         </ScrollView>
-        {/* <BottomBarPage /> */}
+        <BottomBarPage/>
       </ImageBackground>
     );
   }
@@ -266,7 +355,6 @@ const HomePage = () => {
 const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
-    // height: 440,
     flex: 1,
   },
 
@@ -491,6 +579,130 @@ const styles = StyleSheet.create({
   promoContent: {
     width: 245,
     height: 124,
+  },
+
+  tittleBNITraveLink: {
+    fontSize: 16,
+    color: "#005E6A",
+    fontFamily: "Inter-SemiBold",
+    paddingLeft: 13,
+    paddingRight: 13,
+    paddingTop: 17,
+  },
+
+  historyContainer: {
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginTop: 10
+  },
+
+  historyContent: {
+    marginTop: 10,
+  },
+
+  listContainer: {
+    marginLeft: 10,
+    marginBottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  textContainer: {
+    marginLeft: 10,
+  },
+
+  destinationContainer: {
+    flexDirection: "row",
+  },
+
+  tittleTraveLink: {
+    color: "#FE7624",
+    fontFamily: "Poppins-Regular",
+    fontSize: 11,
+  },
+
+  tittleDestination: {
+    color: "#005E6A",
+    fontFamily: "Inter-SemiBold",
+    fontSize: 12,
+    marginTop: 5,
+  },
+
+  tittleDate: {
+    color: "#FE7624",
+    fontFamily: "Inter-Light",
+    fontSize: 10,
+  },
+
+  activeContainer: {
+    backgroundColor: "#A1E496",
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+  activeContent: {
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+
+  tittleActive: {
+    color: "#005E6A",
+    fontFamily: "Inter-Medium",
+    fontSize: 12,
+  },
+
+  tittleOrderID: {
+    color: "#FE7624",
+    fontFamily: "Inter-Regular",
+    fontSize: 10,
+  },
+
+  listRightContainer: {
+    alignItems: "flex-end",
+    marginLeft: 115,
+  },
+
+  reorderContainer: {
+    backgroundColor: "#82E5F2",
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+  reorderContent: {
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+
+  tittleReorder: {
+    color: "#005E6A",
+    fontFamily: "Inter-Medium",
+    fontSize: 12,
   },
 });
 

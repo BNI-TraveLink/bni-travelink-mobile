@@ -1,6 +1,6 @@
-import React from "react";
+import React, { createContext } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
@@ -14,10 +14,26 @@ import Validation from "./src/screens/Validation";
 import Receipt from "./src/screens/Receipt";
 import TicketDetails from "./src/screens/TicketDetails";
 import Confirmation from "./src/components/Confirmation";
+import HomeScreen from "./src/screens/homescreen";
+import TestApp from "./src/screens/TestApp";
 
+// export const FontThemeContext = createContext();
 const Stack = createStackNavigator();
 
 function App() {
+  // Tentukan tema font di sini
+  const fontTheme = {
+    regular: "Inter-Regular",
+    medium: "Inter-Medium",
+    semiBold: "Inter-SemiBold",
+  };
+
+  // const handleBack = () => {
+  //   // Handle logic when the Back button is pressed globally
+  //   // For now, let's navigate back to the previous screen
+  //   // (This logic assumes that your Confirmation screen is the only screen with a Back button)
+  //   navigation.goBack();
+  // };
   return (
     <View style={styles.container}>
       <NavigationContainer>
@@ -39,9 +55,6 @@ function App() {
           <Stack.Screen name="EticketIn" component={EticketIn} />
         </Stack.Navigator>
       </NavigationContainer>
-
-      {/* <EticketIn></EticketIn> */}
-
       <StatusBar style="auto" />
     </View>
   );

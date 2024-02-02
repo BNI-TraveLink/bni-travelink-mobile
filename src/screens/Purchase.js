@@ -1,12 +1,7 @@
+import React from "react";
+import { View, ImageBackground, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { View } from "react-native";
 import GridHomeMenu from "../components/GridHomeMenu";
 import { useNavigation } from "@react-navigation/native";
 

@@ -9,6 +9,7 @@ import {
 import { View } from "react-native";
 import GridHomeMenu from "../components/GridHomeMenu";
 import { useNavigation } from "@react-navigation/native";
+import HistoryTraveLink from "../components/HistoryTraveLink";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
@@ -78,10 +79,10 @@ const TraveLink = () => {
       console.error('Error hitting the API:', error);
     }
   }
-  
+
   const getListStations = async (travelinkService) => {
-    const url = 'http://192.168.132.20:8081/service/getStationByServiceName';
-  
+    const url = `${apiUrl}/service/getStationByServiceName`;
+
     try {
       const response = await axios.get(url, {
         params: {
@@ -107,7 +108,8 @@ const TraveLink = () => {
       console.error('Error getting station data:', error);
       throw error; // Rethrow the error to be caught in handleMrtPress
     }
-  }
+  };
+
 
   const [fontsLoaded] = useFonts({
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
@@ -163,6 +165,9 @@ const TraveLink = () => {
             </View>
           </View>
         </View>
+        <View style={{ marginTop: 10 }}>
+          <HistoryTraveLink />
+        </View>
       </ImageBackground>
     );
   }
@@ -172,6 +177,7 @@ const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
     height: 77,
+    flex: 1
   },
 
   appBar: {

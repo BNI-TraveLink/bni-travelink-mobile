@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Dropdown } from "react-native-element-dropdown";
 import Confirmation from "../components/Confirmation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BottomBarOrderForm from "../components/BotomBarOrderForm";
 
 const KrlOrderForm = () => {
   const [stations, setStations] = useState([]);
@@ -30,7 +31,7 @@ const KrlOrderForm = () => {
   useEffect(() => {
     const getStations = async () => {
       try {
-        const storedData = await AsyncStorage.getItem('travelinkData');
+        const storedData = await AsyncStorage.getItem("travelinkData");
         const parsedData = JSON.parse(storedData);
         if (parsedData) {
           setStations(parsedData.stations);
@@ -38,15 +39,15 @@ const KrlOrderForm = () => {
           setPrice(parsedData.price);
           // await AsyncStorage.removeItem('travelinkData');
         } else {
-          console.log('No stations found in AsyncStorage');
+          console.log("No stations found in AsyncStorage");
         }
       } catch (error) {
-        console.error('Error retrieving stations:', error);
+        console.error("Error retrieving stations:", error);
       }
     };
-    
+
     getStations();
-  }, [])
+  }, []);
 
   const [fontsLoaded] = useFonts({
     "Poppins-Bold": require("../fonts/Poppins/Poppins-Bold.ttf"),
@@ -147,9 +148,7 @@ const KrlOrderForm = () => {
                     source={require("../images/trainRight-item.png")}
                     style={{ height: 40, width: 40, marginTop: 15 }}
                   />
-                  {
-                    stations
-                    &&
+                  {stations && (
                     <Dropdown
                       placeholderStyle={styles.textSelectStation}
                       selectedTextStyle={styles.selectedTextStyle}
@@ -171,7 +170,7 @@ const KrlOrderForm = () => {
                       placeholder="Select Departure Station"
                       style={styles.placeholderStyle}
                     />
-                  }
+                  )}
                 </View>
               </View>
               <View>
@@ -196,31 +195,29 @@ const KrlOrderForm = () => {
                     source={require("../images/trainRight-item.png")}
                     style={{ height: 40, width: 40, marginTop: 15 }}
                   />
-                  {
-                    stations
-                    &&
+                  {stations && (
                     <Dropdown
-                    placeholderStyle={styles.textSelectStation}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={stations}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    searchPlaceholder="Search..."
-                    value={selectedStation2}
-                    onChange={(item) => {
-                      setSelectedStation2(item.value);
-                    }}
-                    onChangeText={(item) => {
-                      setSelectedStation2(item.value);
-                    }}
-                    placeholder="Select Departure Station"
-                    style={styles.placeholderStyle}
-                  />
-                  }
+                      placeholderStyle={styles.textSelectStation}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={stations}
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      searchPlaceholder="Search..."
+                      value={selectedStation2}
+                      onChange={(item) => {
+                        setSelectedStation2(item.value);
+                      }}
+                      onChangeText={(item) => {
+                        setSelectedStation2(item.value);
+                      }}
+                      placeholder="Select Departure Station"
+                      style={styles.placeholderStyle}
+                    />
+                  )}
                 </View>
               </View>
               <View style={styles.contentContainer}>
@@ -264,6 +261,7 @@ const KrlOrderForm = () => {
             price={price}
           />
         </View>
+        {/* <BottomBarOrderForm /> */}
       </ImageBackground>
     );
   } else {
