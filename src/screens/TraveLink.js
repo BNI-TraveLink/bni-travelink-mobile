@@ -31,7 +31,7 @@ const TraveLink = () => {
       await getListStations("KRL");
      navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.error('Error hitting the API:', error);
+      console.log('Error hitting the API:', error);
     }
   };
 
@@ -39,13 +39,13 @@ const TraveLink = () => {
     setStations([]);
 
     try {
-     await  getListStations("TJ");
+      await getListStations("TJ");
 
      navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.error('Error hitting the API:', error);
+      console.log('Error hitting the API:', error);
     }
-  }
+  };
 
   const handleMrtPress = async () => {
     setStations([]);
@@ -53,13 +53,11 @@ const TraveLink = () => {
     try {
       await getListStations("MRT");
 
-
-
       navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.error('Error hitting the API:', error);
+      console.log("Error hitting the API:", error);
     }
-  }
+  };
 
   const handleLrtPress = async () => {
     setStations([]);
@@ -67,20 +65,18 @@ const TraveLink = () => {
     try {
       await getListStations("LRT");
 
-
-
       setTimeout(() => {}, 200);
 
       if (stations.length > 0)
       await navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.error('Error hitting the API:', error);
+      console.log('Error hitting the API:', error);
     }
-  }
+  };
 
   const getListStations = async (travelinkService) => {
     const url = `${API_URL}/service/getStationByServiceName`;
-  
+
     try {
       const response = await axios.get(url, {
         params: {
@@ -103,7 +99,7 @@ const TraveLink = () => {
 
       await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
     } catch (error) {
-      console.error('Error getting station data:', error);
+      console.log('Error getting station data:', error);
       throw error; // Rethrow the error to be caught in handleMrtPress
     }
   };

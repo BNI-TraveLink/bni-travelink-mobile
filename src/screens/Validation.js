@@ -30,10 +30,8 @@ const Validation = () => {
 
   const [password, setPassword] = useState(""); // State untuk menyimpan kata sandi
   const [showPassword, setShowPassword] = useState(false);
-  // const [fontsLoaded] = useFonts({
-  //   "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
-  //   "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
-  // });
+  const [errorMessage, setErrorMessage] = useState("");
+
   const navigation = useNavigation();
 
   const [saldo, setSaldo] = useState(0);
@@ -51,7 +49,7 @@ const Validation = () => {
 
   // const orderID = "";
   let orderID = "";
-  
+
 
   useEffect(() => {
     const getUserData = async () => {
@@ -86,11 +84,11 @@ const Validation = () => {
         const totalPriceData = await AsyncStorage.getItem("totalPrice");
         const parsedTotalPricedData = JSON.parse(totalPriceData);
         setTotalPrice(parsedTotalPricedData);
-        
-       
-        
 
-        
+
+
+
+
       } catch (error) {
         console.error("Error fetching data: " + error);
       }
@@ -111,14 +109,14 @@ const Validation = () => {
 
   const handleTransactionPassword = async () => {
     try {
-      
+
       setIsLoggedIn(true);
       const formData = new FormData();
       formData.append("userId", user_id);
       formData.append("transactionPassword", password);
-  
+
       console.log("Sending request to server...");
-  
+
       const responseLogin = await axios.post(
         `${API_URL}/logins/TransactionPasswordHash`,
         formData,
@@ -131,11 +129,11 @@ const Validation = () => {
       console.log("response status", responseLogin.status);
       console.log("response login", responseLogin);
       console.log("Response received from server:", responseLogin.data);
-  
+
       if (responseLogin.status === 200 || responseLogin.status === 201) {
-      
+
         // generatePayment();
-       
+
         console.log(isLoggedIn);
         // await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
         // hit generatepayment
@@ -145,12 +143,12 @@ const Validation = () => {
     }
   };
 
-  
+
   const generatePayment = async () => {
     try {
-   
+
       const formData = new FormData();
-      
+
       formData.append('userId', user_id);
       formData.append('serviceName', serviceName);
       formData.append('departure', departure);
@@ -159,39 +157,39 @@ const Validation = () => {
       formData.append('totalPrice', totalPrice);
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
-  
+
       const response = await axios.post(`${API_URL}/payment/GeneratePayment`, formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-  
-      
+
+
       // setOrderId(response.data);
       orderID = response.data;
     } catch (error) {
-      
+
       console.error('API Error:', error.message);
     }
   };
 
   const updatePayment = async () => {
     try {
-   
+
       const formData = new FormData();
-      
+
       formData.append('orderId', orderID);
       formData.append('userid', user_id);
       formData.append('val', ("-" + totalPrice.toString())) ;
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
-  
+
       const response = await axios.post(`${API_URL}/payment/updatePayment`, formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-  
+
       // Set the API response in the state
       //generate tiket disini
       console.log("okeh");
@@ -201,21 +199,21 @@ const Validation = () => {
     }
   };
 
-  
+
 
 
   const handlePay = async () => {
     await handleTransactionPassword();
     await  generatePayment();
-    console.log("orderid", orderId); 
-    console.log("orderiD", orderID); 
+    console.log("orderid", orderId);
+    console.log("orderiD", orderID);
     console.log("eak");
      await  updatePayment();
      await AsyncStorage.setItem("orderId", JSON.stringify( orderID));
 
       navigation.navigate("Receipt");
   };
-  
+
   const handleBack = () => {
     // Handle logic when the Pay button is pressed
     // For now, let's navigate to a new page named "PaymentSuccess"
@@ -292,7 +290,7 @@ const Validation = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               Rp {totalPrice}
@@ -304,7 +302,7 @@ const Validation = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               0
@@ -342,6 +340,10 @@ const Validation = () => {
               style={styles.VisibilityImage}
             />
           </TouchableOpacity>
+          {/* Show error message if there's any */}
+          {errorMessage !== "" && (
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
+          )}
         </View>
       </View>
       {/* White background at the bottom with a button */}
@@ -434,6 +436,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "left",
     color: "#005E6A",
+    fontFamily: fontTheme.medium,
   },
   paymentConfirmationValue: {
     textAlign: "right",
@@ -449,6 +452,9 @@ const styles = StyleSheet.create({
   interRegular: {
     fontFamily: fontTheme.regular,
   },
+  interMedium: {
+    fontFamily: fontTheme.medium,
+  },
   paymentConfirmationRow1: {
     paddingTop: 20,
     flexDirection: "row",
@@ -457,7 +463,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   paymentConfirmationLabel1: {
-    // fontWeight: "bold",
+    fontFamily: fontTheme.medium,
     color: "#005E6A",
     fontSize: 14,
     textAlign: "left",
@@ -555,7 +561,6 @@ const styles = StyleSheet.create({
     // top: 18,
     // paddingTop: 10,
     fontSize: 14,
-
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -567,6 +572,12 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     // marginBottom: 5,
     marginTop: 5,
+  },
+  errorMessage: {
+    color: "red", // Set the text color to red
+    fontSize: 12, // Set the font size
+    marginTop: 5, // Add some top margin for spacing
+    textAlign: "center",
   },
 });
 

@@ -52,7 +52,7 @@ const Confirmation = ({
         setServiceName(parsedServiceData.service);
 
       } catch (error) {
-        console.error("Error fetching data: " + error);
+        console.log("Error fetching balance: " + error);
       }
     };
 
@@ -82,7 +82,7 @@ const Confirmation = ({
 
     } catch (error) {
       // Handle errors here
-      console.error('Error build Request :', error.message);
+      console.log('Error build Request :', error.message);
     }
   };
 

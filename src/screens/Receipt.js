@@ -203,7 +203,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               000{orderId}
@@ -215,7 +215,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               930081
@@ -229,7 +229,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               {datePart}
@@ -243,7 +243,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               {timePart} WIB
@@ -255,7 +255,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               {userData.accountNumber}
@@ -267,7 +267,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               Rp {totalPrice}
@@ -279,7 +279,7 @@ const Receipt = () => {
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               0
@@ -287,13 +287,13 @@ const Receipt = () => {
           </View>
           <View style={styles.paymentConfirmationRow}>
             <View style={styles.blueOverlay}></View>
-            <Text style={styles.paymentConfirmationLabel}>Total Payment</Text>
+            <Text style={styles.paymentConfirmationLabel2}>Total Payment</Text>
 
             <Text
               style={[
                 styles.paymentConfirmationValue,
                 styles.rightAlign,
-                styles.interRegular,
+                styles.interSemiBold,
               ]}
             >
               Rp {totalPrice}
@@ -465,12 +465,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 17,
     fontWeight: "500",
   },
+  paymentConfirmationLabel2: {
+    marginLeft: 120,
+    right: 100,
+    fontSize: 14,
+    textAlign: "left",
+    color: "#005E6A",
+    paddingHorizontal: 17,
+    fontWeight: "600",
+    // fontFamily: "Inter-SemiBold",
+  },
   paymentConfirmationValue: {
     // position: "absolute",
     marginRight: 40,
     textAlign: "right",
     fontSize: 14,
     fontWeight: "600",
+    // fontFamily: "Inter-SemiBold",
   },
   buttonContainerRow: {
     flexDirection: "row",

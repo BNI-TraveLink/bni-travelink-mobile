@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Image,
@@ -10,25 +10,52 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;
 
 const fontTheme = {
   regular: "Inter-Regular",
   medium: "Inter-Medium",
   semiBold: "Inter-SemiBold",
 };
-const EticketIn = () => {
+const EticketIn = ({ selectedPeople }) => {
+  const [ticketsDetail, setTicketsDetail] = useState([]);
+  const [accordion, setAccordion] = useState({});
+
+  useEffect(() => {
+    const getTicketsDetail = async () => {
+      try {
+        const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
+        const response = await axios.get(`${apiUrl}/tickets/${fkTransaction}`);
+        const data = response.data;
+
+        const extractedData = data.map((ticket) => ({
+          departure: ticket.transaction.departure,
+        }));
+
+        setTicketsDetail(extractedData);
+      } catch (error) {
+        console.error("Error fetching tickets detail:", error);
+      }
+    };
+
+    getTicketsDetail();
+  }, []);
+
   const [fontsLoaded] = useFonts({
     [fontTheme.regular]: require("../fonts/Inter/static/Inter-Regular.ttf"),
     [fontTheme.medium]: require("../fonts/Inter/static/Inter-Medium.ttf"),
   });
 
   const [activeIndex, setActiveIndex] = useState(null);
-  const [accordion, setAccordion] = useState({});
 
   const toggleAccordion = (index) => {
     // Tutup semua accordion
     const updatedAccordion = {};
-    for (let i = 1; i <= 5; i++) {
+    // for (let i = 1; i <= 5; i++) {
+    for (let i = 0; i < selectedPeople; i++) {
       updatedAccordion[i] = false;
     }
 
@@ -49,9 +76,19 @@ const EticketIn = () => {
     // You can return an empty View or null for now, as we are only interested in the app bar
     return null;
   }
+
+  const handlePay = () => {
+    navigation.navigate("Receipt");
+  };
+
   const handleBack = () => {
     navigation.navigate("TicketDetails");
   };
+
+  // const handleBack = () => {
+  //   navigation.navigate("KrlOrderForm");
+  // };
+
   const handleHome = () => {
     navigation.navigate("Home");
   };
@@ -67,6 +104,7 @@ const EticketIn = () => {
       {/* App Bar */}
       <View style={styles.appBarContainer}>
         <TouchableOpacity onPress={handleBack}>
+          {/* <TouchableOpacity> */}
           {/* Left Icon (Back Arrow) */}
           <Image
             source={require("../images/ion_arrow-back.png")}
@@ -99,7 +137,7 @@ const EticketIn = () => {
         </View>
         <View style={styles.accordion2}>
           <View style={styles.additionalButtonsContainer}>
-            {[1, 2, 3, 4, 5].map((index) => (
+            {ticketsDetail.map((ticket, index) => (
               <TouchableOpacity
                 key={index}
                 style={[
@@ -108,14 +146,23 @@ const EticketIn = () => {
                     accordion[index] && { marginBottom: 200 },
 
                   // Tambahkan spasi di antara accordion yang terbuka
-                  index !== 1 && accordion[index - 1] && { marginTop: 200 },
+                  index !== 0 && accordion[index - 1] && { marginTop: 200 },
                   // accordion[index] && { marginBottom: 100 },
                 ]}
+                // {selectedPeople.map((_, index) => (
+                //   <TouchableOpacity
+                //     key={index}
+                //     style={[
+                //       styles.additionalButton,
+                //       index === activeIndex &&
+                //         accordion[index] && { marginBottom: 200 },
+                //       index !== 0 && accordion[index] && { marginTop: 200 },
+                //     ]}
                 onPress={() => toggleAccordion(index)}
               >
                 <View style={styles.orderDetailsRow}>
                   <Text style={styles.orderDetailsLabel}>
-                    0001{String.fromCharCode(64 + index)}
+                    Ticket {index + 1}
                   </Text>
                   <Image
                     source={require("../images/sort-down.png")}
@@ -141,7 +188,7 @@ const EticketIn = () => {
                           },
                         ]}
                       >
-                        QR code for entrance gate {index}
+                        QR code for entrance gate
                       </Text>
                       <Text
                         style={[
@@ -149,7 +196,7 @@ const EticketIn = () => {
                           { textAlign: "center", fontSize: 13 },
                         ]}
                       >
-                        JAKARTA KOTA STATION
+                        {ticket.departure}
                       </Text>
                       <Image
                         source={require("../images/qris.png")}
@@ -179,7 +226,7 @@ const EticketIn = () => {
       <View style={styles.bottomWhiteBackground}>
         <TouchableOpacity
           style={styles.buttonContainer}
-          //   onPress={handlePay} // Menambahkan onPress event untuk menangani pembayaran
+          onPress={handlePay} // Menambahkan onPress event untuk menangani pembayaran
         >
           <Text style={styles.buttonText}>Show Exit Gate Ticket</Text>
         </TouchableOpacity>
@@ -215,8 +262,8 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 20,
     fontFamily: fontTheme.semiBold,
-    marginRight: 180,
-    marginLeft: 10,
+    marginRight: 165,
+    marginLeft: 20,
   },
   homeImage: {
     // position: "absolute",
@@ -271,7 +318,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 20,
     fontFamily: "Inter-SemiBold",
-    paddingHorizontal: 70,
+    paddingHorizontal: 68,
     top: 4,
     fontWeight: "500",
   },
