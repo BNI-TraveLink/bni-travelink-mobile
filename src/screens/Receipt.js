@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Image,
@@ -9,6 +9,9 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {API_URL} from "@env";
+import axios from "axios";
 
 const fontTheme = {
   regular: "Inter-Regular",
@@ -22,6 +25,115 @@ const Receipt = () => {
   });
 
   const navigation = useNavigation();
+
+  const [saldo, setSaldo] = useState(0);
+  const [userData, setUserData] = useState("");
+  const [orderId, setOrderId] = useState(null);
+  const [serviceName, setServiceName] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [destination, setDestination] = useState("");
+  const [user_id, setUser_id] = useState("");
+  const [requestData, setRequestData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [state, setState] = useState(null);
+  const [amount,setAmount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [transaction,setTransaction] = useState(null);
+  const [datePart, setDatePart] = useState('');
+  const [timePart, setTimePart] = useState('');
+
+
+  let createdAtDate ;
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const getUserData = async () => {
+          // 1. Get the balance first
+        const balanceSessionData = await AsyncStorage.getItem("balance");
+        const parsedBalanceData = JSON.parse(balanceSessionData);
+        setSaldo(parsedBalanceData.toString());
+
+        // 2. Then, get the session data
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        setUserData(parsedSessionData);
+        setUser_id(parsedSessionData.userId);
+
+        const serviceData = await AsyncStorage.getItem("travelinkData");
+        const parsedServiceData = JSON.parse(serviceData);
+        setServiceName(parsedServiceData.service);
+
+        const departureData = await AsyncStorage.getItem("departure");
+        const parsedDepartureData = JSON.parse(departureData);
+        setDeparture(parsedDepartureData);
+
+        const destinationData = await AsyncStorage.getItem("destination");
+        const parsedDestinationData = JSON.parse(destinationData);
+        setDestination(parsedDestinationData);
+
+        const amountData = await AsyncStorage.getItem("amount");
+        const parsedAmountData = JSON.parse(amountData);
+        setAmount(parsedAmountData);
+
+        const totalPriceData = await AsyncStorage.getItem("totalPrice");
+        const parsedTotalPricedData = JSON.parse(totalPriceData);
+        setTotalPrice(parsedTotalPricedData);
+
+        const orderIdData = await AsyncStorage.getItem("orderId");
+        const parsedOrderIdData = JSON.parse(orderIdData);
+        setOrderId(parsedOrderIdData);
+
+        await getTransaction(parsedOrderIdData);
+        };
+  
+        const getTransaction = async (orderId) => {
+          try {
+            console.log("orderID",orderId);
+            const transaction = await axios.get(
+              `${API_URL}/transaction/orderId/${orderId}`
+            );
+            setTransaction(transaction.data.data  );
+            console.log("transaction",transaction);
+            console.log("transaction",transaction.data);
+            console.log("date",transaction.data.createdAt);
+            await AsyncStorage.setItem("transaction", JSON.stringify( transaction.data));
+           
+            createdAtDate = new Date(transaction.data.createdAt);
+          const newDatePart = createdAtDate.toISOString().split('T')[0];
+          const newTimePart = createdAtDate.toLocaleTimeString('id-ID', {
+            hour12: false, // Use 24-hour format
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+          setDatePart(newDatePart);
+          setTimePart(newTimePart);
+        
+            console.log("Date:", newDatePart);
+            console.log("Time:", newTimePart);
+
+
+
+          } catch (error) {
+            console.log("Error fetching transaction: " + error);
+          }
+        };
+  
+        // Call getUserData to initiate data retrieval
+        await getUserData();
+      } catch (error) {
+        console.log("Error fetching data: " + error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+
+ 
+
 
   if (!fontsLoaded) {
     // You can return an empty View or null for now, as we are only interested in the app bar
@@ -83,7 +195,7 @@ const Receipt = () => {
                 { maxWidth: 200 },
               ]}
             >
-              Commuter Line
+              {serviceName}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>
@@ -95,7 +207,7 @@ const Receipt = () => {
                 styles.interSemiBold,
               ]}
             >
-              0001
+              000{orderId}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>
@@ -121,7 +233,7 @@ const Receipt = () => {
                 styles.interSemiBold,
               ]}
             >
-              15 Feb 2023
+              {datePart}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>
@@ -135,7 +247,7 @@ const Receipt = () => {
                 styles.interSemiBold,
               ]}
             >
-              09:35:41 WIB
+              {timePart} WIB
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>
@@ -147,7 +259,7 @@ const Receipt = () => {
                 styles.interSemiBold,
               ]}
             >
-              1946061123
+              {userData.accountNumber}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>
@@ -159,7 +271,7 @@ const Receipt = () => {
                 styles.interSemiBold,
               ]}
             >
-              Rp 15.000
+              Rp {totalPrice}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>
@@ -185,7 +297,7 @@ const Receipt = () => {
                 styles.interSemiBold,
               ]}
             >
-              Rp 15.000
+              Rp {totalPrice}
             </Text>
           </View>
         </View>
