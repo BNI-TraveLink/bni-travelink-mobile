@@ -26,6 +26,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "extra": {
+      "API_URL": "http://192.168.132.189:8081"
+    },
     "plugins": [
       "expo-font"
     ]

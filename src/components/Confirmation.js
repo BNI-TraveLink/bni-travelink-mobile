@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BottomBarOrderForm from "./BotomBarOrderForm";
-import {API_URL} from "@env";
+// import {API_URL} from "@env";
 
 const Confirmation = ({
   isVisibleConfirm,
