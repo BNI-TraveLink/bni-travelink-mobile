@@ -26,6 +26,13 @@ const KrlOrderForm = () => {
   const [loginResponse, setLoginResponse] = useState([]);
   const [userId, setUserId] = useState("");
 
+  const [selectedStation1, setSelectedStation1] = useState(null);
+  const [selectedStation2, setSelectedStation2] = useState(null);
+  const [selectedPeople, setSelectedPeople] = useState(null);
+
+  let isReorder = false;
+  const [dataUsedToReorder, setDataUsedToReorder] = useState([]);
+
   const navigation = useNavigation();
 
   const handleBackPress = () => {
@@ -38,15 +45,12 @@ const KrlOrderForm = () => {
         const storedData = await AsyncStorage.getItem("travelinkData");
         const parsedData = JSON.parse(storedData);
 
-        console.log("hehe");
         const sessionData = await AsyncStorage.getItem("session");
         const parsedSessionData = JSON.parse(sessionData);
-        console.log ("parsedsessiondata",parsedSessionData)
         if (parsedData && parsedSessionData) {
           setStations(parsedData.stations);
           setServiceName(parsedData.service);
           setPrice(parsedData.price);
-          // await AsyncStorage.removeItem('travelinkData');
 
           setLoginResponse(parsedSessionData);
           setUserId(parsedSessionData.userId);
@@ -61,8 +65,32 @@ const KrlOrderForm = () => {
       }
     };
 
+    const reorder = async () => {
+      try {
+        const reorderData = await AsyncStorage.getItem("reorder");
+        const parsedReorderData = JSON.parse(reorderData);
+        setDataUsedToReorder(parsedReorderData);
+
+        isReorder = true;
+
+        if (isReorder) {
+          setSelectedStation1(dataUsedToReorder.departure);
+          setSelectedStation2(dataUsedToReorder.destination);
+          setSelectedPeople(dataUsedToReorder.amount);
+        }
+
+        console.log("isReorder is true")
+        console.log(selectedStation1)
+        console.log(selectedStation2)
+        console.log(selectedPeople)
+        console.log("Done isReorder")
+      } catch (error) {
+        console.error("Error while getting the reorder data: ", error);
+      }
+    }
 
     getStations();
+    reorder();
   }, []);
 
   const [fontsLoaded] = useFonts({
@@ -71,43 +99,14 @@ const KrlOrderForm = () => {
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
   });
 
-  // const station = [
-  //   { label: "Bogor", value: "Bogor" },
-  //   { label: "Bojong Gede", value: "Bojong Gede" },
-  //   { label: "Cawang", value: "Cawang" },
-  //   { label: "Cikini", value: "Cikini" },
-  //   { label: "Cilebut", value: "Cilebut" },
-  //   { label: "Citayam", value: "Citayam" },
-  //   { label: "Depok", value: "Depok" },
-  //   { label: "Depok Baru", value: "Depok Baru" },
-  //   { label: "Duren Kalibata", value: "Duren Kalibata" },
-  //   { label: "Gongdangdia", value: "Gondangdia" },
-  //   { label: "Jakarta Kota", value: "Jakarta Kota" },
-  //   { label: "Juanda", value: "Juanda" },
-  //   { label: "Lenteng Agung", value: "Lenteng Agung" },
-  //   { label: "Mangga Besar", value: "Mangga Besar" },
-  //   { label: "Manggarai", value: "Manggarai" },
-  //   { label: "Pasar Minggu", value: "Pasar Minggu" },
-  //   { label: "Pasar Minggu Baru", value: "Pasar Minggu Baru" },
-  //   { label: "Pondok Cina", value: "Pondok Cina" },
-  //   { label: "Sawah Besar", value: "Sawah Besar" },
-  //   { label: "Tanjung Barat", value: "Tanjung Barat" },
-  //   { label: "Tebet", value: "Tebet" },
-  //   { label: "Univ. Indonesia", value: "Univ. Indonesia" },
-  //   { label: "Univ. Pancasila", value: "Univ.Pancasila" },
-  // ];
-
-  const [selectedStation1, setSelectedStation1] = useState(null);
-  const [selectedStation2, setSelectedStation2] = useState(null);
-
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
-
+  
   const handleExchange = () => {
     const tempStation = selectedStation1;
     setSelectedStation1(selectedStation2);
     setSelectedStation2(tempStation);
   };
-
+  
   const people = [
     { label: "1 people", value: 1 },
     { label: "2 people", value: 2 },
@@ -115,8 +114,6 @@ const KrlOrderForm = () => {
     { label: "4 people", value: 4 },
     { label: "5 people", value: 5 },
   ];
-
-  const [selectedPeople, setSelectedPeople] = useState(null);
 
   const handleFormSubmit = () => {
     if (selectedStation1 && selectedStation2 && selectedPeople) {
