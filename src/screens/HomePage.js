@@ -14,17 +14,24 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BottomBarPage from "../components/BottomBarPage";
+import moment from 'moment';
+
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;
+
+let lastTicket = null;
 
 const HomePage = () => {
   const [isHidden, setIsHidden] = useState(false);
 
   const [saldo, setSaldo] = useState(0);
   const [userData, setUserData] = useState("");
-  const [lastTicket, setLastTicket] = useState(null);
+
+  const [stations, setStations] = useState([]);
 
   useEffect(() => {
     const getUserData = async () => {
-      console.log("getUserData in HomePage")
+      lastTicket = null;
       try {
         // 1. Get the balance first
         const balanceSessionData = await AsyncStorage.getItem("balance");
@@ -39,21 +46,14 @@ const HomePage = () => {
         // 3. Get the last ticket transaction
         const lastTicketTransaction = await AsyncStorage.getItem("lastTicketTransaction");
         const parsedLastTicketTransaction = JSON.parse(lastTicketTransaction);
-        setLastTicket(parsedLastTicketTransaction);
+        lastTicket = parsedLastTicketTransaction;
       } catch (error) {
-        console.log("Error fetching balance: " + error);
+        console.log("Error fetching data: " + error);
       }
     };
 
     getUserData();
   }, []);
-
-  const getAsyncStorage = async ({ field }) => {
-    const sessionData = await AsyncStorage.getItem(field);
-    const parsedData = JSON.parse(sessionData);
-
-    return parsedData;
-  };
 
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
@@ -69,12 +69,51 @@ const HomePage = () => {
     navigation.navigate("Purchase");
   };
 
-  const handleHistoryActive = () => {
-    navigation.navigate("TraveLink");
+  const handleHistoryActive = async () => {
+    await AsyncStorage.setItem("transaction", JSON.stringify(lastTicket));
+    navigation.navigate("EticketIn");
   };
 
-  const handleHistoryReorder = () => {
-    navigation.navigate("TraveLink");
+  const handleHistoryReorder = async () => {
+    setStations([]);
+
+    try {
+      await AsyncStorage.setItem("reorder", JSON.stringify(lastTicket));
+      await getListStations(lastTicket.service.name);
+      navigation.navigate("KrlOrderForm");
+    } catch (error) {
+      console.log('Error hitting the API:', error);
+    }
+  };
+
+  const getListStations = async (travelinkService) => {
+    const url = `${apiUrl}/service/getStationByServiceName`;
+
+    try {
+      const response = await axios.get(url, {
+        params: {
+          serviceName: travelinkService,
+        },
+      });
+
+      const newStations = response.data.map((station) => ({
+        label: station.station_name,
+        value: station.station_name,
+      }));
+
+      setStations(newStations);
+
+      const dataToSave = {
+        service: travelinkService,
+        stations: newStations, // Use the updated stations
+        price: response.data[0].fkService.price
+         };
+
+      await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
+    } catch (error) {
+      console.log('Error getting station data:', error);
+      throw error; // Rethrow the error to be caught in handleMrtPress
+    }
   };
 
   const [fontsLoaded] = useFonts({
@@ -205,91 +244,63 @@ const HomePage = () => {
               <Text style={styles.pointText}>MyPoints</Text>
               <Text style={styles.pointText}>1.946</Text>
             </View>
-            <Text style={styles.tittleBNITraveLink}>My BNI TraveLink</Text>
-            <TouchableOpacity onPress={handleHistoryActive}>
-              <View style={styles.historyContainer}>
-                <View style={styles.historyContent}>
-                  <View style={styles.listContainer}>
-                    <Image
-                      source={require("../images/commuter-historyItem.png")}
-                      style={{ height: 40, width: 40 }}
-                    ></Image>
-                    <View style={styles.textContainer}>
-                      <Text style={styles.tittleTraveLink}>Commuter Line</Text>
-                      <View style={styles.destinationContainer}>
-                        <Text style={styles.tittleDestination}>
-                          Jakarta Kota
-                        </Text>
-                        <Text style={styles.tittleDestination}>-</Text>
-                        <Text style={styles.tittleDestination}>
-                          Tanjung Barat
-                        </Text>
-                      </View>
-                      <Text style={styles.tittleDate}>
-                        Valid until 15 Feb 2024, 23.59
-                      </Text>
-                    </View>
-                    <View style={styles.listRightContainer}>
-                      <View style={styles.activeContainer}>
-                        <View style={styles.activeContent}>
-                          <Text style={styles.tittleActive}> Active </Text>
+            {
+              lastTicket != null
+              ? (
+              <View>
+                <Text style={styles.tittleBNITraveLink}>My BNI TraveLink</Text>
+                {/* <TouchableOpacity onPress={lastTicket.active ? handleHistoryActive : handleHistoryReorder}> */}
+                <TouchableOpacity onPress={lastTicket.active ? handleHistoryReorder : handleHistoryActive}>
+                  <View style={styles.historyContainer}>
+                    <View style={styles.historyContent}>
+                      <View style={styles.listContainer}>
+                        <Image
+                          source={require("../images/commuter-historyItem.png")}
+                          style={{ height: 40, width: 40 }}
+                        ></Image>
+                        <View style={styles.textContainer}>
+                          <Text style={styles.tittleTraveLink}>{lastTicket.service.name}</Text>
+                          <View style={styles.destinationContainer}>
+                            <Text style={styles.tittleDestination}>
+                              {/* Jakarta Kota */}
+                              {lastTicket.departure}
+                            </Text>
+                            <Text style={styles.tittleDestination}>-</Text>
+                            <Text style={styles.tittleDestination}>
+                              {/* Tanjung Barat */}
+                              {lastTicket.destination}
+                            </Text>
+                          </View>
+                          <Text style={styles.tittleDate}>
+                            {/* Valid until 15 Feb 2024, 23.59 */}
+                            Valid until {moment(lastTicket.expiredAt).format('D MMM YYYY,').concat(' 00.00')}
+                          </Text>
+                        </View>
+                        <View style={styles.listRightContainer}>
+                          {/* <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
+                            <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}> */}
+                          <View style={styles.activeContainer}>
+                            <View style={styles.activeContainer}>
+                              <Text style={styles.tittleActive}> {lastTicket.active ? "Active" : "Reorder"} </Text>
+                            </View>
+                          </View>
+                          <Text
+                            style={[
+                              styles.tittleOrderID,
+                              { marginTop: 12, marginRight: 10 },
+                            ]}
+                          >
+                            #{lastTicket.amount.toString().padStart(4, '0')}
+                          </Text>
                         </View>
                       </View>
-                      <Text
-                        style={[
-                          styles.tittleOrderID,
-                          { marginTop: 12, marginRight: 10 },
-                        ]}
-                      >
-                        #0003
-                      </Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleHistoryReorder}>
-              <View style={styles.historyContainer}>
-                <View style={styles.historyContent}>
-                  <View style={styles.listContainer}>
-                    <Image
-                      source={require("../images/commuter-historyItem.png")}
-                      style={{ height: 40, width: 40 }}
-                    ></Image>
-                    <View style={styles.textContainer}>
-                      <Text style={styles.tittleTraveLink}>Commuter Line</Text>
-                      <View style={styles.destinationContainer}>
-                        <Text style={styles.tittleDestination}>
-                          Jakarta Kota
-                        </Text>
-                        <Text style={styles.tittleDestination}>-</Text>
-                        <Text style={styles.tittleDestination}>
-                          Tanjung Barat
-                        </Text>
-                      </View>
-                      <Text style={styles.tittleDate}>
-                        Valid until 15 Feb 2024, 23.59
-                      </Text>
-                    </View>
-                    <View style={styles.listRightContainer}>
-                      <View style={styles.reorderContainer}>
-                        <View style={styles.reorderContent}>
-                          <Text style={styles.tittleReorder}>Reorder</Text>
-                        </View>
-                      </View>
-                      <Text
-                        style={[
-                          styles.tittleOrderID,
-                          { marginTop: 12, marginRight: 10 },
-                        ]}
-                      >
-                        #0003
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
+              ) :
+              null
+            }
             <Text style={styles.eWalletsText}>My E-Wallets</Text>
             <ScrollView
               horizontal={true}
