@@ -249,8 +249,8 @@ const HomePage = () => {
               ? (
               <View>
                 <Text style={styles.tittleBNITraveLink}>My BNI TraveLink</Text>
-                {/* <TouchableOpacity onPress={lastTicket.active ? handleHistoryActive : handleHistoryReorder}> */}
-                <TouchableOpacity onPress={lastTicket.active ? handleHistoryReorder : handleHistoryActive}>
+                <TouchableOpacity onPress={lastTicket.active ? handleHistoryActive : handleHistoryReorder}>
+                {/* <TouchableOpacity onPress={lastTicket.active ? handleHistoryReorder : handleHistoryActive}> */}
                   <View style={styles.historyContainer}>
                     <View style={styles.historyContent}>
                       <View style={styles.listContainer}>
