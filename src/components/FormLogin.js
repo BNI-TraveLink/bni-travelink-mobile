@@ -14,13 +14,14 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {API_URL} from "@env";
+// import {API_URL} from "@env";
 
 
 // import Constants from 'expo-constants';
 
-// const apiUrl = Constants.manifest.extra.API_URL;  
-const apiUrl = process.env.EXPO_PUBLIC_API_URL;  
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;  
+// const apiUrl = process.env.EXPO_PUBLIC_API_URL;  
 
 const FormLogin = ({ modalVisible, setModalVisible }) => {
   const [user_id, setUser_id] = useState("");
@@ -54,8 +55,8 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
         formData.append("userId", user_id);
         formData.append("mpin", mpin);
         
-        console.log("apiurl",API_URL);
-        const responseLogin = await axios.post(`${API_URL}/logins/hash`, formData, {
+        console.log("apiurl",apiUrl);
+        const responseLogin = await axios.post(`${apiUrl}/logins/hash`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           }
@@ -65,14 +66,14 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
 
           const responseBalance = await axios.get(
-            `${API_URL}/balance/getBalanceByUserId/${responseLogin.data.userId}`
+            `${apiUrl}/balance/getBalanceByUserId/${responseLogin.data.userId}`
           );
 
           await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
 
           // get last ticket transaction of the user
           const userTicketsTransaction = await axios.get(
-            `${API_URL}/transaction/userId/${responseLogin.data.userId}`
+            `${apiUrl}/transaction/userId/${responseLogin.data.userId}`
           );
           
           const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];

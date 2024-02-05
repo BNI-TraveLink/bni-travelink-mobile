@@ -20,9 +20,11 @@ const HomePage = () => {
 
   const [saldo, setSaldo] = useState(0);
   const [userData, setUserData] = useState("");
+  const [lastTicket, setLastTicket] = useState(null);
 
   useEffect(() => {
     const getUserData = async () => {
+      console.log("getUserData in HomePage")
       try {
         // 1. Get the balance first
         const balanceSessionData = await AsyncStorage.getItem("balance");
@@ -33,6 +35,11 @@ const HomePage = () => {
         const sessionData = await AsyncStorage.getItem("session");
         const parsedSessionData = JSON.parse(sessionData);
         setUserData(parsedSessionData);
+
+        // 3. Get the last ticket transaction
+        const lastTicketTransaction = await AsyncStorage.getItem("lastTicketTransaction");
+        const parsedLastTicketTransaction = JSON.parse(lastTicketTransaction);
+        setLastTicket(parsedLastTicketTransaction);
       } catch (error) {
         console.log("Error fetching balance: " + error);
       }

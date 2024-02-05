@@ -14,7 +14,10 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
-import {API_URL} from "@env";
+// import {API_URL} from "@env";
+
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;
 
 const TraveLink = () => {
   const navigation = useNavigation();
@@ -75,7 +78,7 @@ const TraveLink = () => {
   };
 
   const getListStations = async (travelinkService) => {
-    const url = `${API_URL}/service/getStationByServiceName`;
+    const url = `${apiUrl}/service/getStationByServiceName`;
 
     try {
       const response = await axios.get(url, {

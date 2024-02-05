@@ -10,8 +10,11 @@ import {
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {API_URL} from "@env";
+// import {API_URL} from "@env";
 import axios from "axios";
+
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;
 
 const fontTheme = {
   regular: "Inter-Regular",
@@ -92,7 +95,7 @@ const Receipt = () => {
           try {
             console.log("orderID",orderId);
             const transaction = await axios.get(
-              `${API_URL}/transaction/orderId/${orderId}`
+              `${apiUrl}/transaction/orderId/${orderId}`
             );
             setTransaction(transaction.data.data  );
             console.log("transaction",transaction);

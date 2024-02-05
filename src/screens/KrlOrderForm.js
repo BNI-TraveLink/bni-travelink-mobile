@@ -17,7 +17,7 @@ import Confirmation from "../components/Confirmation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BottomBarOrderForm from "../components/BotomBarOrderForm";
 import axios from "axios";
-import { API_URL } from "@env";
+// import { API_URL } from "@env";
 
 const KrlOrderForm = () => {
   const [stations, setStations] = useState([]);
