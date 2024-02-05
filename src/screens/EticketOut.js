@@ -70,24 +70,20 @@ const EticketIn = ({ selectedPeople }) => {
   //   "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   //   "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
   // });
-  const navigation = useNavigation();
+  //   const navigation = useNavigation();
 
   if (!fontsLoaded) {
     // You can return an empty View or null for now, as we are only interested in the app bar
     return null;
   }
 
-  const handleShow = () => {
-    navigation.navigate("EticketOut");
+  const handleDone = () => {
+    navigation.navigate("Home");
   };
 
   const handleBack = () => {
-    navigation.navigate("TicketDetails");
+    navigation.navigate("Home");
   };
-
-  // const handleBack = () => {
-  //   navigation.navigate("KrlOrderForm");
-  // };
 
   const handleHome = () => {
     navigation.navigate("Home");
@@ -104,7 +100,6 @@ const EticketIn = ({ selectedPeople }) => {
       {/* App Bar */}
       <View style={styles.appBarContainer}>
         <TouchableOpacity onPress={handleBack}>
-          {/* <TouchableOpacity> */}
           {/* Left Icon (Back Arrow) */}
           <Image
             source={require("../images/ion_arrow-back.png")}
@@ -132,7 +127,7 @@ const EticketIn = ({ selectedPeople }) => {
             source={require("../images/logo_krl.png")}
             style={styles.krlImage}
           />
-          <Text style={styles.entrancegateText}>Entrance Gate Ticket </Text>
+          <Text style={styles.exitgateText}>Exit Gate Ticket </Text>
           <View style={styles.commuterline}></View>
         </View>
         <View style={styles.accordion2}>
@@ -188,7 +183,7 @@ const EticketIn = ({ selectedPeople }) => {
                           },
                         ]}
                       >
-                        QR code for entrance gate
+                        QR code for exit gate
                       </Text>
                       <Text
                         style={[
@@ -215,8 +210,8 @@ const EticketIn = ({ selectedPeople }) => {
               style={styles.warningImage}
             />
             <Text style={styles.warningText}>
-              Make sure to click Show Exit Gate Ticket if all entrance gate
-              tickets have been scanned.
+              Make sure to click Done if all exit gate tickets have been
+              scanned.
             </Text>
           </View>
         </View>
@@ -224,11 +219,8 @@ const EticketIn = ({ selectedPeople }) => {
 
       {/* White background at the bottom with a button */}
       <View style={styles.bottomWhiteBackground}>
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={handleShow} // Menambahkan onPress event untuk menangani pembayaran
-        >
-          <Text style={styles.buttonText}>Show Exit Gate Ticket</Text>
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleDone}>
+          <Text style={styles.buttonText}>Done</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -318,7 +310,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 20,
     fontFamily: "Inter-SemiBold",
-    paddingHorizontal: 68,
+    paddingHorizontal: 138,
     top: 4,
     fontWeight: "500",
   },
@@ -345,7 +337,7 @@ const styles = StyleSheet.create({
     marginLeft: 145,
     resizeMode: "cover",
   },
-  entrancegateText: {
+  exitgateText: {
     fontSize: 20,
     color: "#005E6A",
     fontWeight: "600",

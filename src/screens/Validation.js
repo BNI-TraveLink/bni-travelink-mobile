@@ -52,9 +52,9 @@ const Validation = () => {
     }
   };
 
-  // const handleBack = () => {
-  //   navigation.navigate("KrlOrderForm");
-  // };
+  const handleBack = () => {
+    navigation.navigate("KrlOrderForm");
+  };
 
   return (
     <View style={styles.container}>
