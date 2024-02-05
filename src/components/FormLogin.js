@@ -70,6 +70,15 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
 
           await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
 
+          // get last ticket transaction of the user
+          const userTicketsTransaction = await axios.get(
+            `${API_URL}/transaction/userId/${responseLogin.data.userId}`
+          );
+          
+          const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
+
+          await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTicketTransaction))
+
           // Navigasi ke halaman Home setelah login berhasil
           navigation.navigate("Home");
         }
