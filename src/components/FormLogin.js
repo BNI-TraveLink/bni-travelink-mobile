@@ -39,6 +39,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
   const navigation = useNavigation(); // Inisialisasi objek navigasi
 
   const handleLogin = async () => {
+    console.log("login");
     setUser_id("");
     setMpin("");
     setErrorText("");

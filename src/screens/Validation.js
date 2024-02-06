@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
@@ -131,13 +132,41 @@ const Validation = () => {
 
       if (responseLogin.status === 200 || responseLogin.status === 201) {
 
-        // generatePayment();
+        await  generatePayment();
+        await  updatePayment();
+        await AsyncStorage.setItem("orderId", JSON.stringify( orderID));
+        await generateTicket();
+
+      navigation.navigate("Receipt");
 
         console.log(isLoggedIn);
         // await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
         // hit generatepayment
       }
+      else{
+        Alert.alert(
+          "Transaction Password",
+          "Incorrect transaction password. Please try again.",
+          [
+            {
+              text: "OK",
+              onPress: () => console.log("OK Pressed"),
+            },
+          ]
+        );
+      }
     } catch (error) {
+      Alert.alert(
+        "Transaction Password",
+        "Incorrect transaction password. Please try again.",
+        [
+          {
+            text: "OK",
+            onPress: () => console.log("OK Pressed"),
+          },
+        ]
+      );
+     
       console.log("Error in handleTransactionPassword:", error);
     }
   };
@@ -218,15 +247,6 @@ const Validation = () => {
 
   const handlePay = async () => {
     await handleTransactionPassword();
-    await  generatePayment();
-    console.log("orderid", orderId);
-    console.log("orderiD", orderID);
-    console.log("eak");
-     await  updatePayment();
-     await AsyncStorage.setItem("orderId", JSON.stringify( orderID));
-    await generateTicket();
-
-      navigation.navigate("Receipt");
   };
 
   const handleBack = () => {

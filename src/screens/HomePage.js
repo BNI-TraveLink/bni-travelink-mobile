@@ -10,11 +10,11 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BottomBarPage from "../components/BottomBarPage";
-import moment from 'moment';
+import moment from "moment";
 
 import Constants from "expo-constants";
 const apiUrl = Constants.manifest.extra.API_URL;
@@ -29,31 +29,59 @@ const HomePage = () => {
 
   const [stations, setStations] = useState([]);
 
-  useEffect(() => {
-    const getUserData = async () => {
-      lastTicket = null;
-      try {
-        // 1. Get the balance first
-        const balanceSessionData = await AsyncStorage.getItem("balance");
-        const parsedBalanceData = JSON.parse(balanceSessionData);
-        setSaldo(parsedBalanceData.toString());
+  const getUserData = async () => {
+    lastTicket = null;
+    try {
+      // 1. Get the balance first
+      const balanceSessionData = await AsyncStorage.getItem("balance");
+      const parsedBalanceData = JSON.parse(balanceSessionData);
+      setSaldo(parsedBalanceData.toString());
 
-        // 2. Then, get the session data
-        const sessionData = await AsyncStorage.getItem("session");
-        const parsedSessionData = JSON.parse(sessionData);
-        setUserData(parsedSessionData);
+      // 2. Then, get the session data
+      const sessionData = await AsyncStorage.getItem("session");
+      const parsedSessionData = JSON.parse(sessionData);
+      setUserData(parsedSessionData);
 
-        // 3. Get the last ticket transaction
-        const lastTicketTransaction = await AsyncStorage.getItem("lastTicketTransaction");
-        const parsedLastTicketTransaction = JSON.parse(lastTicketTransaction);
-        lastTicket = parsedLastTicketTransaction;
-      } catch (error) {
-        console.log("Error fetching data: " + error);
-      }
-    };
+      // 3. Get the last ticket transaction
+      const lastTicketTransaction = await AsyncStorage.getItem(
+        "lastTicketTransaction"
+      );
+      const parsedLastTicketTransaction = JSON.parse(lastTicketTransaction);
+      lastTicket = parsedLastTicketTransaction;
 
-    getUserData();
+      // console.log("lasticket", lastTicket);
+    } catch (error) {
+      console.log("Error fetching data: " + error);
+    }
+  };
+  // console.log("lasticket", lastTicket);
+  // getUserData();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserData();
+    }, [lastTicket]) // Add lastTicket as a dependency
+  );
+
+    useEffect(() => {
+      const loadData = async () => {
+        await getUserData();
+        // After fetching the data, you can update the state or take any necessary actions
+      };
+
+    // Call getUserData when the component mounts
+    loadData();
   }, []);
+
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //     await getUserData();
+  //     // After fetching the data, you can update the state or take any necessary actions
+  //   };
+
+  //   // Call loadData every time the component renders
+  //   loadData();
+  // },[]);
 
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
@@ -70,6 +98,7 @@ const HomePage = () => {
   };
 
   const handleHistoryActive = async () => {
+    console.log("handlehistoryactive", lastTicket);
     await AsyncStorage.setItem("transaction", JSON.stringify(lastTicket));
     navigation.navigate("EticketIn");
   };
@@ -82,7 +111,7 @@ const HomePage = () => {
       await getListStations(lastTicket.service.name);
       navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.log('Error hitting the API:', error);
+      console.log("Error hitting the API:", error);
     }
   };
 
@@ -106,12 +135,12 @@ const HomePage = () => {
       const dataToSave = {
         service: travelinkService,
         stations: newStations, // Use the updated stations
-        price: response.data[0].fkService.price
-         };
+        price: response.data[0].fkService.price,
+      };
 
-      await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
+      await AsyncStorage.setItem("travelinkData", JSON.stringify(dataToSave));
     } catch (error) {
-      console.log('Error getting station data:', error);
+      console.log("Error getting station data:", error);
       throw error; // Rethrow the error to be caught in handleMrtPress
     }
   };
@@ -244,6 +273,7 @@ const HomePage = () => {
               <Text style={styles.pointText}>MyPoints</Text>
               <Text style={styles.pointText}>1.946</Text>
             </View>
+            {console.log("lasticket JSX", lastTicket)}
             {
               lastTicket != null
               ? (

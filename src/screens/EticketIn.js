@@ -27,18 +27,40 @@ const EticketIn = ({ selectedPeople }) => {
   const [accordion, setAccordion] = useState({});
 
   useEffect(() => {
+    const parseTransactionData = async () => {
+      try {
+        const transactionData = await AsyncStorage.getItem("transaction");
+
+        if (!transactionData) {
+          console.log("Transaction data is empty.");
+          return null;
+        }
+
+        const parsedTransactionData = JSON.parse(transactionData);
+
+        if (!parsedTransactionData || !parsedTransactionData.skTransaction) {
+          console.log("Invalid transaction data or missing skTransaction.");
+          return null;
+        }
+
+        return parsedTransactionData
+      } catch (error) {
+        console.log("Error parsing transaction data:", error);
+        return null;
+      }
+    };
+
     const getTicketsDetail = async () => {
       try {
+        const transactiondata = await parseTransactionData();
+        const fkTransaction = transactiondata.skTransaction;
 
-        const transactionData = await AsyncStorage.getItem("transaction");
-        const parsedTransactionData = JSON.parse(transactionData);
-        // setSaldo(parsedBalanceData.toString());
+        // Check if fkTransaction has value
+        if (!fkTransaction) {
+          console.log("fkTransaction is empty.");
+          return;
+        }
 
-        console.log("transaction data buat ticket ",parsedTransactionData);
-        console.log("fk transactionnya",parsedTransactionData.skTransaction );
-        // const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
-        const fkTransaction = parsedTransactionData.skTransaction;
-        
         const response = await axios.get(`${apiUrl}/tickets/${fkTransaction}`);
         const data = response.data;
 
@@ -47,13 +69,23 @@ const EticketIn = ({ selectedPeople }) => {
         }));
 
         setTicketsDetail(extractedData);
+
+
+        // // get last ticket transaction of the user
+        // const userTicketsTransaction = await axios.get(
+        //   `${apiUrl}/transaction/userId/${responseLogin.data.userId}`
+        // );
+        
+        // const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
+      
+        await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(transactiondata));
       } catch (error) {
-        console.log("Error fetching tickets detail:", error);
+        console.log("Error storing tickets detail:", error);
       }
     };
 
     getTicketsDetail();
-  }, []);
+  }, []); // Empty dependency array to run once on component mount
 
   const [fontsLoaded] = useFonts({
     [fontTheme.regular]: require("../fonts/Inter/static/Inter-Regular.ttf"),
