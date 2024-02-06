@@ -37,9 +37,9 @@ const TraveLink = () => {
 
     try {
       await getListStations("KRL");
-     navigation.navigate("KrlOrderForm");
+      navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.log('Error hitting the API:', error);
+      console.log("Error hitting the API:", error);
     }
   };
 
@@ -49,9 +49,9 @@ const TraveLink = () => {
     try {
       await getListStations("TJ");
 
-     navigation.navigate("KrlOrderForm");
+      navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.log('Error hitting the API:', error);
+      console.log("Error hitting the API:", error);
     }
   };
 
@@ -75,10 +75,9 @@ const TraveLink = () => {
 
       setTimeout(() => {}, 200);
 
-      if (stations.length > 0)
-      await navigation.navigate("KrlOrderForm");
+      if (stations.length > 0) await navigation.navigate("KrlOrderForm");
     } catch (error) {
-      console.log('Error hitting the API:', error);
+      console.log("Error hitting the API:", error);
     }
   };
 
@@ -102,16 +101,15 @@ const TraveLink = () => {
       const dataToSave = {
         service: travelinkService,
         stations: newStations, // Use the updated stations
-        price: response.data[0].fkService.price
-         };
+        price: response.data[0].fkService.price,
+      };
 
-      await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
+      await AsyncStorage.setItem("travelinkData", JSON.stringify(dataToSave));
     } catch (error) {
-      console.log('Error getting station data:', error);
+      console.log("Error getting station data:", error);
       throw error; // Rethrow the error to be caught in handleMrtPress
     }
   };
-
 
   const [fontsLoaded] = useFonts({
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),

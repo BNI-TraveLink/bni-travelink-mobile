@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 import Constants from "expo-constants";
-const apiUrl = Constants.manifest.extra.API_URL;
+const API_URL = Constants.manifest.extra.API_URL;
 
 const fontTheme = {
   regular: "Inter-Regular",
@@ -28,7 +28,7 @@ const EticketIn = ({ selectedPeople }) => {
     const getTicketsDetail = async () => {
       try {
         const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
-        const response = await axios.get(`${apiUrl}/tickets/${fkTransaction}`);
+        const response = await axios.get(`${API_URL}/tickets/${fkTransaction}`);
         const data = response.data;
 
         const extractedData = data.map((ticket) => ({

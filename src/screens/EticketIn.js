@@ -29,13 +29,12 @@ const EticketIn = ({ selectedPeople }) => {
   useEffect(() => {
     const getTicketsDetail = async () => {
       try {
-
         const transactionData = await AsyncStorage.getItem("transaction");
         const parsedTransactionData = JSON.parse(transactionData);
         // setSaldo(parsedBalanceData.toString());
 
-        console.log("transaction data buat ticket ",parsedTransactionData);
-        console.log("fk transactionnya",parsedTransactionData.skTransaction );
+        console.log("transaction data buat ticket ", parsedTransactionData);
+        console.log("fk transactionnya", parsedTransactionData.skTransaction);
         // const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
         const fkTransaction = parsedTransactionData.skTransaction;
         
