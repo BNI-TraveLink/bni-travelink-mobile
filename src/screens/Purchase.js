@@ -1,9 +1,21 @@
 import React from "react";
-import { View, ImageBackground, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  ImageBackground,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
 import { useNavigation } from "@react-navigation/native";
+
+const window = Dimensions.get("window");
+const windowWidth = window.width;
+const windowHeight = window.height;
 
 const Purchase = () => {
   const navigation = useNavigation();
@@ -41,7 +53,7 @@ const Purchase = () => {
         <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           <View>
             <View style={styles.menuContainer}>
-              <View style={[styles.gridContainer, { paddingTop: 28 }]}>
+              <View style={[styles.gridContainer, { paddingTop: 10 }]}>
                 <GridHomeMenu
                   imageSource={require("../images/internet-item.png")}
                   labelText={"Internet"}
@@ -59,7 +71,7 @@ const Purchase = () => {
                   labelText={"TV"}
                 />
               </View>
-              <View style={[styles.gridContainer, { paddingBottom: 40 }]}>
+              <View style={[styles.gridContainer, { paddingBottom: 10 }]}>
                 <GridHomeMenu
                   imageSource={require("../images/flight-item.png")}
                   labelText={"Flight"}
@@ -73,10 +85,10 @@ const Purchase = () => {
                   labelText={"BNI Life"}
                 />
                 <TouchableOpacity onPress={handleTraveLinkPress}>
-                <GridHomeMenu
-                  imageSource={require("../images/traveLink-item.png")}
-                  labelText={"BNI TraveLink"}
-                />
+                  <GridHomeMenu
+                    imageSource={require("../images/traveLink-item.png")}
+                    labelText={"BNI TraveLink"}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -90,14 +102,15 @@ const Purchase = () => {
 const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
-    height: 77,
+    flex: 1,
+    height: windowHeight * 0.1,
   },
 
   appBar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 8,
+    padding: 10,
     // backgroundColor: 'white',
     borderBottomWidth: 2,
     borderBottomColor: "rgba(0, 0, 0, 0.1)",
@@ -111,7 +124,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    paddingRight: 35, // mengatur logo BNI ketengah
+    paddingRight: 28, // mengatur logo BNI ketengah
   },
 
   logoText: {

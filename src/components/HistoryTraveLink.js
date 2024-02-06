@@ -45,7 +45,7 @@ const HistoryTraveLink = () => {
               <View style={styles.listRightContainer}>
                 <View style={styles.activeContainerActive}>
                   <View style={styles.activeContent}>
-                    <Text style={styles.tittleActive}>Active</Text>
+                    <Text style={styles.tittleActive}> Active </Text>
                   </View>
                 </View>
                 <Text
@@ -70,10 +70,10 @@ const HistoryTraveLink = () => {
               <View style={styles.textContainer}>
                 <Text style={styles.tittleTraveLinkUsed}>MRT</Text>
                 <View style={styles.destinationContainer}>
-                  <Text style={styles.tittleDestinationUsed}>Jakarta Kota</Text>
+                  <Text style={styles.tittleDestinationUsed}>Lebak Bulus Grab</Text>
                   <Text style={styles.tittleDestinationUsed}>-</Text>
                   <Text style={styles.tittleDestinationUsed}>
-                    Tanjung Barat
+                    Dukuh Atas BNI
                   </Text>
                 </View>
                 <Text style={styles.tittleDateUsed}>15 Feb, 09:35</Text>
@@ -81,7 +81,7 @@ const HistoryTraveLink = () => {
               <View style={styles.listRightContainer}>
                 <View style={styles.activeContainerUsed}>
                   <View style={styles.activeContent}>
-                    <Text style={styles.tittleUsed}>Used</Text>
+                    <Text style={styles.tittleUsed}>  Used  </Text>
                   </View>
                 </View>
                 <Text
@@ -141,14 +141,19 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    marginRight: 10
   },
 
   textContainer: {
-    marginLeft: 10,
+    flex : 1,
   },
 
   destinationContainer: {
     flexDirection: "row",
+    overflow: "hidden"
+    // flex: 1,
+    // overflow: 'hidden'
   },
 
   tittleTraveLinkActive: {
@@ -204,7 +209,6 @@ const styles = StyleSheet.create({
 
   listRightContainer: {
     alignItems: "flex-end",
-    marginLeft: 120,
   },
 
   tittleTraveLinkUsed: {
@@ -274,6 +278,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    marginRight: 10
   },
 
   buttonLoadMore: {

@@ -12,7 +12,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import BottomBarOrderForm from "./BotomBarOrderForm";
 // import {API_URL} from "@env";
 
 const Confirmation = ({
@@ -31,7 +30,7 @@ const Confirmation = ({
   const [serviceName, setServiceName] = useState("");
   const [departure, setDeparture] = useState("");
   const [destination, setDestination] = useState("");
-  const [amount,setAmount] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
@@ -50,7 +49,6 @@ const Confirmation = ({
         const serviceData = await AsyncStorage.getItem("travelinkData");
         const parsedServiceData = JSON.parse(serviceData);
         setServiceName(parsedServiceData.service);
-
       } catch (error) {
         console.log("Error fetching data: " + error);
       }
@@ -67,25 +65,26 @@ const Confirmation = ({
     "Inter-Bold": require("../fonts/Inter/static/Inter-Bold.ttf"),
   });
 
-
   const generatePayment = async () => {
     try {
-
-      await AsyncStorage.setItem("serviceName", JSON.stringify( serviceName));
-      await AsyncStorage.setItem("departure", JSON.stringify( selectedStation1));
-      await AsyncStorage.setItem("destination", JSON.stringify( selectedStation2));
-      await AsyncStorage.setItem("amount", JSON.stringify( selectedPeople));
-      await AsyncStorage.setItem("totalPrice", JSON.stringify( selectedPeople * price));
-
+      await AsyncStorage.setItem("serviceName", JSON.stringify(serviceName));
+      await AsyncStorage.setItem("departure", JSON.stringify(selectedStation1));
+      await AsyncStorage.setItem(
+        "destination",
+        JSON.stringify(selectedStation2)
+      );
+      await AsyncStorage.setItem("amount", JSON.stringify(selectedPeople));
+      await AsyncStorage.setItem(
+        "totalPrice",
+        JSON.stringify(selectedPeople * price)
+      );
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(Array.from(formData.entries())));
-
     } catch (error) {
       // Handle errors here
-      console.log('Error build Request :', error.message);
+      console.log("Error build Request :", error.message);
     }
   };
-
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -163,11 +162,14 @@ const Confirmation = ({
                 source={require("../images/warning-purple-item.png")}
                 style={{ height: 20, width: 20 }}
               ></Image>
-              <Text style={[styles.unguText, { marginLeft: 10 }]}>
-                I have read and agree to the{""}
-                <TouchableOpacity onPress={openModal}>
-                  <Text style={styles.textTC}> terms and conditions </Text>
-                </TouchableOpacity>
+              <Text style={[styles.unguText, { marginLeft: 5 }]}>
+                I have read and agree to the{" "}
+                <Text
+                  style={[styles.textTC, { alignSelf: "baseline" }]}
+                  onPress={openModal}
+                >
+                  terms and conditions
+                </Text>{" "}
                 of ticket purchase
               </Text>
               <Modal
@@ -235,44 +237,56 @@ const Confirmation = ({
               </Modal>
             </View>
           </View>
-          <View style={styles.bottomWhiteBackground}>
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 10,
-                  marginBottom: 10,
-                  marginLeft: 5,
-                }}
-              >
-                <Image
-                  source={require("../images/wallet-green-item.png")}
-                  style={{ height: 40, width: 40 }}
-                ></Image>
-                <View style={{ marginLeft: 5 }}>
-                  <Text style={styles.textYourBalance}>Your Balance</Text>
-                  <View style={styles.saldoContainer}>
-                    <Text style={styles.saldoLabel}>Rp </Text>
-                    <Text style={styles.saldoText}>
-                      {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
-                    </Text>
-                    <TouchableOpacity onPress={toggleVisibility}>
-                      <Image
-                        source={
-                          isHidden
-                            ? require("../images/visible-grey.png")
-                            : require("../images/not-visible-grey.png")
-                        }
-                        style={styles.icon}
-                      />
-                    </TouchableOpacity>
-                  </View>
+        </View>
+        <View style={styles.bottomWhiteBackground}>
+          <View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 10,
+                // marginBottom: 10,
+                marginLeft: 5,
+              }}
+            >
+              <Image
+                source={require("../images/wallet-green-item.png")}
+                style={{ height: 40, width: 40, marginLeft: 20 }}
+              ></Image>
+              <View style={{ marginLeft: 5 }}>
+                <Text style={styles.textYourBalance}>Your Balance</Text>
+                <View style={styles.saldoContainer}>
+                  <Text style={styles.saldoLabel}>Rp </Text>
+                  <Text style={[styles.saldoText, {fontSize: isHidden ? 7 : 14}]}>
+                    {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
+                  </Text>
+                  <TouchableOpacity onPress={toggleVisibility}>
+                    <Image
+                      source={
+                        isHidden
+                          ? require("../images/visible-grey.png")
+                          : require("../images/not-visible-grey.png")
+                      }
+                      style={styles.icon}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <TouchableOpacity
+                style={styles.buttomContainer}
+                onPress={handlePay}
+              >
+                <Text style={styles.buttonText}>Pay</Text>
+                <Text style={styles.pricePay}>Rp {selectedPeople * price}</Text>
+                <Image
+                  source={require("../images/next-item.png")}
+                  style={{ height: 40, width: 40, marginLeft: 10 }}
+                ></Image>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-        <BottomBarOrderForm handlePay={handlePay} selectedPeople={selectedPeople} price={price}/>
       </View>
     );
   } else {
@@ -294,6 +308,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: "left",
     zIndex: 2,
+    marginTop: -10,
   },
 
   hijauText: {
@@ -351,7 +366,7 @@ const styles = StyleSheet.create({
     color: "#F15A23",
     fontFamily: "Poppins-Bold",
     marginTop: 67,
-    marginLeft: 120,
+    marginLeft: 70,
   },
 
   unguContainer: {
@@ -371,11 +386,11 @@ const styles = StyleSheet.create({
   unguText: {
     color: "#5D21D1",
     fontFamily: "Inter-Regular",
-    fontSize: 12,
+    fontSize: 11,
   },
 
   textTC: {
-    fontSize: 12,
+    fontSize: 11,
     color: "#5D21D1",
     fontFamily: "Inter-Bold",
   },
@@ -420,17 +435,12 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
   },
+
   bottomWhiteBackground: {
-    width: 390,
-    height: 130,
     backgroundColor: "#FFFFFF",
-    // flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#fff",
-    padding: 10,
-    borderTopWidth: 2,
     borderTopColor: "#ddd",
-    // height: 60,
+    marginTop: 38,
   },
 
   textYourBalance: {
@@ -441,6 +451,8 @@ const styles = StyleSheet.create({
 
   saldoContainer: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
 
   saldoLabel: {
@@ -451,16 +463,47 @@ const styles = StyleSheet.create({
 
   saldoText: {
     color: "#005E6A",
-    fontSize: 14,
     fontFamily: "Poppins-ExtraBold",
-    letterSpacing: 3, // mengatur agar tidak ada space
+    letterSpacing: 1, // mengatur agar tidak ada space
   },
 
   icon: {
     width: 20,
     height: 20,
     marginLeft: 6,
-    marginBottom: 6,
+    // marginBottom: 6,
+  },
+
+  buttomContainer: {
+    backgroundColor: "#F15A23",
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 1,
+    elevation: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 20,
+  },
+
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontFamily: "Inter-SemiBold",
+  },
+
+  pricePay: {
+    color: "#FFFFFF",
+    fontSize: 24,
+    fontFamily: "Poppins-Bold",
+    marginLeft: 160,
   },
 });
 

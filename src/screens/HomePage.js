@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
@@ -20,6 +21,10 @@ import Constants from "expo-constants";
 const apiUrl = Constants.manifest.extra.API_URL;
 
 let lastTicket = null;
+
+const window = Dimensions.get("window");
+const windowWidth = window.width;
+const windowHeight = window.height;
 
 const HomePage = () => {
   const [isHidden, setIsHidden] = useState(false);
@@ -121,6 +126,7 @@ const HomePage = () => {
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
     "Poppins-ExtraBold": require("../fonts/Poppins/Poppins-ExtraBold.ttf"),
     "Poppins-Medium": require("../fonts/Poppins/Poppins-Medium.ttf"),
+    "Poppins-Bold": require("../fonts/Poppins/Poppins-Bold.ttf"),
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Inter-Bold": require("../fonts/Inter/static/Inter-Bold.ttf"),
@@ -130,7 +136,7 @@ const HomePage = () => {
   if (fontsLoaded) {
     return (
       <ImageBackground
-        source={require("../images/background-container-full.png")}
+        source={require("../images/background-container.png")}
         style={styles.backgroundGradient}
       >
         <View style={styles.appBar}>
@@ -145,16 +151,18 @@ const HomePage = () => {
               style={styles.logo}
             />
           </View>
-          <Image
-            source={require("../images/notification.png")}
-            style={{ marginRight: 8, height: 20, width: 16 }}
-          />
-          <TouchableOpacity onPress={handleLogOutPress}>
+          <View style={{ flexDirection: "row", marginRight: 10 }}>
             <Image
-              source={require("../images/log-out.png")}
-              style={{ height: 20, width: 20 }}
+              source={require("../images/notification.png")}
+              style={{ marginRight: 8, height: 20, width: 16 }}
             />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={handleLogOutPress}>
+              <Image
+                source={require("../images/log-out.png")}
+                style={{ height: 20, width: 20 }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <ScrollView>
           <View style={{ paddingLeft: 10, paddingRight: 10 }}>
@@ -171,7 +179,9 @@ const HomePage = () => {
             <View style={styles.balanceContainer}>
               <View style={styles.saldoContainer}>
                 <Text style={styles.saldoLabel}>Rp </Text>
-                <Text style={styles.saldoText}>
+                <Text
+                  style={[styles.saldoText, { fontSize: isHidden ? 11 : 20, marginTop: 5 }]}
+                >
                   {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
                 </Text>
               </View>
@@ -382,17 +392,17 @@ const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
     flex: 1,
+    height: windowHeight * 0.53,
   },
 
   appBar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 8,
+    padding: 10,
     // backgroundColor: 'white',
     borderBottomWidth: 2,
     borderBottomColor: "rgba(0, 0, 0, 0.1)",
-    shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     // elevation: 2,
@@ -409,7 +419,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    paddingRight: 35, // mengatur logo BNI ketengah
+    paddingRight: 20, // mengatur logo BNI ketengah
   },
 
   logo: {
@@ -421,14 +431,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 10,
+    // marginTop: 10,
   },
 
   custText: {
     color: "#FFFFFF",
     fontSize: 25,
     fontFamily: "Poppins-SemiBold",
-    marginTop: 20,
   },
 
   profileContainer: {
@@ -453,6 +462,8 @@ const styles = StyleSheet.create({
 
   saldoContainer: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
 
   saldoLabel: {
@@ -464,16 +475,14 @@ const styles = StyleSheet.create({
 
   saldoText: {
     color: "#FFFFFF",
-    fontSize: 20,
-    fontFamily: "Poppins-ExtraBold",
-    letterSpacing: 3, // mengatur agar tidak ada space
+    fontFamily: "Poppins-Bold",
+    letterSpacing: 1, // mengatur agar tidak ada space
   },
 
   icon: {
     width: 20,
     height: 20,
     marginLeft: 6,
-    marginBottom: 6,
   },
 
   accountContainer: {
@@ -493,7 +502,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#FFFFFF",
     fontFamily: "Poppins-Regular",
-    marginTop: -10,
+    marginTop: -5,
   },
 
   menuContainer: {
@@ -579,7 +588,7 @@ const styles = StyleSheet.create({
 
   nameLabel: {
     color: "#005E6A",
-    fontSize: 20,
+    fontSize: 17,
     fontFamily: "Inter-SemiBold",
     marginRight: 5,
     alignItems: "center",
@@ -639,14 +648,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    marginRight: 10
   },
 
   textContainer: {
-    marginLeft: 10,
+    flex: 1
   },
 
   destinationContainer: {
     flexDirection: "row",
+    overflow: "hidden"
   },
 
   tittleTraveLink: {
@@ -702,7 +714,6 @@ const styles = StyleSheet.create({
 
   listRightContainer: {
     alignItems: "flex-end",
-    marginLeft: 115,
   },
 
   reorderContainer: {
