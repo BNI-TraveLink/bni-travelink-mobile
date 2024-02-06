@@ -43,11 +43,11 @@ function App() {
             headerShown: false,
           }}
         >
-          {/* <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="FirstLogin" component={FirstLogin} /> */}
-          {/* <Stack.Screen name="Home" component={HomePage} />
+          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="FirstLogin" component={FirstLogin} />
+          <Stack.Screen name="Home" component={HomePage} />
           <Stack.Screen name="Purchase" component={Purchase} />
-          <Stack.Screen name="TraveLink" component={TraveLink} /> */}
+          <Stack.Screen name="TraveLink" component={TraveLink} />
           <Stack.Screen name="KrlOrderForm" component={KrlOrderForm} />
           <Stack.Screen name="Validation" component={Validation} />
           <Stack.Screen name="Receipt" component={Receipt} />
