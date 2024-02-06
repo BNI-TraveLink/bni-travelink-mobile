@@ -39,104 +39,98 @@ const Receipt = () => {
   const [requestData, setRequestData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [state, setState] = useState(null);
-  const [amount,setAmount] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [transaction,setTransaction] = useState(null);
-  const [datePart, setDatePart] = useState('');
-  const [timePart, setTimePart] = useState('');
+  const [transaction, setTransaction] = useState(null);
+  const [datePart, setDatePart] = useState("");
+  const [timePart, setTimePart] = useState("");
 
+  let createdAtDate;
 
-  let createdAtDate ;
-
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const getUserData = async () => {
           // 1. Get the balance first
-        const balanceSessionData = await AsyncStorage.getItem("balance");
-        const parsedBalanceData = JSON.parse(balanceSessionData);
-        setSaldo(parsedBalanceData.toString());
+          const balanceSessionData = await AsyncStorage.getItem("balance");
+          const parsedBalanceData = JSON.parse(balanceSessionData);
+          setSaldo(parsedBalanceData.toString());
 
-        // 2. Then, get the session data
-        const sessionData = await AsyncStorage.getItem("session");
-        const parsedSessionData = JSON.parse(sessionData);
-        setUserData(parsedSessionData);
-        setUser_id(parsedSessionData.userId);
+          // 2. Then, get the session data
+          const sessionData = await AsyncStorage.getItem("session");
+          const parsedSessionData = JSON.parse(sessionData);
+          setUserData(parsedSessionData);
+          setUser_id(parsedSessionData.userId);
 
-        const serviceData = await AsyncStorage.getItem("travelinkData");
-        const parsedServiceData = JSON.parse(serviceData);
-        setServiceName(parsedServiceData.service);
+          const serviceData = await AsyncStorage.getItem("travelinkData");
+          const parsedServiceData = JSON.parse(serviceData);
+          setServiceName(parsedServiceData.service);
 
-        const departureData = await AsyncStorage.getItem("departure");
-        const parsedDepartureData = JSON.parse(departureData);
-        setDeparture(parsedDepartureData);
+          const departureData = await AsyncStorage.getItem("departure");
+          const parsedDepartureData = JSON.parse(departureData);
+          setDeparture(parsedDepartureData);
 
-        const destinationData = await AsyncStorage.getItem("destination");
-        const parsedDestinationData = JSON.parse(destinationData);
-        setDestination(parsedDestinationData);
+          const destinationData = await AsyncStorage.getItem("destination");
+          const parsedDestinationData = JSON.parse(destinationData);
+          setDestination(parsedDestinationData);
 
-        const amountData = await AsyncStorage.getItem("amount");
-        const parsedAmountData = JSON.parse(amountData);
-        setAmount(parsedAmountData);
+          const amountData = await AsyncStorage.getItem("amount");
+          const parsedAmountData = JSON.parse(amountData);
+          setAmount(parsedAmountData);
 
-        const totalPriceData = await AsyncStorage.getItem("totalPrice");
-        const parsedTotalPricedData = JSON.parse(totalPriceData);
-        setTotalPrice(parsedTotalPricedData);
+          const totalPriceData = await AsyncStorage.getItem("totalPrice");
+          const parsedTotalPricedData = JSON.parse(totalPriceData);
+          setTotalPrice(parsedTotalPricedData);
 
-        const orderIdData = await AsyncStorage.getItem("orderId");
-        const parsedOrderIdData = JSON.parse(orderIdData);
-        setOrderId(parsedOrderIdData);
+          const orderIdData = await AsyncStorage.getItem("orderId");
+          const parsedOrderIdData = JSON.parse(orderIdData);
+          setOrderId(parsedOrderIdData);
 
-        await getTransaction(parsedOrderIdData);
+          await getTransaction(parsedOrderIdData);
         };
-  
+
         const getTransaction = async (orderId) => {
           try {
-            console.log("orderID",orderId);
+            console.log("orderID", orderId);
             const transaction = await axios.get(
               `${apiUrl}/transaction/orderId/${orderId}`
             );
-            setTransaction(transaction.data.data  );
-            console.log("transaction",transaction);
-            console.log("transaction",transaction.data);
-            console.log("date",transaction.data.createdAt);
-            await AsyncStorage.setItem("transaction", JSON.stringify( transaction.data));
-           
+            setTransaction(transaction.data.data);
+            console.log("transaction", transaction);
+            console.log("transaction", transaction.data);
+            console.log("date", transaction.data.createdAt);
+            await AsyncStorage.setItem(
+              "transaction",
+              JSON.stringify(transaction.data)
+            );
+
             createdAtDate = new Date(transaction.data.createdAt);
-          const newDatePart = createdAtDate.toISOString().split('T')[0];
-          const newTimePart = createdAtDate.toLocaleTimeString('id-ID', {
-            hour12: false, // Use 24-hour format
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-          });
-          setDatePart(newDatePart);
-          setTimePart(newTimePart);
-        
+            const newDatePart = createdAtDate.toISOString().split("T")[0];
+            const newTimePart = createdAtDate.toLocaleTimeString("id-ID", {
+              hour12: false, // Use 24-hour format
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+            setDatePart(newDatePart);
+            setTimePart(newTimePart);
+
             console.log("Date:", newDatePart);
             console.log("Time:", newTimePart);
-
-
-
           } catch (error) {
             console.log("Error fetching transaction: " + error);
           }
         };
-  
+
         // Call getUserData to initiate data retrieval
         await getUserData();
       } catch (error) {
         console.log("Error fetching data: " + error);
       }
     };
-  
+
     fetchData();
   }, []);
-  
-
- 
-
 
   if (!fontsLoaded) {
     // You can return an empty View or null for now, as we are only interested in the app bar

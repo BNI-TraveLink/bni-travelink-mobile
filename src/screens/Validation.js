@@ -43,12 +43,11 @@ const Validation = () => {
   const [requestData, setRequestData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [state, setState] = useState(null);
-  const [amount,setAmount] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
   // const orderID = "";
   let orderID = "";
-
 
   useEffect(() => {
     const getUserData = async () => {
@@ -83,11 +82,6 @@ const Validation = () => {
         const totalPriceData = await AsyncStorage.getItem("totalPrice");
         const parsedTotalPricedData = JSON.parse(totalPriceData);
         setTotalPrice(parsedTotalPricedData);
-
-
-
-
-
       } catch (error) {
         console.log("Error fetching data: " + error);
       }
@@ -105,10 +99,8 @@ const Validation = () => {
     setShowPassword(!showPassword);
   };
 
-
   const handleTransactionPassword = async () => {
     try {
-
       setIsLoggedIn(true);
       const formData = new FormData();
       formData.append("userId", user_id);
@@ -130,7 +122,6 @@ const Validation = () => {
       console.log("Response received from server:", responseLogin.data);
 
       if (responseLogin.status === 200 || responseLogin.status === 201) {
-
         // generatePayment();
 
         console.log(isLoggedIn);
@@ -142,18 +133,16 @@ const Validation = () => {
     }
   };
 
-
   const generatePayment = async () => {
     try {
-
       const formData = new FormData();
 
-      formData.append('userId', user_id);
-      formData.append('serviceName', serviceName);
-      formData.append('departure', departure);
-      formData.append('destination', destination);
-      formData.append('amount', amount);
-      formData.append('totalPrice', totalPrice);
+      formData.append("userId", user_id);
+      formData.append("serviceName", serviceName);
+      formData.append("departure", departure);
+      formData.append("destination", destination);
+      formData.append("amount", amount);
+      formData.append("totalPrice", totalPrice);
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
 
@@ -167,19 +156,17 @@ const Validation = () => {
       // setOrderId(response.data);
       orderID = response.data;
     } catch (error) {
-
-      console.log('API Error:', error.message);
+      console.log("API Error:", error.message);
     }
   };
 
   const updatePayment = async () => {
     try {
-
       const formData = new FormData();
 
-      formData.append('orderId', orderID);
-      formData.append('userid', user_id);
-      formData.append('val', ("-" + totalPrice.toString())) ;
+      formData.append("orderId", orderID);
+      formData.append("userid", user_id);
+      formData.append("val", "-" + totalPrice.toString());
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
 
@@ -194,39 +181,32 @@ const Validation = () => {
       console.log("okeh");
     } catch (error) {
       // Handle errors here
-      console.log('API Error:', error.message);
+      console.log("API Error:", error.message);
     }
   };
 
-  const generateTicket= async ()=> {
-
-   
-    try{
+  const generateTicket = async () => {
+    try {
       const orderId = orderID;
       const generateTicketResponse = await axios.post(
         `${apiUrl}/tickets/GenerateTicket/${orderId}`
       );
-    }catch(Error){
+    } catch (Error) {
       console.log("Error when Generate Ticket" + Error);
     }
-
-   
-  }
-
-
-
+  };
 
   const handlePay = async () => {
     await handleTransactionPassword();
-    await  generatePayment();
+    await generatePayment();
     console.log("orderid", orderId);
     console.log("orderiD", orderID);
     console.log("eak");
-     await  updatePayment();
-     await AsyncStorage.setItem("orderId", JSON.stringify( orderID));
+    await updatePayment();
+    await AsyncStorage.setItem("orderId", JSON.stringify(orderID));
     await generateTicket();
 
-      navigation.navigate("Receipt");
+    navigation.navigate("Receipt");
   };
 
   const handleBack = () => {

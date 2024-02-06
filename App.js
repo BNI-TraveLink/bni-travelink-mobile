@@ -16,6 +16,7 @@ import TicketDetails from "./src/screens/TicketDetails";
 import Confirmation from "./src/components/Confirmation";
 import HomeScreen from "./src/screens/homescreen";
 import TestApp from "./src/screens/TestApp";
+import EticketOut from "./src/screens/EticketOut";
 
 // export const FontThemeContext = createContext();
 const Stack = createStackNavigator();
@@ -42,19 +43,21 @@ function App() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="FirstLogin" component={FirstLogin} />
-          <Stack.Screen name="Home" component={HomePage} />
+          {/* <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="FirstLogin" component={FirstLogin} /> */}
+          {/* <Stack.Screen name="Home" component={HomePage} />
           <Stack.Screen name="Purchase" component={Purchase} />
-          <Stack.Screen name="TraveLink" component={TraveLink} />
+          <Stack.Screen name="TraveLink" component={TraveLink} /> */}
           <Stack.Screen name="KrlOrderForm" component={KrlOrderForm} />
-          <Stack.Screen name="Confirmation" component={Confirmation} />
           <Stack.Screen name="Validation" component={Validation} />
           <Stack.Screen name="Receipt" component={Receipt} />
           <Stack.Screen name="TicketDetails" component={TicketDetails} />
           <Stack.Screen name="EticketIn" component={EticketIn} />
+          <Stack.Screen name="EticketOut" component={EticketOut} />
         </Stack.Navigator>
       </NavigationContainer>
+
+      {/* <EticketOut></EticketOut> */}
       <StatusBar style="auto" />
     </View>
   );

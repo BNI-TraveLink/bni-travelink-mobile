@@ -20,8 +20,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // import Constants from 'expo-constants';
 
 import Constants from "expo-constants";
-const apiUrl = Constants.manifest.extra.API_URL;  
-// const apiUrl = process.env.EXPO_PUBLIC_API_URL;  
+const apiUrl = Constants.manifest.extra.API_URL;
+// const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 const FormLogin = ({ modalVisible, setModalVisible }) => {
   const [user_id, setUser_id] = useState("");
@@ -60,22 +60,28 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           headers: {
             "Content-Type": "multipart/form-data",
           }
-        })
+        );
 
         if (responseLogin.data) {
-          await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
+          await AsyncStorage.setItem(
+            "session",
+            JSON.stringify(responseLogin.data)
+          );
 
           const responseBalance = await axios.get(
             `${apiUrl}/balance/getBalanceByUserId/${responseLogin.data.userId}`
           );
 
-          await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
+          await AsyncStorage.setItem(
+            "balance",
+            JSON.stringify(responseBalance.data)
+          );
 
           // get last ticket transaction of the user
           const userTicketsTransaction = await axios.get(
             `${apiUrl}/transaction/userId/${responseLogin.data.userId}`
           );
-          
+
           const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
 
           await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTicketTransaction))
@@ -85,17 +91,15 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
         }
       } catch (error) {
         console.log(error);
+        setModalVisible(true); // Open the modal if there's an error
+        setIsLoggedIn(false);
+        setErrorText("User ID or MPIN is Incorrect");
+      }
+    } else {
+      console.log("Login failed. Check your User ID and MPIN.");
       setModalVisible(true); // Open the modal if there's an error
       setIsLoggedIn(false);
       setErrorText("User ID or MPIN is Incorrect");
-        
-      }
-
-    } else {
-      console.log("Login failed. Check your User ID and MPIN.");
-    setModalVisible(true); // Open the modal if there's an error
-    setIsLoggedIn(false);
-    setErrorText("User ID or MPIN is Incorrect");
     }
   };
 

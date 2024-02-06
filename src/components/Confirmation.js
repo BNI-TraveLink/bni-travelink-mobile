@@ -435,7 +435,6 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
   },
-
   bottomWhiteBackground: {
     backgroundColor: "#FFFFFF",
     justifyContent: "space-between",
