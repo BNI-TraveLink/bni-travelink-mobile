@@ -11,6 +11,7 @@ import {
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Constants from "expo-constants";
 const API_URL = Constants.manifest.extra.API_URL;
@@ -27,12 +28,15 @@ const EticketIn = ({ selectedPeople }) => {
   useEffect(() => {
     const getTicketsDetail = async () => {
       try {
-        const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
+        const transactionData = await AsyncStorage.getItem("transaction");
+        const parsedTransactionData = JSON.parse(transactionData);
+        // const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
+        const fkTransaction = parsedTransactionData.skTransaction;
         const response = await axios.get(`${API_URL}/tickets/${fkTransaction}`);
         const data = response.data;
 
         const extractedData = data.map((ticket) => ({
-          departure: ticket.transaction.departure,
+          destination: ticket.transaction.destination,
         }));
 
         setTicketsDetail(extractedData);
@@ -70,7 +74,7 @@ const EticketIn = ({ selectedPeople }) => {
   //   "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
   //   "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
   // });
-  //   const navigation = useNavigation();
+    const navigation = useNavigation();
 
   if (!fontsLoaded) {
     // You can return an empty View or null for now, as we are only interested in the app bar
@@ -191,7 +195,7 @@ const EticketIn = ({ selectedPeople }) => {
                           { textAlign: "center", fontSize: 13 },
                         ]}
                       >
-                        {ticket.departure}
+                        {ticket.destination}
                       </Text>
                       <Image
                         source={require("../images/qris.png")}

@@ -60,7 +60,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           headers: {
             "Content-Type": "multipart/form-data",
           }
-        );
+        });
 
         if (responseLogin.data) {
           await AsyncStorage.setItem(
