@@ -82,8 +82,11 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
             `${apiUrl}/transaction/userId/${responseLogin.data.userId}`
           );
 
+          // const historiesTransaction = userTicketsTransaction.data.length <= 9 ? userTicketsTransaction.data : userTicketsTransaction.data.slice(-10);
+          const historiesTransaction = userTicketsTransaction.data;
           const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
 
+          await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
           await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTicketTransaction))
 
           // Navigasi ke halaman Home setelah login berhasil
@@ -185,7 +188,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
                       placeholder="Enter your MPIN"
                       secureTextEntry={!showMpin}
                       value={mpin}
-                      autoFocus={true}
+                      autoFocus={false}
                       onChangeText={(text) => setMpin(text)}
                     />
                     <TouchableOpacity

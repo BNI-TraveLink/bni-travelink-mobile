@@ -73,15 +73,15 @@ const TraveLink = () => {
     try {
       await getListStations("LRT");
 
-      setTimeout(() => {}, 200);
-
-      if (stations.length > 0) await navigation.navigate("KrlOrderForm");
+      if (stations.length > 0)
+      await navigation.navigate("KrlOrderForm");
     } catch (error) {
       console.log("Error hitting the API:", error);
     }
   };
 
   const getListStations = async (travelinkService) => {
+    await AsyncStorage.removeItem("reorder");
     const url = `${apiUrl}/service/getStationByServiceName`;
 
     try {
