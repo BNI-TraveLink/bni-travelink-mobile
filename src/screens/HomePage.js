@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
@@ -14,6 +15,16 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BottomBarPage from "../components/BottomBarPage";
+import moment from 'moment';
+
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;
+
+let lastTicket = null;
+
+const window = Dimensions.get("window");
+const windowWidth = window.width;
+const windowHeight = window.height;
 
 const HomePage = () => {
   const [isHidden, setIsHidden] = useState(false);
@@ -21,8 +32,11 @@ const HomePage = () => {
   const [saldo, setSaldo] = useState(0);
   const [userData, setUserData] = useState("");
 
+  const [stations, setStations] = useState([]);
+
   useEffect(() => {
     const getUserData = async () => {
+      lastTicket = null;
       try {
         // 1. Get the balance first
         const balanceSessionData = await AsyncStorage.getItem("balance");
@@ -33,20 +47,18 @@ const HomePage = () => {
         const sessionData = await AsyncStorage.getItem("session");
         const parsedSessionData = JSON.parse(sessionData);
         setUserData(parsedSessionData);
+
+        // 3. Get the last ticket transaction
+        const lastTicketTransaction = await AsyncStorage.getItem("lastTicketTransaction");
+        const parsedLastTicketTransaction = JSON.parse(lastTicketTransaction);
+        lastTicket = parsedLastTicketTransaction;
       } catch (error) {
-        console.log("Error fetching balance: " + error);
+        console.log("Error fetching data: " + error);
       }
     };
 
     getUserData();
   }, []);
-
-  const getAsyncStorage = async ({ field }) => {
-    const sessionData = await AsyncStorage.getItem(field);
-    const parsedData = JSON.parse(sessionData);
-
-    return parsedData;
-  };
 
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
@@ -62,12 +74,51 @@ const HomePage = () => {
     navigation.navigate("Purchase");
   };
 
-  const handleHistoryActive = () => {
-    navigation.navigate("TraveLink");
+  const handleHistoryActive = async () => {
+    await AsyncStorage.setItem("transaction", JSON.stringify(lastTicket));
+    navigation.navigate("EticketIn");
   };
 
-  const handleHistoryReorder = () => {
-    navigation.navigate("TraveLink");
+  const handleHistoryReorder = async () => {
+    setStations([]);
+
+    try {
+      await AsyncStorage.setItem("reorder", JSON.stringify(lastTicket));
+      await getListStations(lastTicket.service.name);
+      navigation.navigate("KrlOrderForm");
+    } catch (error) {
+      console.log('Error hitting the API:', error);
+    }
+  };
+
+  const getListStations = async (travelinkService) => {
+    const url = `${apiUrl}/service/getStationByServiceName`;
+
+    try {
+      const response = await axios.get(url, {
+        params: {
+          serviceName: travelinkService,
+        },
+      });
+
+      const newStations = response.data.map((station) => ({
+        label: station.station_name,
+        value: station.station_name,
+      }));
+
+      setStations(newStations);
+
+      const dataToSave = {
+        service: travelinkService,
+        stations: newStations, // Use the updated stations
+        price: response.data[0].fkService.price
+         };
+
+      await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
+    } catch (error) {
+      console.log('Error getting station data:', error);
+      throw error; // Rethrow the error to be caught in handleMrtPress
+    }
   };
 
   const [fontsLoaded] = useFonts({
@@ -75,6 +126,7 @@ const HomePage = () => {
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
     "Poppins-ExtraBold": require("../fonts/Poppins/Poppins-ExtraBold.ttf"),
     "Poppins-Medium": require("../fonts/Poppins/Poppins-Medium.ttf"),
+    "Poppins-Bold": require("../fonts/Poppins/Poppins-Bold.ttf"),
     "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Inter-Bold": require("../fonts/Inter/static/Inter-Bold.ttf"),
@@ -84,7 +136,7 @@ const HomePage = () => {
   if (fontsLoaded) {
     return (
       <ImageBackground
-        source={require("../images/background-container-full.png")}
+        source={require("../images/background-container.png")}
         style={styles.backgroundGradient}
       >
         <View style={styles.appBar}>
@@ -99,16 +151,18 @@ const HomePage = () => {
               style={styles.logo}
             />
           </View>
-          <Image
-            source={require("../images/notification.png")}
-            style={{ marginRight: 8, height: 20, width: 16 }}
-          />
-          <TouchableOpacity onPress={handleLogOutPress}>
+          <View style={{ flexDirection: "row", marginRight: 10 }}>
             <Image
-              source={require("../images/log-out.png")}
-              style={{ height: 20, width: 20 }}
+              source={require("../images/notification.png")}
+              style={{ marginRight: 8, height: 20, width: 16 }}
             />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={handleLogOutPress}>
+              <Image
+                source={require("../images/log-out.png")}
+                style={{ height: 20, width: 20 }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <ScrollView>
           <View style={{ paddingLeft: 10, paddingRight: 10 }}>
@@ -125,7 +179,9 @@ const HomePage = () => {
             <View style={styles.balanceContainer}>
               <View style={styles.saldoContainer}>
                 <Text style={styles.saldoLabel}>Rp </Text>
-                <Text style={styles.saldoText}>
+                <Text
+                  style={[styles.saldoText, { fontSize: isHidden ? 11 : 20, marginTop: 5 }]}
+                >
                   {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
                 </Text>
               </View>
@@ -198,91 +254,63 @@ const HomePage = () => {
               <Text style={styles.pointText}>MyPoints</Text>
               <Text style={styles.pointText}>1.946</Text>
             </View>
-            <Text style={styles.tittleBNITraveLink}>My BNI TraveLink</Text>
-            <TouchableOpacity onPress={handleHistoryActive}>
-              <View style={styles.historyContainer}>
-                <View style={styles.historyContent}>
-                  <View style={styles.listContainer}>
-                    <Image
-                      source={require("../images/commuter-historyItem.png")}
-                      style={{ height: 40, width: 40 }}
-                    ></Image>
-                    <View style={styles.textContainer}>
-                      <Text style={styles.tittleTraveLink}>Commuter Line</Text>
-                      <View style={styles.destinationContainer}>
-                        <Text style={styles.tittleDestination}>
-                          Jakarta Kota
-                        </Text>
-                        <Text style={styles.tittleDestination}>-</Text>
-                        <Text style={styles.tittleDestination}>
-                          Tanjung Barat
-                        </Text>
-                      </View>
-                      <Text style={styles.tittleDate}>
-                        Valid until 15 Feb 2024, 23.59
-                      </Text>
-                    </View>
-                    <View style={styles.listRightContainer}>
-                      <View style={styles.activeContainer}>
-                        <View style={styles.activeContent}>
-                          <Text style={styles.tittleActive}> Active </Text>
+            {
+              lastTicket != null
+              ? (
+              <View>
+                <Text style={styles.tittleBNITraveLink}>My BNI TraveLink</Text>
+                <TouchableOpacity onPress={lastTicket.active ? handleHistoryActive : handleHistoryReorder}>
+                {/* <TouchableOpacity onPress={lastTicket.active ? handleHistoryReorder : handleHistoryActive}> */}
+                  <View style={styles.historyContainer}>
+                    <View style={styles.historyContent}>
+                      <View style={styles.listContainer}>
+                        <Image
+                          source={require("../images/commuter-historyItem.png")}
+                          style={{ height: 40, width: 40 }}
+                        ></Image>
+                        <View style={styles.textContainer}>
+                          <Text style={styles.tittleTraveLink}>{lastTicket.service.name}</Text>
+                          <View style={styles.destinationContainer}>
+                            <Text style={styles.tittleDestination}>
+                              {/* Jakarta Kota */}
+                              {lastTicket.departure}
+                            </Text>
+                            <Text style={styles.tittleDestination}>-</Text>
+                            <Text style={styles.tittleDestination}>
+                              {/* Tanjung Barat */}
+                              {lastTicket.destination}
+                            </Text>
+                          </View>
+                          <Text style={styles.tittleDate}>
+                            {/* Valid until 15 Feb 2024, 23.59 */}
+                            Valid until {moment(lastTicket.expiredAt).format('D MMM YYYY,').concat(' 00.00')}
+                          </Text>
+                        </View>
+                        <View style={styles.listRightContainer}>
+                          {/* <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
+                            <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}> */}
+                          <View style={styles.activeContainer}>
+                            <View style={styles.activeContainer}>
+                              <Text style={styles.tittleActive}> {lastTicket.active ? "Active" : "Reorder"} </Text>
+                            </View>
+                          </View>
+                          <Text
+                            style={[
+                              styles.tittleOrderID,
+                              { marginTop: 12, marginRight: 10 },
+                            ]}
+                          >
+                            #{lastTicket.amount.toString().padStart(4, '0')}
+                          </Text>
                         </View>
                       </View>
-                      <Text
-                        style={[
-                          styles.tittleOrderID,
-                          { marginTop: 12, marginRight: 10 },
-                        ]}
-                      >
-                        #0003
-                      </Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleHistoryReorder}>
-              <View style={styles.historyContainer}>
-                <View style={styles.historyContent}>
-                  <View style={styles.listContainer}>
-                    <Image
-                      source={require("../images/commuter-historyItem.png")}
-                      style={{ height: 40, width: 40 }}
-                    ></Image>
-                    <View style={styles.textContainer}>
-                      <Text style={styles.tittleTraveLink}>Commuter Line</Text>
-                      <View style={styles.destinationContainer}>
-                        <Text style={styles.tittleDestination}>
-                          Jakarta Kota
-                        </Text>
-                        <Text style={styles.tittleDestination}>-</Text>
-                        <Text style={styles.tittleDestination}>
-                          Tanjung Barat
-                        </Text>
-                      </View>
-                      <Text style={styles.tittleDate}>
-                        Valid until 15 Feb 2024, 23.59
-                      </Text>
-                    </View>
-                    <View style={styles.listRightContainer}>
-                      <View style={styles.reorderContainer}>
-                        <View style={styles.reorderContent}>
-                          <Text style={styles.tittleReorder}>Reorder</Text>
-                        </View>
-                      </View>
-                      <Text
-                        style={[
-                          styles.tittleOrderID,
-                          { marginTop: 12, marginRight: 10 },
-                        ]}
-                      >
-                        #0003
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
+              ) :
+              null
+            }
             <Text style={styles.eWalletsText}>My E-Wallets</Text>
             <ScrollView
               horizontal={true}
@@ -364,17 +392,17 @@ const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
     flex: 1,
+    height: windowHeight * 0.53,
   },
 
   appBar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 8,
+    padding: 10,
     // backgroundColor: 'white',
     borderBottomWidth: 2,
     borderBottomColor: "rgba(0, 0, 0, 0.1)",
-    shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     // elevation: 2,
@@ -391,7 +419,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    paddingRight: 35, // mengatur logo BNI ketengah
+    paddingRight: 20, // mengatur logo BNI ketengah
   },
 
   logo: {
@@ -403,14 +431,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 10,
+    // marginTop: 10,
   },
 
   custText: {
     color: "#FFFFFF",
     fontSize: 25,
     fontFamily: "Poppins-SemiBold",
-    marginTop: 20,
   },
 
   profileContainer: {
@@ -435,6 +462,8 @@ const styles = StyleSheet.create({
 
   saldoContainer: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
 
   saldoLabel: {
@@ -446,16 +475,14 @@ const styles = StyleSheet.create({
 
   saldoText: {
     color: "#FFFFFF",
-    fontSize: 20,
-    fontFamily: "Poppins-ExtraBold",
-    letterSpacing: 3, // mengatur agar tidak ada space
+    fontFamily: "Poppins-Bold",
+    letterSpacing: 1, // mengatur agar tidak ada space
   },
 
   icon: {
     width: 20,
     height: 20,
     marginLeft: 6,
-    marginBottom: 6,
   },
 
   accountContainer: {
@@ -475,7 +502,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#FFFFFF",
     fontFamily: "Poppins-Regular",
-    marginTop: -10,
+    marginTop: -5,
   },
 
   menuContainer: {
@@ -561,7 +588,7 @@ const styles = StyleSheet.create({
 
   nameLabel: {
     color: "#005E6A",
-    fontSize: 20,
+    fontSize: 17,
     fontFamily: "Inter-SemiBold",
     marginRight: 5,
     alignItems: "center",
@@ -621,14 +648,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    marginRight: 10
   },
 
   textContainer: {
-    marginLeft: 10,
+    flex: 1
   },
 
   destinationContainer: {
     flexDirection: "row",
+    overflow: "hidden"
   },
 
   tittleTraveLink: {
@@ -684,7 +714,6 @@ const styles = StyleSheet.create({
 
   listRightContainer: {
     alignItems: "flex-end",
-    marginLeft: 115,
   },
 
   reorderContainer: {

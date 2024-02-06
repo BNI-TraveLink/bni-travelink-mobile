@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { View } from "react-native";
 import GridHomeMenu from "../components/GridHomeMenu";
@@ -14,7 +15,14 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
-import {API_URL} from "@env";
+// import {API_URL} from "@env";
+
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;
+
+const window = Dimensions.get("window");
+const windowWidth = window.width;
+const windowHeight = window.height;
 
 const TraveLink = () => {
   const navigation = useNavigation();
@@ -75,7 +83,7 @@ const TraveLink = () => {
   };
 
   const getListStations = async (travelinkService) => {
-    const url = `${API_URL}/service/getStationByServiceName`;
+    const url = `${apiUrl}/service/getStationByServiceName`;
 
     try {
       const response = await axios.get(url, {
@@ -170,15 +178,15 @@ const TraveLink = () => {
 const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
-    height: 77,
-    flex: 1
+    flex: 1,
+    height: windowHeight * 0.1,
   },
 
   appBar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 8,
+    padding: 10,
     // backgroundColor: 'white',
     borderBottomWidth: 2,
     borderBottomColor: "rgba(0, 0, 0, 0.1)",

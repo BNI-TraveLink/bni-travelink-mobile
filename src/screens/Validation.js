@@ -11,7 +11,10 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL } from "@env";
+// import {API_URL} from "@env";
+
+import Constants from "expo-constants";
+const apiUrl = Constants.manifest.extra.API_URL;
 
 const fontTheme = {
   regular: "Inter-Regular",
@@ -106,7 +109,7 @@ const Validation = () => {
       console.log("Sending request to server...");
 
       const responseLogin = await axios.post(
-        `${API_URL}/logins/TransactionPasswordHash`,
+        `${apiUrl}/logins/TransactionPasswordHash`,
         formData,
         {
           headers: {
@@ -143,15 +146,12 @@ const Validation = () => {
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
 
-      const response = await axios.post(
-        `${API_URL}/payment/GeneratePayment`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
+      const response = await axios.post(`${apiUrl}/payment/GeneratePayment`, formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
 
       // setOrderId(response.data);
       orderID = response.data;
@@ -170,15 +170,11 @@ const Validation = () => {
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
 
-      const response = await axios.post(
-        `${API_URL}/payment/updatePayment`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
+      const response = await axios.post(`${apiUrl}/payment/updatePayment`, formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
 
       // Set the API response in the state
       //generate tiket disini
@@ -193,7 +189,7 @@ const Validation = () => {
     try {
       const orderId = orderID;
       const generateTicketResponse = await axios.post(
-        `${API_URL}/tickets/GenerateTicket/${orderId}`
+        `${apiUrl}/tickets/GenerateTicket/${orderId}`
       );
     } catch (Error) {
       console.log("Error when Generate Ticket" + Error);
