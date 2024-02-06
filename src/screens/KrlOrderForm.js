@@ -24,6 +24,8 @@ const window = Dimensions.get("window");
 const windowWidth = window.width;
 const windowHeight = window.height;
 
+let dataUsedToReorder = [];
+
 const KrlOrderForm = () => {
   const [stations, setStations] = useState([]);
   const [serviceName, setServiceName] = useState("");
@@ -53,6 +55,13 @@ const KrlOrderForm = () => {
   };
 
   useEffect(() => {
+    const setDefault = () => {
+      setSelectedStation1(null);
+      setSelectedStation2(null);
+      setSelectedPeople(null);
+      dataUsedToReorder = [];
+    }
+
     const getStations = async () => {
       try {
         const storedData = await AsyncStorage.getItem("travelinkData");
@@ -81,26 +90,18 @@ const KrlOrderForm = () => {
       try {
         const reorderData = await AsyncStorage.getItem("reorder");
         const parsedReorderData = JSON.parse(reorderData);
-        setDataUsedToReorder(parsedReorderData);
+        await AsyncStorage.removeItem("reorder");
+        dataUsedToReorder = parsedReorderData;
 
-        isReorder = true;
-
-        if (isReorder) {
-          setSelectedStation1(dataUsedToReorder.departure);
-          setSelectedStation2(dataUsedToReorder.destination);
-          setSelectedPeople(dataUsedToReorder.amount);
-        }
-
-        console.log("isReorder is true")
-        console.log(selectedStation1)
-        console.log(selectedStation2)
-        console.log(selectedPeople)
-        console.log("Done isReorder")
+        setSelectedStation1(dataUsedToReorder.departure);
+        setSelectedStation2(dataUsedToReorder.destination);
+        setSelectedPeople(dataUsedToReorder.amount);
       } catch (error) {
         console.error("Error while getting the reorder data: ", error);
       }
     }
 
+    setDefault();
     getStations();
     reorder();
   }, []);
@@ -158,7 +159,6 @@ const KrlOrderForm = () => {
             />
           </TouchableOpacity>
           <View style={styles.centerContent}>
-            {/* <Text style={styles.logoText}>Commuter Line</Text> */}
             <Text style={styles.logoText}>{serviceName}</Text>
           </View>
         </View>
@@ -208,7 +208,7 @@ const KrlOrderForm = () => {
                   />
                   {stations && (
                     <Dropdown
-                      placeholderStyle={styles.textSelectStation}
+                      placeholderStyle={selectedStation1 ? styles.selectedTextStyle : styles.textSelectStation}
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
@@ -225,7 +225,7 @@ const KrlOrderForm = () => {
                       onChangeText={(item) => {
                         setSelectedStation1(item.value);
                       }}
-                      placeholder="Select Departure Station"
+                      placeholder={selectedStation1 ? selectedStation1 : "Select Departure Station"}
                       style={styles.placeholderStyle}
                     />
                   )}
@@ -255,7 +255,7 @@ const KrlOrderForm = () => {
                   />
                   {stations && (
                     <Dropdown
-                      placeholderStyle={styles.textSelectStation}
+                      placeholderStyle={selectedStation1 ? styles.selectedTextStyle : styles.textSelectStation}
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
@@ -272,7 +272,7 @@ const KrlOrderForm = () => {
                       onChangeText={(item) => {
                         setSelectedStation2(item.value);
                       }}
-                      placeholder="Select Destination Station"
+                      placeholder={selectedStation1 ? selectedStation2 : "Select Departure Station"}
                       style={styles.placeholderStyle}
                     />
                   )}
@@ -286,7 +286,7 @@ const KrlOrderForm = () => {
                     style={{ height: 40, width: 40, marginTop: 15 }}
                   />
                   <Dropdown
-                    placeholderStyle={styles.textSelectStation}
+                    placeholderStyle={selectedStation1 ? styles.selectedTextStyle : styles.textSelectStation}
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}

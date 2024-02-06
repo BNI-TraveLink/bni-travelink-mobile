@@ -287,10 +287,10 @@ const HomePage = () => {
                           </Text>
                         </View>
                         <View style={styles.listRightContainer}>
-                          {/* <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
-                            <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}> */}
-                          <View style={styles.activeContainer}>
-                            <View style={styles.activeContainer}>
+                          <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
+                            <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
+                          {/* <View style={styles.activeContainer}>
+                            <View style={styles.activeContainer}> */}
                               <Text style={styles.tittleActive}> {lastTicket.active ? "Active" : "Reorder"} </Text>
                             </View>
                           </View>
