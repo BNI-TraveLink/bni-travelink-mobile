@@ -65,9 +65,6 @@ const Confirmation = () => {
             style={styles.backArrowImage}
           />
         </TouchableOpacity>
-
-        {/* Title (Purchase) */}
-        <Text style={styles.title}>Validation</Text>
       </View>
 
       {/* Image in the middle below App Bar */}
@@ -188,11 +185,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5F5F5",
   },
+
   PurchaseImage: {
     width: "100%",
     height: 88,
     resizeMode: "cover",
   },
+
   appBarContainer: {
     position: "absolute",
     top: 55,
@@ -202,21 +201,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   backArrow: {
     position: "absolute",
     left: 16,
   },
+
   title: {
     color: "#FFFFFF",
     fontSize: 20,
     fontFamily: fontTheme.semiBold,
     marginRight: 140,
   },
+
   centeredImageContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
+
   centeredImage: {
     width: 57.83,
     height: 58,
@@ -224,6 +227,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     resizeMode: "cover",
   },
+
   overlayImage: {
     position: "absolute",
     width: 44.86,
@@ -232,6 +236,7 @@ const styles = StyleSheet.create({
     top: 50,
     marginBottom: 15,
   },
+
   paymentContainer: {
     backgroundColor: "#FFFFFF",
     width: 362,
@@ -250,6 +255,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 5,
   },
+
   paymentConfirmationRow: {
     paddingTop: 8,
     flexDirection: "row",

@@ -9,15 +9,20 @@ import {
   Image,
   ImageBackground,
   Modal,
+  Dimensions,
 } from "react-native";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import { Dropdown } from "react-native-element-dropdown";
+import { Ionicons } from "@expo/vector-icons";
 import Confirmation from "../components/Confirmation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import BottomBarOrderForm from "../components/BotomBarOrderForm";
 import axios from "axios";
 // import { API_URL } from "@env";
+
+const window = Dimensions.get("window");
+const windowWidth = window.width;
+const windowHeight = window.height;
 
 const KrlOrderForm = () => {
   const [stations, setStations] = useState([]);
@@ -32,6 +37,14 @@ const KrlOrderForm = () => {
 
   let isReorder = false;
   const [dataUsedToReorder, setDataUsedToReorder] = useState([]);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const openModal = () => {
+    setModalVisible(true);
+  };
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   const navigation = useNavigation();
 
@@ -56,7 +69,6 @@ const KrlOrderForm = () => {
           setUserId(parsedSessionData.userId);
           console.log("login response", loginResponse.userId);
           console.log("userid", userId);
-
         } else {
           console.log("No stations found in AsyncStorage");
         }
@@ -100,13 +112,13 @@ const KrlOrderForm = () => {
   });
 
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
-  
+
   const handleExchange = () => {
     const tempStation = selectedStation1;
     setSelectedStation1(selectedStation2);
     setSelectedStation2(tempStation);
   };
-  
+
   const people = [
     { label: "1 people", value: 1 },
     { label: "2 people", value: 2 },
@@ -117,7 +129,12 @@ const KrlOrderForm = () => {
 
   const handleFormSubmit = () => {
     if (selectedStation1 && selectedStation2 && selectedPeople) {
-      setIsConfirmationVisible(true);
+      if (selectedStation1 !== selectedStation2) {
+        setIsConfirmationVisible(true);
+      } else {
+        setIsConfirmationVisible(false);
+        alert("Departure and destination stations should be different.");
+      }
     } else {
       setIsConfirmationVisible(false);
     }
@@ -148,11 +165,39 @@ const KrlOrderForm = () => {
         <View style={{ paddingLeft: 10, paddingRight: 10, height: 390 }}>
           <View>
             <View style={styles.menuContainer}>
-              <View style={{ alignItems: "center" }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image
                   source={require("../images/kai-commuter-logo.png")}
-                  style={styles.kaiLogo}
+                  style={[styles.kaiLogo, { marginLeft: 133 }]}
                 />
+                <TouchableOpacity style={styles.buttonMaps} onPress={openModal}>
+                  <Image
+                    source={require("../images/maps-item.png")}
+                    style={{ height: 14, width: 16}}
+                  />
+                  <Text style={styles.buttonTextMaps}>View Rute</Text>
+                </TouchableOpacity>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => setModalVisible(false)}
+                >
+                  <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                      <TouchableOpacity
+                        style={styles.closeButton}
+                        onPress={() => setModalVisible(false)}
+                      >
+                        <Ionicons name="close" size={20} color="#005E6A"/>
+                      </TouchableOpacity>
+                      <Image
+                        source={require("../images/rute-item.png")}
+                        style={{ height: 430, width: 300 }}
+                      />
+                    </View>
+                  </View>
+                </Modal>
               </View>
               <View style={[styles.contentContainer, { paddingBottom: 20 }]}>
                 <Text style={styles.textContainer}>From</Text>
@@ -194,7 +239,7 @@ const KrlOrderForm = () => {
                       height: 40,
                       width: 40,
                       marginTop: -20,
-                      marginLeft: 340,
+                      marginLeft: 320,
                     }}
                   />
                 </TouchableOpacity>
@@ -267,14 +312,13 @@ const KrlOrderForm = () => {
           </View>
         </View>
         <Confirmation
-            // set order from krl
-            isVisibleConfirm={isConfirmationVisible}
-            selectedStation1={selectedStation1}
-            selectedStation2={selectedStation2}
-            selectedPeople={selectedPeople}
-            price={price}
-          />
-        {/* <BottomBarOrderForm /> */}
+          // set order from krl
+          isVisibleConfirm={isConfirmationVisible}
+          selectedStation1={selectedStation1}
+          selectedStation2={selectedStation2}
+          selectedPeople={selectedPeople}
+          price={price}
+        />
       </ImageBackground>
     );
   } else {
@@ -285,14 +329,15 @@ const KrlOrderForm = () => {
 const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
-    height: 77,
+    flex: 1,
+    height: windowHeight * 0.1,
   },
 
   appBar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 8,
+    padding: 10,
     borderBottomWidth: 2,
     borderBottomColor: "rgba(0, 0, 0, 0.1)",
     shadowColor: "black",
@@ -334,31 +379,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
-  modalContainer: {
-    position: "absolute",
-    top: 200,
-    left: 0,
-    right: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 0,
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-
-  modalContent: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    padding: 16,
-  },
-
   //container di bawah KAI
   contentContainer: {
     padding: 8,
@@ -381,7 +401,7 @@ const styles = StyleSheet.create({
     borderColor: "#ADADAD",
     paddingVertical: 5,
     marginLeft: 10,
-    width: 270,
+    width: 255,
   },
 
   textSelectStation: {
@@ -407,6 +427,51 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+  },
+
+  buttonMaps: {
+    borderRadius: 20,
+    borderWidth: 0.5,
+    padding: 8,
+    backgroundColor: "white",
+    borderColor: "#00A2B7",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    fontFamily: "Poppins-SemiBold",
+    marginLeft: 25,
+  },
+
+  buttonTextMaps: {
+    color: "#00A2B7",
+    fontSize: 10,
+    fontFamily: "Poppins-SemiBold",
+    textAlign: "center",
+    marginLeft: 8,
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+
+  modalContent: {
+    backgroundColor: "#FFFFFF",
+    padding: 20,
+    borderRadius: 10,
+  },
+
+  closeButton: {
+    position: "absolute",
+    top: 5,
+    right: 5,
+    padding: 0,
+  },
+
+  closeButtonText: {
+    fontSize: 18,
   },
 });
 
