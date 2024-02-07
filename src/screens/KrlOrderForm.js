@@ -37,9 +37,6 @@ const KrlOrderForm = () => {
   const [selectedStation2, setSelectedStation2] = useState(null);
   const [selectedPeople, setSelectedPeople] = useState(null);
 
-  let isReorder = false;
-  const [dataUsedToReorder, setDataUsedToReorder] = useState([]);
-
   const [modalVisible, setModalVisible] = useState(false);
   const openModal = () => {
     setModalVisible(true);
@@ -255,7 +252,7 @@ const KrlOrderForm = () => {
                   />
                   {stations && (
                     <Dropdown
-                      placeholderStyle={selectedStation1 ? styles.selectedTextStyle : styles.textSelectStation}
+                      placeholderStyle={selectedStation2 ? styles.selectedTextStyle : styles.textSelectStation}
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
@@ -272,7 +269,7 @@ const KrlOrderForm = () => {
                       onChangeText={(item) => {
                         setSelectedStation2(item.value);
                       }}
-                      placeholder={selectedStation1 ? selectedStation2 : "Select Departure Station"}
+                      placeholder={selectedStation2 ? selectedStation2 : "Select Departure Station"}
                       style={styles.placeholderStyle}
                     />
                   )}
@@ -286,7 +283,7 @@ const KrlOrderForm = () => {
                     style={{ height: 40, width: 40, marginTop: 15 }}
                   />
                   <Dropdown
-                    placeholderStyle={selectedStation1 ? styles.selectedTextStyle : styles.textSelectStation}
+                    placeholderStyle={selectedPeople ? styles.selectedTextStyle : styles.textSelectStation}
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
