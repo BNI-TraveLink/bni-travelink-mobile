@@ -73,8 +73,7 @@ const TraveLink = () => {
     try {
       await getListStations("LRT");
 
-      if (stations.length > 0)
-      await navigation.navigate("KrlOrderForm");
+      navigation.navigate("KrlOrderForm");
     } catch (error) {
       console.log("Error hitting the API:", error);
     }
