@@ -146,12 +146,15 @@ const Validation = () => {
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
 
-      const response = await axios.post(`${apiUrl}/payment/GeneratePayment`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-
+      const response = await axios.post(
+        `${apiUrl}/payment/GeneratePayment`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
 
       // setOrderId(response.data);
       orderID = response.data;
@@ -170,11 +173,15 @@ const Validation = () => {
 
       // await AsyncStorage.setItem("paymentRequest", JSON.stringify(formData));
 
-      const response = await axios.post(`${apiUrl}/payment/updatePayment`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
+      const response = await axios.post(
+        `${apiUrl}/payment/updatePayment`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
 
       // Set the API response in the state
       //generate tiket disini
@@ -197,6 +204,13 @@ const Validation = () => {
   };
 
   const handlePay = async () => {
+    if (saldo < 20000) {
+      // Tampilkan pop-up alert
+      alert(
+        "Your transaction cannot be processed. Your debit account has an insufficient balance. Ensure that your balance is available and repeat your transaction."
+      );
+      return; // Hentikan eksekusi jika saldo tidak mencukupi
+    }
     await handleTransactionPassword();
     await generatePayment();
     console.log("orderid", orderId);
