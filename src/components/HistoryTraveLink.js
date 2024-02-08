@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Text, View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -50,6 +50,7 @@ const HistoryTraveLink = () => {
     return (
       <View style={{ paddingLeft: 10, paddingRight: 10 }}>
         <Text style={styles.tittleHistory}>History</Text>
+        <ScrollView>
         {userHistoriesTransaction.length > 0 && userHistoriesTransaction.map((ticket, index) => (
           <View key={ticket.skTransaction} style={ticket.active ? styles.historyContainerActive : styles.historyContainerUsed}>
             <View style={ticket.active ? styles.historyContentActive : styles.historyContentUsed}>
@@ -90,6 +91,8 @@ const HistoryTraveLink = () => {
             </View>
           </View>
         ))}
+        </ScrollView>
+        
         {/* <View style={{marginTop: 60}}>
           <TouchableOpacity
             style={styles.buttonLoadMore}

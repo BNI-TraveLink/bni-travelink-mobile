@@ -57,7 +57,7 @@ const KrlOrderForm = () => {
       setSelectedStation2(null);
       setSelectedPeople(null);
       dataUsedToReorder = [];
-    }
+    };
 
     const getStations = async () => {
       try {
@@ -96,7 +96,7 @@ const KrlOrderForm = () => {
       } catch (error) {
         console.error("Error while getting the reorder data: ", error);
       }
-    }
+    };
 
     setDefault();
     getStations();
@@ -170,7 +170,7 @@ const KrlOrderForm = () => {
                 <TouchableOpacity style={styles.buttonMaps} onPress={openModal}>
                   <Image
                     source={require("../images/maps-item.png")}
-                    style={{ height: 14, width: 16}}
+                    style={{ height: 14, width: 16 }}
                   />
                   <Text style={styles.buttonTextMaps}>View Rute</Text>
                 </TouchableOpacity>
@@ -186,11 +186,12 @@ const KrlOrderForm = () => {
                         style={styles.closeButton}
                         onPress={() => setModalVisible(false)}
                       >
-                        <Ionicons name="close" size={20} color="#005E6A"/>
+                        <Ionicons name="close" size={20} color="#005E6A" />
                       </TouchableOpacity>
                       <Image
-                        source={require("../images/rute-item.png")}
+                        source={require("../images/ruteKRL-item.png")}
                         style={{ height: 430, width: 300 }}
+                        resizeMode="contain"
                       />
                     </View>
                   </View>
@@ -205,7 +206,11 @@ const KrlOrderForm = () => {
                   />
                   {stations && (
                     <Dropdown
-                      placeholderStyle={selectedStation1 ? styles.selectedTextStyle : styles.textSelectStation}
+                      placeholderStyle={
+                        selectedStation1
+                          ? styles.selectedTextStyle
+                          : styles.textSelectStation
+                      }
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
@@ -222,7 +227,11 @@ const KrlOrderForm = () => {
                       onChangeText={(item) => {
                         setSelectedStation1(item.value);
                       }}
-                      placeholder={selectedStation1 ? selectedStation1 : "Select Departure Station"}
+                      placeholder={
+                        selectedStation1
+                          ? selectedStation1
+                          : "Select Departure Station"
+                      }
                       style={styles.placeholderStyle}
                     />
                   )}
@@ -252,7 +261,11 @@ const KrlOrderForm = () => {
                   />
                   {stations && (
                     <Dropdown
-                      placeholderStyle={selectedStation2 ? styles.selectedTextStyle : styles.textSelectStation}
+                      placeholderStyle={
+                        selectedStation2
+                          ? styles.selectedTextStyle
+                          : styles.textSelectStation
+                      }
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
@@ -269,7 +282,11 @@ const KrlOrderForm = () => {
                       onChangeText={(item) => {
                         setSelectedStation2(item.value);
                       }}
-                      placeholder={selectedStation2 ? selectedStation2 : "Select Departure Station"}
+                      placeholder={
+                        selectedStation2
+                          ? selectedStation2
+                          : "Select Departure Station"
+                      }
                       style={styles.placeholderStyle}
                     />
                   )}
@@ -283,7 +300,11 @@ const KrlOrderForm = () => {
                     style={{ height: 40, width: 40, marginTop: 15 }}
                   />
                   <Dropdown
-                    placeholderStyle={selectedPeople ? styles.selectedTextStyle : styles.textSelectStation}
+                    placeholderStyle={
+                      selectedPeople
+                        ? styles.selectedTextStyle
+                        : styles.textSelectStation
+                    }
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}

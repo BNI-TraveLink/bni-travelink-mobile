@@ -182,7 +182,8 @@ const HomePage = () => {
                 <Text
                   style={[styles.saldoText, { fontSize: isHidden ? 11 : 20, marginTop: 5 }]}
                 >
-                  {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
+                  {/* {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo} */}
+                  {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : parseFloat(saldo).toLocaleString('id-ID')}
                 </Text>
               </View>
               <TouchableOpacity onPress={toggleVisibility}>
@@ -289,9 +290,11 @@ const HomePage = () => {
                         <View style={styles.listRightContainer}>
                           <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
                             <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
-                          {/* <View style={styles.activeContainer}>
-                            <View style={styles.activeContainer}> */}
-                              <Text style={styles.tittleActive}> {lastTicket.active ? "Active" : "Reorder"} </Text>
+                              <View style={styles.activeContent}>
+                                {/* <View style={styles.activeContainer}>
+                                  <View style={styles.activeContainer}> */}
+                                <Text style={styles.tittleActive}> {lastTicket.active ? "Active" : "Reorder"} </Text>
+                              </View>
                             </View>
                           </View>
                           <Text
@@ -471,6 +474,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Poppins-ExtraBold",
     marginRight: 5,
+    marginTop: 3
   },
 
   saldoText: {
